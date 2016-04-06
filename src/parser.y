@@ -17,17 +17,23 @@
 
 %token TAG
 %token TEXT
-%token EOF;		//End Of File
+%token EOF		//End Of File
 
-%start arbre
+%start file
 
 %%
 
-arbre: arbre EOF		{}
-	|  EOF				{}
-	;
+file: 	:	file balise								{ ; }
+		|	%empty									{ ; }
+		;
 
-	
+balise: 	label "[" attribut "]" "{" contenu "}"	{ ; }
+		|	label "{" contenu "}"					{ ; }	
+		;
+contenu:	balise									{ ; }
+		|	texte									{ ; }
+		;
+texte:	
 
 %%
 //Grammaire au dessus
