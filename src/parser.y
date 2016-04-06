@@ -15,9 +15,19 @@
 
 %output "parser.tab.c"
 
+%token TAG
+%token TEXT
+%token EOF;		//End Of File
+
+%start arbre
+
 %%
 
+arbre: arbre EOF		{}
+	|  EOF				{}
+	;
 
+	
 
 %%
 //Grammaire au dessus

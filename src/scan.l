@@ -15,9 +15,14 @@
 
 %option nounput noinput
 
+%x TEXTE
+
 %%
 
+[[:alpha:]_]+[[:alnum:]_]*{			{ return TAG; }
 
+<BALISE>	"\""					{ BEGIN TEXTE; }
+<TEXTE>		
 
 %%
 //Regles au dessus
