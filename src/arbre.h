@@ -19,6 +19,6 @@ struct tree {
     bool space;                //nœud suivi d'un espace
     enum type tp;              //type du nœud. nullary doit être true s tp vaut word
     struct attributes * attr;  //attributs du nœud
-    struct tree * daughters;   //fils gauche, qui doit être NULL si nullary est true
-    struct tree * right;       //frère droit
+    struct tree * daughter;    //fils de gauche, il doit être NULL si nullary est true
+    struct tree * next;        //frère droit
 };

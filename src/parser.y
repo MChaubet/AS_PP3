@@ -15,9 +15,25 @@
 
 %output "parser.tab.c"
 
+%token TAG
+%token TEXT
+%token EOF		//End Of File
+
+%start file
+
 %%
 
+file: 	:	file balise								{ ; }
+		|	%empty									{ ; }
+		;
 
+balise: 	label "[" attribut "]" "{" contenu "}"	{ ; }
+		|	label "{" contenu "}"					{ ; }	
+		;
+contenu:	balise									{ ; }
+		|	texte									{ ; }
+		;
+texte:	
 
 %%
 //Grammaire au dessus
