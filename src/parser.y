@@ -24,18 +24,27 @@
 
 %%
 
-file: 	:	file balise								{ ; }
+FILE : FILE TREE EOF								{ ; }
+		|	TREE									{ ; }
 		|	%empty									{ ; }
+			;
+
+TREE : TEXT "[" ATTRIBUTS "]" "{" CONTENU "}"		{ ; }
+		|	TEXT "{" CONTENU   "}"					{ ; }
+		|	TEXT "[" ATTRIBUTS "]" SLASH			{ ; }	
 		;
 
-balise  : 	label "[" attribut "]" "{" contenu "}"	{ ; }
-		|	label "{" contenu  "}"					{ ; }
-		|	label "[" attribut "]" SLASH			{ ; }	
+ATTRIBUT : ATTRIBUT SPACE ATTRIBUT
+		| WORD '=' '"' WORD '"'
 		;
-contenu :	balise									{ ; }
-		|	texte									{ ; }
+		
+CONTENU : 
+		|	
 		;
-texte   :
+		
+TEXT : 
+		|
+		;
 
 %%
 //Grammaire au dessus
