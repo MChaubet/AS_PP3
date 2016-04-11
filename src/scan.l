@@ -44,7 +44,7 @@
 	 * Les contenus textuels d’une balise sont toujours entre guillemets doubles. Les espaces et les sauts de lignes servent seulement à séparer deux mots consécutifs et ont donc peu d’importance
 	 */
 [[:alpha:]_][[:alnum:]_]+						{ /*TODO retourner mot */							printf ("<tag>\n"); }
-
+\/												{ /*TODO balise précédente vide*/					printf ("<tag/ Fermant>\n");}
 \{												{ /*TODO début des fils de la balise */ 			printf ("débuts fils\n"); }
 \}												{ /*TODO fin des fils de la balise */ 				printf ("fin fils\n");}
 \[												{ /*TODO commencer ATTRIBUT*/						BEGIN ATTRIBUT; printf ("débuts attributs\n");}
