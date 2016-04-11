@@ -16,6 +16,7 @@
 %output "parser.tab.c"
 
 %token TAG
+%token SLASH
 %token TEXT
 %token EOF		//End Of File
 
@@ -28,7 +29,8 @@ file: 	:	file balise								{ ; }
 		;
 
 balise  : 	label "[" attribut "]" "{" contenu "}"	{ ; }
-		|	label "{" contenu "}"					{ ; }	
+		|	label "{" contenu  "}"					{ ; }
+		|	label "[" attribut "]" SLASH			{ ; }	
 		;
 contenu :	balise									{ ; }
 		|	texte									{ ; }
