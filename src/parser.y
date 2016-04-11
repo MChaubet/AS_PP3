@@ -27,13 +27,13 @@ file: 	:	file balise								{ ; }
 		|	%empty									{ ; }
 		;
 
-balise: 	label "[" attribut "]" "{" contenu "}"	{ ; }
+balise  : 	label "[" attribut "]" "{" contenu "}"	{ ; }
 		|	label "{" contenu "}"					{ ; }	
 		;
-contenu:	balise									{ ; }
+contenu :	balise									{ ; }
 		|	texte									{ ; }
 		;
-texte:	
+texte   :
 
 %%
 //Grammaire au dessus

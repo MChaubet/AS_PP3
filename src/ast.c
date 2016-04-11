@@ -6,7 +6,6 @@ struct ast * mk_node(void){
     e->node = malloc(sizeof(union node));
     return e;
 }
-
 struct ast * mk_integer(int n){
     struct ast * e = mk_node();
     e->type = INTEGER;
@@ -30,7 +29,6 @@ struct ast * mk_var(char * var){
     e->type = VAR;
     e->node->str = var;
     return e;
-
 }
 struct ast * mk_import(struct path * chemin){
     struct ast * e = mk_node();
@@ -93,7 +91,6 @@ struct ast * mk_cond(struct ast * cond, struct ast * then_br, struct ast * else_
     e->node->cond->else_br=else_br;
     return e;
 }
-
 struct ast * mk_declrec(char * id, struct ast * body){
     struct ast * e = mk_node();
     e->type = DECLREC;

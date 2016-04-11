@@ -6,7 +6,7 @@ enum pattern_type {
     PTREE,     // filtre acceptant un arbre
     PSTRING,   // filtre acceptant un mot particulier
     PVAR,      // filtre effectuant une affectation de variable
-    PFOREST,    // filtre composÃ© de plusieurs filtres acceptant une forÃªt
+    PFOREST,   // filtre composé de plusieurs filtres acceptant une forÃªt
     ANYTREE,   // filtre acceptant un arbre quel que soit son Ã©tiquette
 };
 
@@ -18,10 +18,8 @@ enum wildcard {
 
 enum pvar {
     TREEVAR,   // filtre acceptant n'importe quel arbre et l'affectant Ã  une variable
-    STRINGVAR, // filtre acceptant n'importe quelle suite de mots et l'affectant
-               // Ã  une variable
-    FORESTVAR  // filtre acceptant n'importe quelle suite d'arbres et l'affectant
-               // Ã  une variable 
+    STRINGVAR, // filtre acceptant n'importe quelle suite de mots et l'affectant à une variable
+    FORESTVAR  // filtre acceptant n'importe quelle suite d'arbres et l'affectant à une variable 
 };
 
 struct pattern;
