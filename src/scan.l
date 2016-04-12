@@ -12,6 +12,7 @@
 	int yylex(void);
 	void yyerror(char *);
 
+	int isForest = 1;
 	int accolades = 0;
 	int crochets = 0;
 %}
@@ -19,6 +20,10 @@
 %x TEXT
 %x ATTRIBUT
 %x VALEUR
+
+XML [xX][mM][lL]
+MAIN [[:alnum:]_\.\']*
+EXP [[:alpha:]_]{MAIN}
 
 %%
 
@@ -43,15 +48,23 @@
 	 
 	 * Les contenus textuels d’une balise sont toujours entre guillemets doubles. Les espaces et les sauts de lignes servent seulement à séparer deux mots consécutifs et ont donc peu d’importance
 	 */
-[[:alpha:]_][[:alnum:]_]+						{ /*TODO retourner mot */							printf ("<tag>\n"); }
+({XML}{EXP}|{EXP}[.^\/\[\{{MAIN}]|\_+)			{ /*TODO retourner erreur */						printf ("erreur");}
+{EXP}											{ /*TODO retourner mot */							isForest=0; printf ("<tag>\n"); }
 \/												{ /*TODO balise précédente vide*/					printf ("<tag/ Fermant>\n");}
-\{												{ /*TODO début des fils de la balise */ 			printf ("débuts fils\n"); }
+\{												{ /*TODO début des fils de la balise */ 			
+													if (isForest)
+														{/* Creer foret*/}
+													else
+										 				{/* Creer balise*/ 
+										 	 		 	 isForest=1; }
+										 	 		printf ("débuts fils\n"); }
 \}												{ /*TODO fin des fils de la balise */ 				printf ("fin fils\n");}
 \[												{ /*TODO commencer ATTRIBUT*/						BEGIN ATTRIBUT; printf ("débuts attributs\n");}
 \"												{ /*TODO commencer TEXT*/							BEGIN TEXT; printf ("/StartText/\n");}
 <TEXT>[[:alnum:]èàùéâêîôûäëïöü]+				{ /*TODO retourner mot*/ 							printf ("mot ");}
 <TEXT>\"										{ /*TODO fin TEXT */								BEGIN INITIAL; printf ("/EndText/\n");}
-<ATTRIBUT>[[:alnum:]]+=							{ /*TODO retourner attribut (sauf égal à la fin)*/	BEGIN VALEUR; printf ("newAttibut\n");}
+<ATTRIBUT>({XML}{EXP}|{EXP}[.^\={MAIN}]|\_+) 	{ /*TODO retourner erreur */						printf("erreur !!\n"); }
+<ATTRIBUT>{EXP}\=								{ /*TODO retourner attribut (sauf égal à la fin)*/	BEGIN VALEUR; printf ("newAttibut\n");}
 <ATTRIBUT>\]									{ /*TODO fin d'attributs */ 						BEGIN INITIAL; printf ("fin attibuts\n");}
 <VALEUR>(\"[^\"]*\"|true|false|[[:digit:]]*)	{ /*TODO retourner valeur*/							BEGIN ATTRIBUT; printf ("valeur attibuts = %s\n", yytext);}
 .|\n											{ /*TODO Tous les autres caractères et fin de lignes*/ }
