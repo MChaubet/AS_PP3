@@ -16,37 +16,40 @@
 %output "parser.tab.c"
 
 %token TAG
+%token SPACE
 %token SLASH
-%token TEXT
-%token EOF		//End Of File
+%token WORD
 
-%start file
+%start FILE
 
 %%
 
-FILE : FILE TREE EOF								{ ; }
-		|	TREE									{ ; }
-		|	%empty									{ ; }
-			;
+FILE : FILE SPACE TREE
+		| TREE
+		;
 
-TREE : TEXT "[" ATTRIBUTS "]" "{" CONTENU "}"		{ ; }
-		|	TEXT "{" CONTENU   "}"					{ ; }
-		|	TEXT "[" ATTRIBUTS "]" SLASH			{ ; }	
+TREE : TAG '[' ATTRIBUT ']' '{' CONTENU '}'
+		| TAG '[' ATTRIBUT ']' SPACE '{' CONTENU '}'
+		| TAG '[' ATTRIBUT ']' SLASH
+		| TAG '{' CONTENU '}'
+		| TAG SLASH
+		| '{' CONTENU '}'
 		;
 
 ATTRIBUT : ATTRIBUT SPACE ATTRIBUT
-		| WORD '=' '"' WORD '"'
+		| TAG '=' '"' TEXT '"'
 		;
 		
-CONTENU : 
-		|	
+CONTENU : TREE
+		| SPACE '"' TEXT '"' SPACE
+		| SPACE '"' TEXT '"'
+		| '"' TEXT '"' SPACE
+		| '"' TEXT '"'
 		;
 		
-TEXT : 
-		|
+TEXT : TEXT SPACE WORD
+		| WORD
 		;
 
 %%
-//Grammaire au dessus
-
-//Code C en dessous
+//Code C
