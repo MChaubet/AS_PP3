@@ -45,6 +45,7 @@ CONTENU : TREE
 		| SPACE '"' TEXT '"'
 		| '"' TEXT '"' SPACE
 		| '"' TEXT '"'
+		| %empty
 		;
 		
 TEXT : TEXT SPACE WORD
