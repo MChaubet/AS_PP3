@@ -16,7 +16,7 @@
 %output "parser.tab.c"
 
 %token TAG
-%token SPACE
+%token KEY
 %token SLASH
 %token WORD
 
@@ -24,35 +24,31 @@
 
 %%
 
-FILE : FILE SPACE TREE
-		| TREE
+FILE : FILE TREE										{ ; }
+		| TREE											{ $$ = $1; }
 		;
 
-TREE : TAG '[' ATTRIBUTS ']' '{' CONTENU '}'
-		| TAG '[' ATTRIBUTS ']' SPACE '{' CONTENU '}'
-		| TAG '[' ATTRIBUTS ']' SLASH
-		| TAG '{' CONTENU '}'
-		| TAG SLASH
-		| '{' CONTENU '}'
+TREE : TAG '[' ATTRIBUTS ']' '{' CONTENU '}'			{ ; }
+		| TAG '[' ATTRIBUTS ']' SLASH					{ ; }
+		| TAG '{' CONTENU '}'							{ ; }
+		| TAG SLASH										{ ; }
+		| '{' CONTENU '}'								{ ; }
 		;
 
-ATTRIBUTS : ATTRIBUTS SPACE ATTRIBUT
-		| ATTRIBUT
+ATTRIBUTS : ATTRIBUTS ATTRIBUT							{ ; }
+		| ATTRIBUT										{ $$ = $1; }
 		;
 
-ATTRIBUT : TAG '=' '"' TEXT '"'
+ATTRIBUT : KEY '=' '"' TEXT '"'							{ /*$$ = createAttribute($1, $4)*/; }
 		;
 		
-CONTENU : TREE
-		| SPACE '"' TEXT '"' SPACE
-		| SPACE '"' TEXT '"'
-		| '"' TEXT '"' SPACE
-		| '"' TEXT '"'
-		| %empty
+CONTENU : TREE											{ $$ = $1; }
+		| '"' TEXT '"'									{ /*$$ = createTree($2)*/; }
+		| %empty										{ ; }
 		;
 		
-TEXT : TEXT SPACE WORD
-		| WORD
+TEXT : TEXT SPACE WORD									{ ; }
+		| WORD											{ $$ = $1; }
 		;
 
 %%

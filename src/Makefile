@@ -14,5 +14,3 @@ parser.tab.c: parser.y
 	$(YACC) -o $@ $<
 lex.yy.c: scan.l
 	$(LEX)  -o $@ $<
-	
-# Ajouter les autres fichiers .h et .c du projet

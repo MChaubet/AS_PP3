@@ -4,8 +4,8 @@
 
 struct tree;
 struct attributes;
-enum type {tree, word};        //typage des nœuds: permet de savoir si un nœud construit
-                               //un arbre ou s'il s'agit simplement de texte
+enum type {TREE, WORD};        //typage des nœuds: permet de savoir si un nœud construit
+                               //un arbre ou s'il s'agit simplement de texte""
 
 struct attributes{
     char * key;               //nom de l'attribut
@@ -22,3 +22,10 @@ struct tree {
     struct tree * daughter;    //fils de gauche, il doit être NULL si nullary est true
     struct tree * next;        //frère droit
 };
+
+tree createTree(char *);
+tree createWord(char *, bool);
+
+attributes createAttribute(char *, char *);
+
+void displayTree(tree);

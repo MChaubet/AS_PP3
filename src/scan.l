@@ -7,10 +7,6 @@
 	#include <unistd.h>
 
 	#include "parser.tab.h"
-	#include "main.h"
-
-	int yylex(void);
-	void yyerror(char *);
 %}
 
 %x TEXT
@@ -51,8 +47,3 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 <TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ return WORD; }
 <TEXT>[.^\"[:space:]]+							{ return WORD; }
 %%
-
-int main (void) {
-	yylex();	
-	return 0;
-}
