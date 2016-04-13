@@ -1,0 +1,17 @@
+div{
+"contenu..."
+}
+div[att1="v1"
+    att2="v2"]
+    {
+    "contenu..."
+    }
+
+br[att1="v1"
+   att2="v2"]/
+
+{"contenu ... " div[class="nb"]{...}
+ "suite ..."}
+ 
+div{"contenu " a[href="www.labri.fr"]{"LaBRI"}"."}
+div{"contenu" a[href="www.labri.fr"]{"LaBRI"}"."}
