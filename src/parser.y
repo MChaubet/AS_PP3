@@ -28,16 +28,19 @@ FILE : FILE SPACE TREE
 		| TREE
 		;
 
-TREE : TAG '[' ATTRIBUT ']' '{' CONTENU '}'
-		| TAG '[' ATTRIBUT ']' SPACE '{' CONTENU '}'
-		| TAG '[' ATTRIBUT ']' SLASH
+TREE : TAG '[' ATTRIBUTS ']' '{' CONTENU '}'
+		| TAG '[' ATTRIBUTS ']' SPACE '{' CONTENU '}'
+		| TAG '[' ATTRIBUTS ']' SLASH
 		| TAG '{' CONTENU '}'
 		| TAG SLASH
 		| '{' CONTENU '}'
 		;
 
-ATTRIBUT : ATTRIBUT SPACE ATTRIBUT
-		| TAG '=' '"' TEXT '"'
+ATTRIBUTS : ATTRIBUTS SPACE ATTRIBUT
+		| ATTRIBUT
+		;
+
+ATTRIBUT : TAG '=' '"' TEXT '"'
 		;
 		
 CONTENU : TREE
@@ -53,4 +56,3 @@ TEXT : TEXT SPACE WORD
 		;
 
 %%
-//Code C

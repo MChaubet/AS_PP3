@@ -1,0 +1,469 @@
+Grammaire
+
+    0 $accept: FILE $end
+
+    1 FILE: FILE SPACE TREE
+    2     | TREE
+
+    3 TREE: TAG '[' ATTRIBUTS ']' '{' CONTENU '}'
+    4     | TAG '[' ATTRIBUTS ']' SPACE '{' CONTENU '}'
+    5     | TAG '[' ATTRIBUTS ']' SLASH
+    6     | TAG '{' CONTENU '}'
+    7     | TAG SLASH
+    8     | '{' CONTENU '}'
+
+    9 ATTRIBUTS: ATTRIBUTS SPACE ATTRIBUT
+   10          | ATTRIBUT
+
+   11 ATTRIBUT: TAG '=' '"' TEXT '"'
+
+   12 CONTENU: TREE
+   13        | SPACE '"' TEXT '"' SPACE
+   14        | SPACE '"' TEXT '"'
+   15        | '"' TEXT '"' SPACE
+   16        | '"' TEXT '"'
+   17        | %empty
+
+   18 TEXT: TEXT SPACE WORD
+   19     | WORD
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+$end (0) 0
+'"' (34) 11 13 14 15 16
+'=' (61) 11
+'[' (91) 3 4 5
+']' (93) 3 4 5
+'{' (123) 3 4 6 8
+'}' (125) 3 4 6 8
+error (256)
+TAG (258) 3 4 5 6 7 11
+SPACE (259) 1 4 9 13 14 15 18
+SLASH (260) 5 7
+WORD (261) 18 19
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+$accept (13)
+    à gauche: 0
+FILE (14)
+    à gauche: 1 2, à droite: 0 1
+TREE (15)
+    à gauche: 3 4 5 6 7 8, à droite: 1 2 12
+ATTRIBUTS (16)
+    à gauche: 9 10, à droite: 3 4 5 9
+ATTRIBUT (17)
+    à gauche: 11, à droite: 9 10
+CONTENU (18)
+    à gauche: 12 13 14 15 16 17, à droite: 3 4 6 8
+TEXT (19)
+    à gauche: 18 19, à droite: 11 13 14 15 16 18
+
+
+État 0
+
+    0 $accept: . FILE $end
+
+    TAG  décalage et aller à l'état 1
+    '{'  décalage et aller à l'état 2
+
+    FILE  aller à l'état 3
+    TREE  aller à l'état 4
+
+
+État 1
+
+    3 TREE: TAG . '[' ATTRIBUTS ']' '{' CONTENU '}'
+    4     | TAG . '[' ATTRIBUTS ']' SPACE '{' CONTENU '}'
+    5     | TAG . '[' ATTRIBUTS ']' SLASH
+    6     | TAG . '{' CONTENU '}'
+    7     | TAG . SLASH
+
+    SLASH  décalage et aller à l'état 5
+    '['    décalage et aller à l'état 6
+    '{'    décalage et aller à l'état 7
+
+
+État 2
+
+    8 TREE: '{' . CONTENU '}'
+
+    TAG    décalage et aller à l'état 1
+    SPACE  décalage et aller à l'état 8
+    '{'    décalage et aller à l'état 2
+    '"'    décalage et aller à l'état 9
+
+    $défaut  réduction par utilisation de la règle 17 (CONTENU)
+
+    TREE     aller à l'état 10
+    CONTENU  aller à l'état 11
+
+
+État 3
+
+    0 $accept: FILE . $end
+    1 FILE: FILE . SPACE TREE
+
+    $end   décalage et aller à l'état 12
+    SPACE  décalage et aller à l'état 13
+
+
+État 4
+
+    2 FILE: TREE .
+
+    $défaut  réduction par utilisation de la règle 2 (FILE)
+
+
+État 5
+
+    7 TREE: TAG SLASH .
+
+    $défaut  réduction par utilisation de la règle 7 (TREE)
+
+
+État 6
+
+    3 TREE: TAG '[' . ATTRIBUTS ']' '{' CONTENU '}'
+    4     | TAG '[' . ATTRIBUTS ']' SPACE '{' CONTENU '}'
+    5     | TAG '[' . ATTRIBUTS ']' SLASH
+
+    TAG  décalage et aller à l'état 14
+
+    ATTRIBUTS  aller à l'état 15
+    ATTRIBUT   aller à l'état 16
+
+
+État 7
+
+    6 TREE: TAG '{' . CONTENU '}'
+
+    TAG    décalage et aller à l'état 1
+    SPACE  décalage et aller à l'état 8
+    '{'    décalage et aller à l'état 2
+    '"'    décalage et aller à l'état 9
+
+    $défaut  réduction par utilisation de la règle 17 (CONTENU)
+
+    TREE     aller à l'état 10
+    CONTENU  aller à l'état 17
+
+
+État 8
+
+   13 CONTENU: SPACE . '"' TEXT '"' SPACE
+   14        | SPACE . '"' TEXT '"'
+
+    '"'  décalage et aller à l'état 18
+
+
+État 9
+
+   15 CONTENU: '"' . TEXT '"' SPACE
+   16        | '"' . TEXT '"'
+
+    WORD  décalage et aller à l'état 19
+
+    TEXT  aller à l'état 20
+
+
+État 10
+
+   12 CONTENU: TREE .
+
+    $défaut  réduction par utilisation de la règle 12 (CONTENU)
+
+
+État 11
+
+    8 TREE: '{' CONTENU . '}'
+
+    '}'  décalage et aller à l'état 21
+
+
+État 12
+
+    0 $accept: FILE $end .
+
+    $défaut  accepter
+
+
+État 13
+
+    1 FILE: FILE SPACE . TREE
+
+    TAG  décalage et aller à l'état 1
+    '{'  décalage et aller à l'état 2
+
+    TREE  aller à l'état 22
+
+
+État 14
+
+   11 ATTRIBUT: TAG . '=' '"' TEXT '"'
+
+    '='  décalage et aller à l'état 23
+
+
+État 15
+
+    3 TREE: TAG '[' ATTRIBUTS . ']' '{' CONTENU '}'
+    4     | TAG '[' ATTRIBUTS . ']' SPACE '{' CONTENU '}'
+    5     | TAG '[' ATTRIBUTS . ']' SLASH
+    9 ATTRIBUTS: ATTRIBUTS . SPACE ATTRIBUT
+
+    SPACE  décalage et aller à l'état 24
+    ']'    décalage et aller à l'état 25
+
+
+État 16
+
+   10 ATTRIBUTS: ATTRIBUT .
+
+    $défaut  réduction par utilisation de la règle 10 (ATTRIBUTS)
+
+
+État 17
+
+    6 TREE: TAG '{' CONTENU . '}'
+
+    '}'  décalage et aller à l'état 26
+
+
+État 18
+
+   13 CONTENU: SPACE '"' . TEXT '"' SPACE
+   14        | SPACE '"' . TEXT '"'
+
+    WORD  décalage et aller à l'état 19
+
+    TEXT  aller à l'état 27
+
+
+État 19
+
+   19 TEXT: WORD .
+
+    $défaut  réduction par utilisation de la règle 19 (TEXT)
+
+
+État 20
+
+   15 CONTENU: '"' TEXT . '"' SPACE
+   16        | '"' TEXT . '"'
+   18 TEXT: TEXT . SPACE WORD
+
+    SPACE  décalage et aller à l'état 28
+    '"'    décalage et aller à l'état 29
+
+
+État 21
+
+    8 TREE: '{' CONTENU '}' .
+
+    $défaut  réduction par utilisation de la règle 8 (TREE)
+
+
+État 22
+
+    1 FILE: FILE SPACE TREE .
+
+    $défaut  réduction par utilisation de la règle 1 (FILE)
+
+
+État 23
+
+   11 ATTRIBUT: TAG '=' . '"' TEXT '"'
+
+    '"'  décalage et aller à l'état 30
+
+
+État 24
+
+    9 ATTRIBUTS: ATTRIBUTS SPACE . ATTRIBUT
+
+    TAG  décalage et aller à l'état 14
+
+    ATTRIBUT  aller à l'état 31
+
+
+État 25
+
+    3 TREE: TAG '[' ATTRIBUTS ']' . '{' CONTENU '}'
+    4     | TAG '[' ATTRIBUTS ']' . SPACE '{' CONTENU '}'
+    5     | TAG '[' ATTRIBUTS ']' . SLASH
+
+    SPACE  décalage et aller à l'état 32
+    SLASH  décalage et aller à l'état 33
+    '{'    décalage et aller à l'état 34
+
+
+État 26
+
+    6 TREE: TAG '{' CONTENU '}' .
+
+    $défaut  réduction par utilisation de la règle 6 (TREE)
+
+
+État 27
+
+   13 CONTENU: SPACE '"' TEXT . '"' SPACE
+   14        | SPACE '"' TEXT . '"'
+   18 TEXT: TEXT . SPACE WORD
+
+    SPACE  décalage et aller à l'état 28
+    '"'    décalage et aller à l'état 35
+
+
+État 28
+
+   18 TEXT: TEXT SPACE . WORD
+
+    WORD  décalage et aller à l'état 36
+
+
+État 29
+
+   15 CONTENU: '"' TEXT '"' . SPACE
+   16        | '"' TEXT '"' .
+
+    SPACE  décalage et aller à l'état 37
+
+    $défaut  réduction par utilisation de la règle 16 (CONTENU)
+
+
+État 30
+
+   11 ATTRIBUT: TAG '=' '"' . TEXT '"'
+
+    WORD  décalage et aller à l'état 19
+
+    TEXT  aller à l'état 38
+
+
+État 31
+
+    9 ATTRIBUTS: ATTRIBUTS SPACE ATTRIBUT .
+
+    $défaut  réduction par utilisation de la règle 9 (ATTRIBUTS)
+
+
+État 32
+
+    4 TREE: TAG '[' ATTRIBUTS ']' SPACE . '{' CONTENU '}'
+
+    '{'  décalage et aller à l'état 39
+
+
+État 33
+
+    5 TREE: TAG '[' ATTRIBUTS ']' SLASH .
+
+    $défaut  réduction par utilisation de la règle 5 (TREE)
+
+
+État 34
+
+    3 TREE: TAG '[' ATTRIBUTS ']' '{' . CONTENU '}'
+
+    TAG    décalage et aller à l'état 1
+    SPACE  décalage et aller à l'état 8
+    '{'    décalage et aller à l'état 2
+    '"'    décalage et aller à l'état 9
+
+    $défaut  réduction par utilisation de la règle 17 (CONTENU)
+
+    TREE     aller à l'état 10
+    CONTENU  aller à l'état 40
+
+
+État 35
+
+   13 CONTENU: SPACE '"' TEXT '"' . SPACE
+   14        | SPACE '"' TEXT '"' .
+
+    SPACE  décalage et aller à l'état 41
+
+    $défaut  réduction par utilisation de la règle 14 (CONTENU)
+
+
+État 36
+
+   18 TEXT: TEXT SPACE WORD .
+
+    $défaut  réduction par utilisation de la règle 18 (TEXT)
+
+
+État 37
+
+   15 CONTENU: '"' TEXT '"' SPACE .
+
+    $défaut  réduction par utilisation de la règle 15 (CONTENU)
+
+
+État 38
+
+   11 ATTRIBUT: TAG '=' '"' TEXT . '"'
+   18 TEXT: TEXT . SPACE WORD
+
+    SPACE  décalage et aller à l'état 28
+    '"'    décalage et aller à l'état 42
+
+
+État 39
+
+    4 TREE: TAG '[' ATTRIBUTS ']' SPACE '{' . CONTENU '}'
+
+    TAG    décalage et aller à l'état 1
+    SPACE  décalage et aller à l'état 8
+    '{'    décalage et aller à l'état 2
+    '"'    décalage et aller à l'état 9
+
+    $défaut  réduction par utilisation de la règle 17 (CONTENU)
+
+    TREE     aller à l'état 10
+    CONTENU  aller à l'état 43
+
+
+État 40
+
+    3 TREE: TAG '[' ATTRIBUTS ']' '{' CONTENU . '}'
+
+    '}'  décalage et aller à l'état 44
+
+
+État 41
+
+   13 CONTENU: SPACE '"' TEXT '"' SPACE .
+
+    $défaut  réduction par utilisation de la règle 13 (CONTENU)
+
+
+État 42
+
+   11 ATTRIBUT: TAG '=' '"' TEXT '"' .
+
+    $défaut  réduction par utilisation de la règle 11 (ATTRIBUT)
+
+
+État 43
+
+    4 TREE: TAG '[' ATTRIBUTS ']' SPACE '{' CONTENU . '}'
+
+    '}'  décalage et aller à l'état 45
+
+
+État 44
+
+    3 TREE: TAG '[' ATTRIBUTS ']' '{' CONTENU '}' .
+
+    $défaut  réduction par utilisation de la règle 3 (TREE)
+
+
+État 45
+
+    4 TREE: TAG '[' ATTRIBUTS ']' SPACE '{' CONTENU '}' .
+
+    $défaut  réduction par utilisation de la règle 4 (TREE)
