@@ -15,10 +15,16 @@
 
 %output "parser.tab.c"
 
+/* TODO Les tokens que l'on devrait avoir */ 
+%token ERROR
 %token TAG
+%token INST
+%token VAR
+%token WORD
+
+/* TODO Les tokens à supprimer au final */
 %token KEY
 %token SLASH
-%token WORD
 
 %start FILE
 
