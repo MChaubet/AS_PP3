@@ -35,7 +35,7 @@ struct app{
 struct attributes{
     struct ast * key;
     struct ast * value;
-    struct ast * next;
+    struct attributes * next;
 };
 
 struct tree{
