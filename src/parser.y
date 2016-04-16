@@ -29,6 +29,25 @@
 %start FILE
 
 %%
+/*
+IDEES DE NOUVELLE REGLE :
+
+FILE --> CONST CORPS
+
+CORPS --> INST CORPS
+CORPS --> TREE CORPS
+CORPS --> EPSILON
+
+
+Une variable peut etre implémenté par "let var = contenu;"
+CONST --> INST VAR '='  ';'
+
+En revanche une fonction peut etre implémenté par 
+	"let f var1 var2 = contenu;"
+	"let f = fun var1 var2 -> contenu;"
+	"let f var1 var2 = func var1 var2 -> contenu;"
+	"let rec f var1 var2 = func var1 var2 -> constenu;"
+*/
 
 FILE : FILE TREE										{ ; }
 		| TREE											{ $$ = $1; }

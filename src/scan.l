@@ -12,7 +12,7 @@
 %x TEXT
 
 XML [xX][mM][lL]
-INSTR ("let"|"if"|"then"|"else"|"with"|"in"|"where"|"emit"|"rec")
+INSTR ("let"|"if"|"then"|"else"|"with"|"in"|"where"|"emit"|"rec"|"fun")
 EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 
 %%
