@@ -38,6 +38,7 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	 
 	 * Les contenus textuels d’une balise sont toujours entre guillemets doubles. Les espaces et les sauts de lignes servent seulement à séparer deux mots consécutifs et ont donc peu d’importance
 	 */
+\]/[[:space:]]									{ printf("]"); return SPACE; }
 [[:space:]]+									{ }
 ({XML}{EXP}|\_)									{ return ERROR; }
 {INSTR}/[[:space:]]								{ return INST; }
@@ -45,6 +46,7 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 {EXP}											{ return NAME; }
 \"												{ BEGIN TEXT; ECHO; }
 <TEXT>\"										{ BEGIN INITIAL; ECHO; }
+<TEXT>[[:space:]]+								{ return SPACE; }
 <TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ return WORD; }
 <TEXT>[.^\"[:space:]]+							{ return WORD; }
 %%
