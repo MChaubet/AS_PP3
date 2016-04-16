@@ -19,7 +19,7 @@
 %token ERROR
 %token TAG
 %token INST
-%token VAR
+%token NAME
 %token WORD
 
 /* TODO Les tokens à supprimer au final */
@@ -40,7 +40,7 @@ CORPS --> EPSILON
 
 
 Une variable peut etre implémenté par "let var = contenu;"
-CONST --> INST VAR '='  ';'
+CONST --> INST NAME '='  ';'
 
 En revanche une fonction peut etre implémenté par 
 	"let f var1 var2 = contenu;"

@@ -42,7 +42,7 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 ({XML}{EXP}|\_)									{ return ERROR; }
 {INSTR}/[[:space:]]								{ return INST; }
 {EXP}/[\{\[\\\=]								{ return TAG; }
-{EXP}											{ return VAR; }
+{EXP}											{ return NAME; }
 \"												{ BEGIN TEXT; ECHO; }
 <TEXT>\"										{ BEGIN INITIAL; ECHO; }
 <TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ return WORD; }
