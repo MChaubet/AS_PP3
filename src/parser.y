@@ -54,7 +54,7 @@ FILE : FILE TREE										{ ; }
 		;
 
 TREE : TAG '[' ATTRIBUTS ']' '{' CONTENU '}'			{ ; }
-		| TAG '[' ATTRIBUTS ']' SLASH					{ ; }
+		| TAG '[' ATTRIBUTS "]/"						{ ; }
 		| TAG '{' CONTENU '}'							{ ; }
 		| TAG SLASH										{ ; }
 		| '{' CONTENU '}'								{ ; }
