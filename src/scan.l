@@ -1,53 +1,42 @@
 %{
-	#include <assert.h>
-	#include <stdbool.h>
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#include <unistd.h>
-
+	#include "main.h"
 	#include "parser.tab.h"
+	
+	int yylex(void);
+	void yyerror(char *);
 %}
+
+%option noinput nounput
 
 %x TEXT
 
 XML [xX][mM][lL]
 INSTR ("let"|"if"|"then"|"else"|"with"|"in"|"where"|"emit"|"rec"|"fun"|"match"|"end")
+/* Expression régulière des tags et variables */
 EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 
 %%
-
-	/* Etiquettes et attributs (Convention)
-	
-	 * Elles doivent commencer par une lettre ou un caractère ’_’ (mais ’_’ seul n’est pas accepté comme étiquette possible) 
-	 * Elles ne doivent pas commencer par une séquence de la forme xml, XML, Xml, etc.
-	 * Elles peuvent contenir des lettres, des chiffres, des apostrophes, des points, des caractères ’_’.
-	 * Elles ne doivent pas contenir d’espace.
-	 
-	 * Le nom de l’étiquette soit immédiatement accolé (sans espace ou saut de ligne) soit à :
-	 * 	Un crochet ouvrant '[' au cas où on souhaite associer une liste d'attributs au noeud
-	 * 	un accolade ouvrante '{' pour écrire le contenu du noeud
-	 * 	Un symbole '/' si on souhaite décrire un noeud qui ne peut avoir de contenu
-	 *    (NB: foo/ représente la balise <foo/> alors que foo{} représente la balise <foo></foo>)
-	 
-	 * Si un nom d'étiquette est suivi d'une liste d'attributs entre crochets alors :
-	 * 	Il peut y avoir des espaces et des sauts de lignes entre la fin de la déclaration des attributs et l’accolade ouvrante qui permet de décrire le contenu du noeud
-	 *  s’il s’agit d’un nœud qui ne peut pas avoir de contenu, on impose que le ’/’ soit directement positionné après le crochet fermant.
-	 
-	 * On autorise également d’écrire une forêt entre accolades sans qu’il y ait besoin d’une balise pour ouvrir la racine
-	 
-	 * Les contenus textuels d’une balise sont toujours entre guillemets doubles. Les espaces et les sauts de lignes servent seulement à séparer deux mots consécutifs et ont donc peu d’importance
-	 */
+	/* Les '/' précédés d'espaces */
 [[:space:]]+/\/									{ printf(" "); }
+	/* On supprime tous les espaces pour ne pas avoir à les gérer dans la grammaire */
 [[:space:]]+									{ }
-({XML}{EXP}|\_)									{ return ERROR; }
+	/* Les nom de variables débutants par des variantes de 'xml', ou simplement constitués de '_' provoquent des ereurs */
+({XML}{EXP}|\_)									{ /*return ERROR;*/ }
+	/* Les instructions d'Ocaml */
 {INSTR}/[[:space:]]								{ return INST; }
-{EXP}/[\{\[\\\=]								{ return TAG; }
+	/* Les expressions suivies de '{', '[', '/' ou '=' sont des TAGs */
+{EXP}/[\{\[\/\=]								{ return TAG; }
+	/* Les expressions qui ne sont pas des tags sont des noms de variables, de fonctions ou d'actions */
 {EXP}											{ return NAME; }
+	/* On entre en écriture de texte */
 \"												{ BEGIN TEXT; ECHO; }
+	/* On arrete l'écriture de texte */
 <TEXT>\"										{ BEGIN INITIAL; ECHO; }
+	/* On renvoie un simple espace losque l'on en détecte une suite */
 <TEXT>[[:space:]]+								{ printf(" "); }
+	/* On fait attention à la détection du symple double quote quand il est échappé par '\' */
 <TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ return WORD; }
+	/* Toutes les suites de caractères sauf l'espace constituent un mot */
 <TEXT>[.^\"[:space:]]+							{ return WORD; }
 %%
 
