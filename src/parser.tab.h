@@ -46,8 +46,8 @@ extern int yydebug;
   enum yytokentype
   {
     TAG = 258,
-    SPACE = 259,
-    SLASH = 260,
+    INST = 259,
+    NAME = 260,
     WORD = 261
   };
 #endif

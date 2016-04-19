@@ -15,16 +15,10 @@
 
 %output "parser.tab.c"
 
-/* TODO Les tokens que l'on devrait avoir */ 
-%token ERROR
-%token TAG
-%token INST
-%token NAME
-%token WORD
-
-/* TODO Les tokens à supprimer au final */
-%token KEY
-%token SLASH
+%token TAG			// Nom de balise
+%token INST			// Mot clé  OCaml
+%token NAME			// Variable OCaml
+%token WORD			// Mot d'un texte
 
 %start FILE
 
@@ -53,27 +47,35 @@ FILE : FILE TREE										{ ; }
 		| TREE											{ $$ = $1; }
 		;
 
-TREE : TAG '[' ATTRIBUTS ']' '{' CONTENU '}'			{ ; }
-		| TAG '[' ATTRIBUTS "]/"						{ ; }
-		| TAG '{' CONTENU '}'							{ ; }
-		| TAG SLASH										{ ; }
-		| '{' CONTENU '}'								{ ; }
+TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ ; }
+		| TAG '[' ATTRIBUTS ']' '/'						{ ; }
+		| TAG '{' CONTENUS '}'							{ ; }
+		| TAG '/'										{ ; }
+		| '{' CONTENUS '}'								{ ; }
 		;
 
 ATTRIBUTS : ATTRIBUTS ATTRIBUT							{ ; }
 		| ATTRIBUT										{ $$ = $1; }
 		;
 
-ATTRIBUT : KEY '=' '"' TEXT '"'							{ /*$$ = createAttribute($1, $4)*/; }
+ATTRIBUT : TAG '=' '"' TEXT '"'							{ /*$$ = createAttribute($1, $4)*/; }
 		;
-		
+
+CONTENUS : CONTENUS CONTENU								{ ; }
+		| CONTENU										{ $$ = $1; }
+		;
+	
 CONTENU : TREE											{ $$ = $1; }
+		/*| VARIABLE OCAML*/
 		| '"' TEXT '"'									{ /*$$ = createTree($2)*/; }
-		| %empty										{ ; }
 		;
 		
-TEXT : TEXT SPACE WORD									{ ; }
-		| WORD											{ $$ = $1; }
+TEXT : TEXT WORD_T										{ ; }
+		| WORD_T										{ $$ = $1; }
+		;
+
+WORD_T : WORD ' ' 										{ /*Creation de mot avec espace*/; }
+		| WORD	 										{ /*Creation de mot sans espace*/; }
 		;
 
 %%
