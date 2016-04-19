@@ -40,11 +40,31 @@ En revanche une fonction peut etre implémenté par
 	"let f var1 var2 = contenu;"
 	"let f = fun var1 var2 -> contenu;"
 	"let f var1 var2 = func var1 var2 -> contenu;"
-	"let rec f var1 var2 = func var1 var2 -> constenu;"
+	"let rec f var1 var2 = func var1 var2 -> contenu;"
 */
 
-FILE : FILE TREE										{ ; }
-		| TREE											{ $$ = $1; }
+// Rajout de DECLS dans FILE, de facon a avoir toutes les occurrences
+// de DECLS avant les toutes les occurrences de TREES
+FILE : DECLS TREES										{ ; }
+		| TREES											{ $$ = $1; }
+		;
+
+DECLS : DECLS DECL										{ ; }
+		| DECL											{ ; }
+		;
+
+DECL : INST NAMES '=' /*CONTENU_OCAML*/ ';'
+		| INST INST NAMES '=' /*CONTENU_OCAML*/ ';'
+		| INST NAMES '=' INST NAMES '-' '>' /*CONTENU_OCAML*/ ';'
+		| INST INST NAMES = INST NAMES '-' '>' /*CONTENU_OCAML*/ ';' 
+		;
+
+NAMES : NAMES NAME
+		| NAME
+		;
+
+TREES : TREES TREE										{ ; }
+		| TREE											{ ; }
 		;
 
 TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ ; }
@@ -66,7 +86,7 @@ CONTENUS : CONTENUS CONTENU								{ ; }
 		;
 	
 CONTENU : TREE											{ $$ = $1; }
-		/*| VARIABLE OCAML*/
+			/* Possibilite d'avoir des variables locales pour des balises */
 		| '"' TEXT '"'									{ /*$$ = createTree($2)*/; }
 		;
 		
