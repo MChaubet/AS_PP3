@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -9,3 +12,5 @@
 #include "parser.tab.h"
 
 int yyparse(void);
+
+#endif

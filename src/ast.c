@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "ast.h"
 
-void to_string(ast * t){
+void to_string(struct ast * t){
     switch (t->type) {
         case FOREST:
             if(t->node->forest->head != NULL)
@@ -17,10 +17,10 @@ void to_string(ast * t){
                 printf("%s='%s' ", att->key->node->str, att->value->node->str);
                 att = att->next;
             }
-            if(t->node->tree->nullary != FALSE){
+            if(t->node->tree->nullary != false){
                 printf(">");
-                to_string(t->node->daughters);
-                if(t->node->tree->space == TRUE){
+                to_string(t->node->tree->daughters);
+                if(t->node->tree->space == true){
                     printf(" ");
                 }
                 printf("</%s>", t->node->tree->label);
@@ -32,7 +32,7 @@ void to_string(ast * t){
             printf("%s\n",t->node->str);
             break;
         default:
-            printf("Type non reconnu\n", );
+            printf("Type non reconnu\n");
     }
 }
 struct ast * mk_node(void){
@@ -83,8 +83,8 @@ struct ast * mk_word(char * str){
     e->node->str = str;
     return e;
 };
-struct attributes * mk_attributes(ast * key, ast * value, attributes * next){
-    struct attributes * e = malloc(sizeo(struct attributes));
+struct attributes * mk_attributes(struct ast * key, struct ast * value, struct attributes * next){
+    struct attributes * e = malloc(sizeof(struct attributes));
     e->key = key;
     e->value = value;
     e->next = next;
