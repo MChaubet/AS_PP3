@@ -9,18 +9,22 @@
 
 %output "parser.tab.c"
 
-%union{
+%union{	
 	int value;
 	char * name;
+	struct ast * ast;
 }
 
-%token TAG			// Nom de balise
-%token INST			// Mot clé  OCaml
-%token NAME			// Variable OCaml
-%token MOT			// Mot d'un texte
+%token < value > TAG	// Nom de balise
+%token < value > INST	// Mot clé  OCaml
+%token < value > NAME	// Variable OCaml
+%token < value > MOT	// Mot d'un texte
 
-/* Temporaire */
-%token ACTION
+					/* Temporaire */
+%token < ast > ACTION
+
+%type < ast > FILE DECLS DECL NAMES BODY TREE CONTENUS CONTENU TEXT WORD_T
+%type < attributes > ATTRIBUTS
 
 %start FILE
 
@@ -47,44 +51,44 @@ DECLS : DECL DECLS										{ $$ = mk_forest(false, $1, $2); }
 DECL : INST NAMES '=' BODY ';'							{ ; }
 		| INST INST NAMES '=' BODY ';'					{ ; }
 		| INST NAMES '=' INST NAMES "->" BODY ';'		{ ; }
-		| INST INST NAMES '=' INST NAMES "->" BODY ';'	{ if($2 == "rec"); }
+		| INST INST NAMES '=' INST NAMES "->" BODY ';'	{ ; }
 		;
 
-NAMES : NAMES NAME										{ $$ = mk_forest(false, $1, $2); }
+NAMES : NAME NAMES										{ $$ = mk_forest(false, $1, $2); }
 		| NAME											{ $$ = $1; }
 		;
 
-BODY : BODY TREE										{ $$ = mk_forest(false, $1, $2); }
-		| BODY ACTION									{ $$ = mk_forest(false, $1, $2); }
+BODY : TREE BODY										{ $$ = mk_forest(false, $1, $2); }
+		| ACTION BODY									{ $$ = mk_forest(false, $1, $2); }
 		| TREE											{ $$ = $1; }
 		| ACTION										{ $$ = $1; }
 		;
 
-TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ $$ = mk_tree($1, true, false, false, $2, $3); }
-		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, false, false, $2, NULL); }
+TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ $$ = mk_tree($1, true, false, false, $3, $6); }
+		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, false, false, $3, NULL); }
 		| TAG '{' CONTENUS '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
 		| TAG '/'										{ $$ = mk_tree($1, true, false, false, NULL, NULL); }
-		| '{' CONTENUS '}'								{ $$ = $1; }
+		| '{' CONTENUS '}'								{ $$ = $2; }
 		;
 
-ATTRIBUTS : ATTRIBUTS TAG '=' '"' TEXT '"'				{ $$ = mk_attributes($2, $3, $1); }
-		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes($1, $2, NULL); }
+ATTRIBUTS : ATTRIBUTS TAG '=' '"' TEXT '"'				{ $$ = mk_attributes($2, $5, $1); }
+		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes($1, $4, NULL); }
 		;
 
-CONTENUS : CONTENUS CONTENU								{ $$ = mk_forest(false, $1, $2); }
+CONTENUS : CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
 		| CONTENU										{ $$ = $1; }
 		;
 	
 CONTENU : TREE											{ $$ = $1; }
-		| '"' TEXT '"'									{ $$ = $1; }
+		| '"' TEXT '"'									{ $$ = $2; }
 		;
 		
-TEXT : TEXT WORD_T										{ $$ = mk_forest(false, $1, $2); }
+TEXT : WORD_T TEXT										{ $$ = mk_forest(false, $1, $2); }
 		| WORD_T										{ $$ = $1; }
 		;
 
-WORD_T : MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word(yylval)); }
-		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word(yylval)); }
+WORD_T : MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
+		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
 		;
 
 %%
