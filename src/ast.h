@@ -100,6 +100,8 @@ struct ast{
     union node * node;
 };
 void to_string(ast * t);
+struct attributes * mk_attributes(ast * key, ast * value, attributes * next);
+
 struct ast * mk_integer(int n);
 struct ast * mk_binop(enum binop binop);
 struct ast * mk_unaryop(enum unaryop unaryop);
