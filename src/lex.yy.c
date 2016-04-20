@@ -888,14 +888,14 @@ case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
 #line 38 "scan.l"
-{ return MOT; }
+{ yylval.name = strdup(yytext); return MOT; }
 	YY_BREAK
 /* Toutes les suites de caractères sauf l'espace constituent un mot */
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
 #line 40 "scan.l"
-{ return MOT; }
+{ yylval.name = strdup(yytext); return MOT; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP

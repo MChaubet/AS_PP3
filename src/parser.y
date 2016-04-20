@@ -9,6 +9,11 @@
 
 %output "parser.tab.c"
 
+%union{
+	int value;
+	char * name;
+}
+
 %token TAG			// Nom de balise
 %token INST			// Mot clé  OCaml
 %token NAME			// Variable OCaml
@@ -78,8 +83,8 @@ TEXT : TEXT WORD_T										{ $$ = mk_forest(false, $1, $2); }
 		| WORD_T										{ $$ = $1; }
 		;
 
-WORD_T : MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
-		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
+WORD_T : MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word(yylval)); }
+		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word(yylval)); }
 		;
 
 %%

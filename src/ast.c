@@ -17,10 +17,10 @@ void to_string(ast * t){
                 printf("%s='%s' ", att->key->node->str, att->value->node->str);
                 att = att->next;
             }
-            if(t->node->tree->nullary != FALSE){
+            if(t->node->tree->nullary != false){
                 printf(">");
                 to_string(t->node->daughters);
-                if(t->node->tree->space == TRUE){
+                if(t->node->tree->space == true){
                     printf(" ");
                 }
                 printf("</%s>", t->node->tree->label);
