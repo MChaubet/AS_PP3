@@ -13,6 +13,7 @@ struct attributes{
     struct attributes * next; //attribut suivant
 };
 
+
 struct tree {
     char * label;              //étiquette du nœud
     bool nullary;              //nœud vide, par exemple <br/>
@@ -23,9 +24,15 @@ struct tree {
     struct tree * next;        //frère droit
 };
 
-tree createTree(char *);
-tree createWord(char *, bool);
+struct tree * first;
 
-attributes createAttribute(char *, char *);
+tree createTree(char * label);
+tree createWord(char * label, bool space);
+
+tree createBrotherTree(char * label, tree brother);
+tree createBrotherWord(char * label, bool space, tree brother);
+
+attributes createAttribute(char * key, char * value);
+attributes createBrotherAttribute(char * key, char * value, attributes brother);
 
 void displayTree(tree);
