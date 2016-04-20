@@ -17,7 +17,7 @@ enum ast_type {
     APP,      // L'expression est une application de fonction
     WORD,     // L'expression est un mot
     TREE,     // L'expression est un arbre
-    FOREST,   // L'expression est une forÃªt
+    FOREST,   // L'expression est une foret
     FUN,      // L'expression est une fonction
     MATCH,    // L'expression est un filtre
     COND,     // L'expression est une conditionnelle
