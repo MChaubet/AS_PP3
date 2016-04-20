@@ -29,7 +29,8 @@ void to_string(ast * t){
             }
             break;
         case WORD:
-            printf("%s", t->node->tree->label);
+            printf("%s\n",t->node->str);
+            break;
         default:
             printf("Type non reconnu\n", );
     }
@@ -82,6 +83,14 @@ struct ast * mk_word(char * str){
     e->node->str = str;
     return e;
 };
+struct ast * mk_attributes(ast * key, ast * value, attributes * next){
+    struct ast * e = mk_node();
+    e->type = ATTRIBUTE;
+    e->node->attributes->key = key;
+    e->node->attributes->value = value;
+    e->node->attributes->next = next;
+    return e;
+}
 struct ast * mk_tree(char * label, bool is_value, bool nullary, bool space,
                      struct attributes * att, struct ast * daughters){
     struct ast * e = mk_node();
