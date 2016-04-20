@@ -27,7 +27,7 @@ Grammaire
    18     | TAG '/'
    19     | '{' CONTENUS '}'
 
-   20 ATTRIBUTS: ATTRIBUTS TAG '=' '"' TEXT '"'
+   20 ATTRIBUTS: TAG '=' '"' TEXT '"' ATTRIBUTS
    21          | TAG '=' '"' TEXT '"'
 
    22 CONTENUS: CONTENU CONTENUS
@@ -352,7 +352,8 @@ WORD_T (29)
 
 État 25
 
-   21 ATTRIBUTS: TAG . '=' '"' TEXT '"'
+   20 ATTRIBUTS: TAG . '=' '"' TEXT '"' ATTRIBUTS
+   21          | TAG . '=' '"' TEXT '"'
 
     '='  décalage et aller à l'état 36
 
@@ -361,17 +362,15 @@ WORD_T (29)
 
    15 TREE: TAG '[' ATTRIBUTS . ']' '{' CONTENUS '}'
    16     | TAG '[' ATTRIBUTS . ']' '/'
-   20 ATTRIBUTS: ATTRIBUTS . TAG '=' '"' TEXT '"'
 
-    TAG  décalage et aller à l'état 37
-    ']'  décalage et aller à l'état 38
+    ']'  décalage et aller à l'état 37
 
 
 État 27
 
    17 TREE: TAG '{' CONTENUS . '}'
 
-    '}'  décalage et aller à l'état 39
+    '}'  décalage et aller à l'état 38
 
 
 État 28
@@ -379,7 +378,7 @@ WORD_T (29)
     6 DECL: INST INST NAMES . '=' BODY ';'
     8     | INST INST NAMES . '=' INST NAMES "->" BODY ';'
 
-    '='  décalage et aller à l'état 40
+    '='  décalage et aller à l'état 39
 
 
 État 29
@@ -395,11 +394,11 @@ WORD_T (29)
     7     | INST NAMES '=' . INST NAMES "->" BODY ';'
 
     TAG     décalage et aller à l'état 1
-    INST    décalage et aller à l'état 41
+    INST    décalage et aller à l'état 40
     ACTION  décalage et aller à l'état 3
     '{'     décalage et aller à l'état 4
 
-    BODY  aller à l'état 42
+    BODY  aller à l'état 41
     TREE  aller à l'état 9
 
 
@@ -408,7 +407,7 @@ WORD_T (29)
    28 WORD_T: MOT . ' '
    29       | MOT .
 
-    ' '  décalage et aller à l'état 43
+    ' '  décalage et aller à l'état 42
 
     $défaut  réduction par utilisation de la règle 29 (WORD_T)
 
@@ -417,7 +416,7 @@ WORD_T (29)
 
    25 CONTENU: '"' TEXT . '"'
 
-    '"'  décalage et aller à l'état 44
+    '"'  décalage et aller à l'état 43
 
 
 État 33
@@ -429,7 +428,7 @@ WORD_T (29)
 
     $défaut  réduction par utilisation de la règle 27 (TEXT)
 
-    TEXT    aller à l'état 45
+    TEXT    aller à l'état 44
     WORD_T  aller à l'état 33
 
 
@@ -449,103 +448,91 @@ WORD_T (29)
 
 État 36
 
-   21 ATTRIBUTS: TAG '=' . '"' TEXT '"'
+   20 ATTRIBUTS: TAG '=' . '"' TEXT '"' ATTRIBUTS
+   21          | TAG '=' . '"' TEXT '"'
 
-    '"'  décalage et aller à l'état 46
+    '"'  décalage et aller à l'état 45
 
 
 État 37
 
-   20 ATTRIBUTS: ATTRIBUTS TAG . '=' '"' TEXT '"'
-
-    '='  décalage et aller à l'état 47
-
-
-État 38
-
    15 TREE: TAG '[' ATTRIBUTS ']' . '{' CONTENUS '}'
    16     | TAG '[' ATTRIBUTS ']' . '/'
 
-    '{'  décalage et aller à l'état 48
-    '/'  décalage et aller à l'état 49
+    '{'  décalage et aller à l'état 46
+    '/'  décalage et aller à l'état 47
 
 
-État 39
+État 38
 
    17 TREE: TAG '{' CONTENUS '}' .
 
     $défaut  réduction par utilisation de la règle 17 (TREE)
 
 
-État 40
+État 39
 
     6 DECL: INST INST NAMES '=' . BODY ';'
     8     | INST INST NAMES '=' . INST NAMES "->" BODY ';'
 
     TAG     décalage et aller à l'état 1
-    INST    décalage et aller à l'état 50
+    INST    décalage et aller à l'état 48
     ACTION  décalage et aller à l'état 3
     '{'     décalage et aller à l'état 4
 
-    BODY  aller à l'état 51
+    BODY  aller à l'état 49
     TREE  aller à l'état 9
 
 
-État 41
+État 40
 
     7 DECL: INST NAMES '=' INST . NAMES "->" BODY ';'
 
     NAME  décalage et aller à l'état 14
 
-    NAMES  aller à l'état 52
+    NAMES  aller à l'état 50
 
 
-État 42
+État 41
 
     5 DECL: INST NAMES '=' BODY . ';'
 
-    ';'  décalage et aller à l'état 53
+    ';'  décalage et aller à l'état 51
 
 
-État 43
+État 42
 
    28 WORD_T: MOT ' ' .
 
     $défaut  réduction par utilisation de la règle 28 (WORD_T)
 
 
-État 44
+État 43
 
    25 CONTENU: '"' TEXT '"' .
 
     $défaut  réduction par utilisation de la règle 25 (CONTENU)
 
 
-État 45
+État 44
 
    26 TEXT: WORD_T TEXT .
 
     $défaut  réduction par utilisation de la règle 26 (TEXT)
 
 
-État 46
+État 45
 
-   21 ATTRIBUTS: TAG '=' '"' . TEXT '"'
+   20 ATTRIBUTS: TAG '=' '"' . TEXT '"' ATTRIBUTS
+   21          | TAG '=' '"' . TEXT '"'
 
     MOT  décalage et aller à l'état 31
 
-    TEXT    aller à l'état 54
+    TEXT    aller à l'état 52
     WORD_T  aller à l'état 33
 
 
-État 47
-
-   20 ATTRIBUTS: ATTRIBUTS TAG '=' . '"' TEXT '"'
-
-    '"'  décalage et aller à l'état 55
-
-
-État 48
+État 46
 
    15 TREE: TAG '[' ATTRIBUTS ']' '{' . CONTENUS '}'
 
@@ -554,86 +541,77 @@ WORD_T (29)
     '"'  décalage et aller à l'état 17
 
     TREE      aller à l'état 18
-    CONTENUS  aller à l'état 56
+    CONTENUS  aller à l'état 53
     CONTENU   aller à l'état 20
 
 
-État 49
+État 47
 
    16 TREE: TAG '[' ATTRIBUTS ']' '/' .
 
     $défaut  réduction par utilisation de la règle 16 (TREE)
 
 
-État 50
+État 48
 
     8 DECL: INST INST NAMES '=' INST . NAMES "->" BODY ';'
 
     NAME  décalage et aller à l'état 14
 
-    NAMES  aller à l'état 57
+    NAMES  aller à l'état 54
 
 
-État 51
+État 49
 
     6 DECL: INST INST NAMES '=' BODY . ';'
 
-    ';'  décalage et aller à l'état 58
+    ';'  décalage et aller à l'état 55
 
 
-État 52
+État 50
 
     7 DECL: INST NAMES '=' INST NAMES . "->" BODY ';'
 
-    "->"  décalage et aller à l'état 59
+    "->"  décalage et aller à l'état 56
 
 
-État 53
+État 51
 
     5 DECL: INST NAMES '=' BODY ';' .
 
     $défaut  réduction par utilisation de la règle 5 (DECL)
 
 
-État 54
+État 52
 
-   21 ATTRIBUTS: TAG '=' '"' TEXT . '"'
+   20 ATTRIBUTS: TAG '=' '"' TEXT . '"' ATTRIBUTS
+   21          | TAG '=' '"' TEXT . '"'
 
-    '"'  décalage et aller à l'état 60
-
-
-État 55
-
-   20 ATTRIBUTS: ATTRIBUTS TAG '=' '"' . TEXT '"'
-
-    MOT  décalage et aller à l'état 31
-
-    TEXT    aller à l'état 61
-    WORD_T  aller à l'état 33
+    '"'  décalage et aller à l'état 57
 
 
-État 56
+État 53
 
    15 TREE: TAG '[' ATTRIBUTS ']' '{' CONTENUS . '}'
 
-    '}'  décalage et aller à l'état 62
+    '}'  décalage et aller à l'état 58
 
 
-État 57
+État 54
 
     8 DECL: INST INST NAMES '=' INST NAMES . "->" BODY ';'
 
-    "->"  décalage et aller à l'état 63
+    "->"  décalage et aller à l'état 59
 
 
-État 58
+État 55
 
     6 DECL: INST INST NAMES '=' BODY ';' .
 
     $défaut  réduction par utilisation de la règle 6 (DECL)
 
 
-État 59
+État 56
 
     7 DECL: INST NAMES '=' INST NAMES "->" . BODY ';'
 
@@ -641,32 +619,30 @@ WORD_T (29)
     ACTION  décalage et aller à l'état 3
     '{'     décalage et aller à l'état 4
 
-    BODY  aller à l'état 64
+    BODY  aller à l'état 60
     TREE  aller à l'état 9
 
 
-État 60
+État 57
 
-   21 ATTRIBUTS: TAG '=' '"' TEXT '"' .
+   20 ATTRIBUTS: TAG '=' '"' TEXT '"' . ATTRIBUTS
+   21          | TAG '=' '"' TEXT '"' .
+
+    TAG  décalage et aller à l'état 25
 
     $défaut  réduction par utilisation de la règle 21 (ATTRIBUTS)
 
-
-État 61
-
-   20 ATTRIBUTS: ATTRIBUTS TAG '=' '"' TEXT . '"'
-
-    '"'  décalage et aller à l'état 65
+    ATTRIBUTS  aller à l'état 61
 
 
-État 62
+État 58
 
    15 TREE: TAG '[' ATTRIBUTS ']' '{' CONTENUS '}' .
 
     $défaut  réduction par utilisation de la règle 15 (TREE)
 
 
-État 63
+État 59
 
     8 DECL: INST INST NAMES '=' INST NAMES "->" . BODY ';'
 
@@ -674,39 +650,39 @@ WORD_T (29)
     ACTION  décalage et aller à l'état 3
     '{'     décalage et aller à l'état 4
 
-    BODY  aller à l'état 66
+    BODY  aller à l'état 62
     TREE  aller à l'état 9
 
 
-État 64
+État 60
 
     7 DECL: INST NAMES '=' INST NAMES "->" BODY . ';'
 
-    ';'  décalage et aller à l'état 67
+    ';'  décalage et aller à l'état 63
 
 
-État 65
+État 61
 
-   20 ATTRIBUTS: ATTRIBUTS TAG '=' '"' TEXT '"' .
+   20 ATTRIBUTS: TAG '=' '"' TEXT '"' ATTRIBUTS .
 
     $défaut  réduction par utilisation de la règle 20 (ATTRIBUTS)
 
 
-État 66
+État 62
 
     8 DECL: INST INST NAMES '=' INST NAMES "->" BODY . ';'
 
-    ';'  décalage et aller à l'état 68
+    ';'  décalage et aller à l'état 64
 
 
-État 67
+État 63
 
     7 DECL: INST NAMES '=' INST NAMES "->" BODY ';' .
 
     $défaut  réduction par utilisation de la règle 7 (DECL)
 
 
-État 68
+État 64
 
     8 DECL: INST INST NAMES '=' INST NAMES "->" BODY ';' .
 

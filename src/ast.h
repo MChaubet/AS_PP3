@@ -2,6 +2,7 @@
 #define AST_H
 
 #include <stdbool.h>
+#include <stdio.h>
 #include "chemin.h"
 #include "pattern.h"
 
@@ -106,6 +107,7 @@ struct ast{
 void to_string(struct ast * t);
 struct attributes * mk_attributes(struct ast * key, struct ast * value, struct attributes * next);
 
+struct ast * mk_node(void);
 struct ast * mk_integer(int n);
 struct ast * mk_binop(enum binop binop);
 struct ast * mk_unaryop(enum unaryop unaryop);

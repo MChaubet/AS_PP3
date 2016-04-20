@@ -82,7 +82,7 @@ struct ast * mk_word(char * str){
     e->type = WORD;
     e->node->str = str;
     return e;
-};
+}
 struct attributes * mk_attributes(struct ast * key, struct ast * value, struct attributes * next){
     struct attributes * e = malloc(sizeof(struct attributes));
     e->key = key;

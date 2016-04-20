@@ -63,8 +63,9 @@ union YYSTYPE
 	int value;
 	char * name;
 	struct ast * ast;
+	struct attributes * attributes;
 
-#line 68 "parser.tab.h" /* yacc.c:1909  */
+#line 69 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

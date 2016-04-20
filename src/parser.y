@@ -13,14 +13,15 @@
 	int value;
 	char * name;
 	struct ast * ast;
+	struct attributes * attributes;
 }
 
-%token < value > TAG	// Nom de balise
-%token < value > INST	// Mot clé  OCaml
-%token < value > NAME	// Variable OCaml
-%token < value > MOT	// Mot d'un texte
+%token < name > TAG		// Nom de balise
+%token < name > INST	// Mot clé  OCaml
+%token < name > NAME	// Variable OCaml
+%token < name > MOT		// Mot d'un texte
 
-					/* Temporaire */
+	/* Temporaire */
 %token < ast > ACTION
 
 %type < ast > FILE DECLS DECL NAMES BODY TREE CONTENUS CONTENU TEXT WORD_T
@@ -40,6 +41,7 @@ En revanche une fonction peut etre implémenté par
 	"let rec f var1 var2 = func var1 var2 -> contenu;"
 */
 
+//TODO Voir si faire une foret avec les declarations et le body
 FILE : DECLS BODY										{ $$ = mk_forest(false, $1, $2); }
 		| BODY											{ $$ = $1; }
 		;
@@ -54,6 +56,8 @@ DECL : INST NAMES '=' BODY ';'							{ ; }
 		| INST INST NAMES '=' INST NAMES "->" BODY ';'	{ ; }
 		;
 
+//TODO Voir pour la possibilite d'avoir plusieurs noms pour argument de fonction
+//TODO Foret de noms n'est pas la meilleur idee
 NAMES : NAME NAMES										{ $$ = mk_forest(false, $1, $2); }
 		| NAME											{ $$ = $1; }
 		;
@@ -65,13 +69,13 @@ BODY : TREE BODY										{ $$ = mk_forest(false, $1, $2); }
 		;
 
 TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ $$ = mk_tree($1, true, false, false, $3, $6); }
-		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, false, false, $3, NULL); }
+		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
 		| TAG '{' CONTENUS '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
-		| TAG '/'										{ $$ = mk_tree($1, true, false, false, NULL, NULL); }
+		| TAG '/'										{ $$ = mk_tree($1, true, true, false, NULL, NULL); }
 		| '{' CONTENUS '}'								{ $$ = $2; }
 		;
 
-ATTRIBUTS : ATTRIBUTS TAG '=' '"' TEXT '"'				{ $$ = mk_attributes($2, $5, $1); }
+ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes($1, $4, $6); }
 		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes($1, $4, NULL); }
 		;
 
