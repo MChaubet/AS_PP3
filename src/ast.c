@@ -14,7 +14,7 @@ void to_string(ast * t){
             printf("<%s ", t->node->tree->label);
             struct attributes * att = t->node->tree->attributes;
             while(att != NULL){
-                printf("%s='%s' ", att->key, att->value);
+                printf("%s='%s' ", att->key->node->str, att->value->node->str);
                 att = att->next;
             }
             if(t->node->tree->nullary != FALSE){
