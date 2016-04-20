@@ -48,7 +48,7 @@ extern int yydebug;
     TAG = 258,
     INST = 259,
     NAME = 260,
-    WORD = 261,
+    MOT = 261,
     ACTION = 262
   };
 #endif

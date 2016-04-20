@@ -5,4 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "ast.h"
+#include "parser.tab.h"
+
 int yyparse(void);

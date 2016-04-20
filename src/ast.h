@@ -1,3 +1,6 @@
+#ifndef AST_H
+#define AST_H
+
 #include <stdbool.h>
 #include "chemin.h"
 #include "pattern.h"
@@ -77,7 +80,7 @@ struct cond{
 
 struct declrec{
     char * id;
-    struct ast * body
+    struct ast * body;
 };
 
 
@@ -99,8 +102,9 @@ struct ast{
     enum  ast_type type;
     union node * node;
 };
-void to_string(ast * t);
-struct attributes * mk_attributes(ast * key, ast * value, attributes * next);
+
+void to_string(struct ast * t);
+struct attributes * mk_attributes(struct ast * key, struct ast * value, struct attributes * next);
 
 struct ast * mk_integer(int n);
 struct ast * mk_binop(enum binop binop);
@@ -116,3 +120,5 @@ struct ast * mk_fun(char * id, struct ast * body);
 struct ast * mk_match(struct ast * ast, struct patterns * patterns);
 struct ast * mk_cond(struct ast * cond, struct ast * then_br, struct ast * else_br);
 struct ast * mk_declrec(char * id, struct ast * body);
+
+#endif
