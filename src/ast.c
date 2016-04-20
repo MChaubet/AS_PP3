@@ -29,8 +29,7 @@ void to_string(ast * t){
             }
             break;
         case WORD:
-            printf("%s\n",t->node->str);
-            break;
+            printf("%s", t->node->tree->label);
         default:
             printf("Type non reconnu\n", );
     }
