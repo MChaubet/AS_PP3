@@ -7,7 +7,7 @@ CFLAGS	=-g -pedantic -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wstrict
 
 all : app.out
 
-app.out: parser.tab.c lex.yy.c main.c
+app.out: parser.tab.c lex.yy.c main.c ast.c
 	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS)
 
 parser.tab.c: parser.y
