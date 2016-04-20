@@ -16,7 +16,7 @@ enum ast_type {
     FOREST,   // L'expression est une forÃªt
     FUN,      // L'expression est une fonction
     MATCH,    // L'expression est un filtre
-    COND,     // L'expression est une conditionnelle 
+    COND,     // L'expression est une conditionnelle
     DECLREC   // Déclarations récursives (let rec ... where rec ...)
 };
 
@@ -66,7 +66,7 @@ struct patterns{
 
 struct match {
     struct ast * ast; 			// expression filtrée
-    struct patterns * patterns; // liste des filtres 
+    struct patterns * patterns; // liste des filtres
 };
 
 struct cond{
@@ -86,7 +86,7 @@ union node{
     enum binop binop;
     enum unaryop unaryop;
     char * str;  				// peut représenter ou bien une variable ou encore un mot
-    struct path * chemin; 
+    struct path * chemin;
     struct app * app;
     struct tree * tree;
     struct forest * forest;
@@ -99,7 +99,7 @@ struct ast{
     enum  ast_type type;
     union node * node;
 };
-
+void to_string(ast * t);
 struct ast * mk_integer(int n);
 struct ast * mk_binop(enum binop binop);
 struct ast * mk_unaryop(enum unaryop unaryop);
@@ -107,7 +107,7 @@ struct ast * mk_var(char * var);
 struct ast * mk_import(struct path * chemin);
 struct ast * mk_app(struct ast * fun, struct ast * arg);
 struct ast * mk_word(char * str);
-struct ast * mk_tree(char * label, bool is_value, bool nullary, bool space, 
+struct ast * mk_tree(char * label, bool is_value, bool nullary, bool space,
                      struct attributes * att, struct ast * daughters);
 struct ast * mk_forest(bool is_value, struct ast * head, struct ast * tail);
 struct ast * mk_fun(char * id, struct ast * body);

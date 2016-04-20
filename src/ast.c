@@ -1,6 +1,40 @@
 #include <stdlib.h>
 #include "ast.h"
 
+void to_string(ast * t){
+    switch (t->type) {
+        case FOREST:
+            if(t->node->forest->head != NULL)
+                to_string(t->node->forest->head);
+            if(t->node->forest->tail != NULL)
+                to_string(t->node->forest->tail);
+            break;
+
+        case TREE:
+            printf("<%s ", t->node->tree->label);
+            struct attributes * att = t->node->tree->attributes;
+            while(att != NULL){
+                printf("%s='%s' ", att->key, att->value);
+                att = att->next;
+            }
+            if(t->node->tree->nullary != FALSE){
+                printf(">");
+                to_string(t->node->daughters);
+                if(t->node->tree->space == TRUE){
+                    printf(" ");
+                }
+                printf("</%s>", t->node->tree->label);
+            } else {
+                printf("/>");
+            }
+            break;
+        case WORD:
+            printf("%s\n",t->node->str);
+            break;
+        default:
+            printf("Type non reconnu\n", );
+    }
+}
 struct ast * mk_node(void){
     struct ast *e = malloc(sizeof(struct ast));
     e->node = malloc(sizeof(union node));
