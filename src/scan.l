@@ -23,11 +23,11 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	/* Les nom de variables débutants par des variantes de 'xml', ou simplement constitués de '_' provoquent des ereurs */
 ({XML}{EXP}|\_)									{ /*return ERROR;*/ }
 	/* Les instructions d'Ocaml */
-{INSTR}/[[:space:]]								{ return INST; }
+{INSTR}/[[:space:]]								{ yylval.name = strdup(yytext); return INST; }
 	/* Les expressions suivies de '{', '[', '/' ou '=' sont des TAGs */
-{EXP}/[\{\[\/\=]								{ return TAG; }
+{EXP}/[\{\[\/\=]								{ yylval.name = strdup(yytext); return TAG; }
 	/* Les expressions qui ne sont pas des tags sont des noms de variables, de fonctions ou d'actions */
-{EXP}											{ return NAME; }
+{EXP}											{ yylval.name = strdup(yytext); return NAME; }
 	/* On entre en écriture de texte */
 \"												{ BEGIN TEXT; ECHO; }
 	/* On arrete l'écriture de texte */
@@ -35,9 +35,9 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	/* On renvoie un simple espace losque l'on en détecte une suite */
 <TEXT>[[:space:]]+								{ printf(" "); }
 	/* On fait attention à la détection du symple double quote quand il est échappé par '\' */
-<TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ return MOT; }
+<TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ yylval.name = strdup(yytext); return MOT; }
 	/* Toutes les suites de caractères sauf l'espace constituent un mot */
-<TEXT>[.^\"[:space:]]+							{ return MOT; }
+<TEXT>[.^\"[:space:]]+							{ yylval.name = strdup(yytext); return MOT; }
 %%
 
 
