@@ -1347,7 +1347,7 @@ yyreduce:
 
   case 18:
 #line 74 "parser.y" /* yacc.c:1646  */
-    { printf("lel1.1\n");(yyval. ast ) = mk_tree((yyvsp[-3]. name ), true, false, false, NULL, (yyvsp[-1]. ast )); }
+    { (yyval. ast ) = mk_tree((yyvsp[-3]. name ), true, false, false, NULL, (yyvsp[-1]. ast )); }
 #line 1352 "parser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1359,67 +1359,67 @@ yyreduce:
 
   case 20:
 #line 76 "parser.y" /* yacc.c:1646  */
-    { printf("lel1.2\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
+    { (yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1364 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 79 "parser.y" /* yacc.c:1646  */
-    { printf("lel2.1\n");(yyval. attributes ) = mk_attributes(mk_var((yyvsp[-5]. name )), (yyvsp[-2]. ast ), (yyvsp[0]. attributes )); }
+    { (yyval. attributes ) = mk_attributes(mk_var((yyvsp[-5]. name )), (yyvsp[-2]. ast ), (yyvsp[0]. attributes )); }
 #line 1370 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 80 "parser.y" /* yacc.c:1646  */
-    { printf("lel2.2\n");(yyval. attributes ) = mk_attributes(mk_var((yyvsp[-4]. name )), (yyvsp[-1]. ast ), NULL); }
+    { (yyval. attributes ) = mk_attributes(mk_var((yyvsp[-4]. name )), (yyvsp[-1]. ast ), NULL);}
 #line 1376 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 83 "parser.y" /* yacc.c:1646  */
-    { printf("lel3.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
+    { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
 #line 1382 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 84 "parser.y" /* yacc.c:1646  */
-    { printf("lel3.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
+    { (yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1388 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 87 "parser.y" /* yacc.c:1646  */
-    { printf("lel4.1\n");(yyval. ast ) = (yyvsp[0]. ast ); }
+    { (yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1394 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
 #line 88 "parser.y" /* yacc.c:1646  */
-    { printf("lel4.2\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
+    { (yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1400 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 91 "parser.y" /* yacc.c:1646  */
-    { printf("lel5.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
+    { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
 #line 1406 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 92 "parser.y" /* yacc.c:1646  */
-    { printf("lel5.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
+    { (yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1412 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
 #line 95 "parser.y" /* yacc.c:1646  */
-    { printf("lel6.1\n");(yyval. ast ) = mk_tree("text", false, false, true, NULL, mk_word((yyvsp[-1]. name ))); }
+    { (yyval. ast ) = mk_tree("text", false, false, true, NULL, mk_word((yyvsp[-1]. name ))); }
 #line 1418 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 96 "parser.y" /* yacc.c:1646  */
-    { printf("lel6.2\n");(yyval. ast ) = mk_tree("text", false, false, false, NULL, mk_word((yyvsp[0]. name ))); printf("lel6.3\n"); }
+    { (yyval. ast ) = mk_tree("text", false, false, false, NULL, mk_word((yyvsp[0]. name ))); printf("lel6.3\n"); }
 #line 1424 "parser.tab.c" /* yacc.c:1646  */
     break;
 

@@ -24,11 +24,11 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	/* Les nom de variables débutants par des variantes de 'xml', ou simplement constitués de '_' provoquent des ereurs */
 ({XML}{EXP}|\_)									{ /*return ERROR;*/ }
 	/* Les instructions d'Ocaml */
-{INSTR}/[[:space:]]								{ printf("INST\n", strdup(yytext));yylval.name = strdup(yytext); return INST; }
+{INSTR}/[[:space:]]								{ yylval.name = strdup(yytext); return INST; }
 	/* Les expressions suivies de '{', '[', '/' ou '=' sont des TAGs */
-{EXP}/[\{\[\/\=]								{ printf("TAG\n", strdup(yytext));yylval.name = strdup(yytext); return TAG; }
+{EXP}/[\{\[\/\=]								{ yylval.name = strdup(yytext); return TAG; }
 	/* Les expressions qui ne sont pas des tags sont des noms de variables, de fonctions ou d'actions */
-{EXP}											{ printf("NAME\n", strdup(yytext));yylval.name = strdup(yytext); return NAME; }
+{EXP}											{ yylval.name = strdup(yytext); return NAME; }
 	/* On entre en écriture de texte */
 \"												{ BEGIN TEXT; return yytext[0]; }
 .												{ return yytext[0];}
@@ -37,6 +37,6 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	/* On renvoie un simple espace losque l'on en détecte une suite */
 <TEXT>[[:space:]]+								{ return ' '; }
 	/* On fait attention à la détection du symple double quote quand il est échappé par '\' */
-<TEXT>[^[:space:]]*\\\"[^[:space:]]*			{ printf("MOT\n", strdup(yytext));yylval.name = strdup(yytext); return MOT; }
+<TEXT>[^[:space:]]*\\\"[^[:space:]]*			{ yylval.name = strdup(yytext); return MOT; }
 	/* Toutes les suites de caractères sauf l'espace constituent un mot */
-<TEXT>[^\"[:space:]]+							{ printf("MOT\n", strdup(yytext));yylval.name = strdup(yytext); return MOT; }
+<TEXT>[^\"[:space:]]+							{ yylval.name = strdup(yytext); return MOT; }

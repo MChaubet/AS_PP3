@@ -837,7 +837,7 @@ YY_LINENO_REWIND_TO(yy_cp - 1);
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
 #line 27 "scan.l"
-{ printf("INST\n", strdup(yytext));yylval.name = strdup(yytext); return INST; }
+{ yylval.name = strdup(yytext); return INST; }
 	YY_BREAK
 /* Les expressions suivies de '{', '[', '/' ou '=' sont des TAGs */
 case 5:
@@ -846,13 +846,13 @@ case 5:
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
 #line 29 "scan.l"
-{ printf("TAG\n", strdup(yytext));yylval.name = strdup(yytext); return TAG; }
+{ yylval.name = strdup(yytext); return TAG; }
 	YY_BREAK
 /* Les expressions qui ne sont pas des tags sont des noms de variables, de fonctions ou d'actions */
 case 6:
 YY_RULE_SETUP
 #line 31 "scan.l"
-{ printf("NAME\n", strdup(yytext));yylval.name = strdup(yytext); return NAME; }
+{ yylval.name = strdup(yytext); return NAME; }
 	YY_BREAK
 /* On entre en écriture de texte */
 case 7:
@@ -882,13 +882,13 @@ YY_RULE_SETUP
 case 11:
 YY_RULE_SETUP
 #line 40 "scan.l"
-{ printf("MOT\n", strdup(yytext));yylval.name = strdup(yytext); return MOT; }
+{ yylval.name = strdup(yytext); return MOT; }
 	YY_BREAK
 /* Toutes les suites de caractères sauf l'espace constituent un mot */
 case 12:
 YY_RULE_SETUP
 #line 42 "scan.l"
-{ printf("MOT\n", strdup(yytext));yylval.name = strdup(yytext); return MOT; }
+{ yylval.name = strdup(yytext); return MOT; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP

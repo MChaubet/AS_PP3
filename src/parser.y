@@ -71,29 +71,29 @@ BODY : TREE BODY										{ $$ = mk_forest(false, $1, $2); }
 
 TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ $$ = mk_tree($1, true, false, false, $3, $6); }
 		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
-		| TAG '{' CONTENUS '}'							{ printf("lel1.1\n");$$ = mk_tree($1, true, false, false, NULL, $3); }
+		| TAG '{' CONTENUS '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
 		| TAG '/'										{ $$ = mk_tree($1, true, true, false, NULL, NULL); }
-		| '{' CONTENUS '}'								{ printf("lel1.2\n");$$ = $2; }
+		| '{' CONTENUS '}'								{ $$ = $2; }
 		;
 
-ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ printf("lel2.1\n");$$ = mk_attributes(mk_var($1), $4, $6); }
-		| TAG '=' '"' TEXT '"'							{ printf("lel2.2\n");$$ = mk_attributes(mk_var($1), $4, NULL); }
+ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $4, $6); }
+		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes(mk_var($1), $4, NULL);}
 		;
 
-CONTENUS : CONTENU CONTENUS								{ printf("lel3.1\n");$$ = mk_forest(false, $1, $2); }
-		| CONTENU										{ printf("lel3.2\n");$$ = $1; }
+CONTENUS : CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
+		| CONTENU										{ $$ = $1; }
 		;
 	
-CONTENU : TREE											{ printf("lel4.1\n");$$ = $1; }
-		| '"' TEXT '"'									{ printf("lel4.2\n");$$ = $2; }
+CONTENU : TREE											{ $$ = $1; }
+		| '"' TEXT '"'									{ $$ = $2; }
 		;
 		
-TEXT : WORD_T TEXT										{ printf("lel5.1\n");$$ = mk_forest(false, $1, $2); }
-		| WORD_T										{ printf("lel5.2\n");$$ = $1; }
+TEXT : WORD_T TEXT										{ $$ = mk_forest(false, $1, $2); }
+		| WORD_T										{ $$ = $1; }
 		;
 
-WORD_T : MOT ' ' 										{ printf("lel6.1\n");$$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
-		| MOT	 										{ printf("lel6.2\n");$$ = mk_tree("text", false, false, false, NULL, mk_word($1)); printf("lel6.3\n"); }
+WORD_T : MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
+		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); printf("lel6.3\n"); }
 		;
 
 %%
