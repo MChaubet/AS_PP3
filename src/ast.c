@@ -92,14 +92,23 @@ struct attributes * mk_attributes(struct ast * key, struct ast * value, struct a
 }
 struct ast * mk_tree(char * label, bool is_value, bool nullary, bool space,
                      struct attributes * att, struct ast * daughters){
+    printf("lel7.1\n");
     struct ast * e = mk_node();
+    printf("lel7.2\n");
     e->type = TREE;
+    printf("lel7.3 %s\n", label);
     e->node->tree->label = label;
+    printf("lel7.4\n");
     e->node->tree->is_value=is_value;
+printf("lel7.5\n");
     e->node->tree->nullary=nullary;
+printf("lel7.6\n");
     e->node->tree->space=space;
+printf("lel7.7\n");
     e->node->tree->attributes=att;
+printf("lel7.8\n");
     e->node->tree->daughters=daughters;
+printf("lel7.9\n");
     return e;
 }
 struct ast * mk_forest(bool is_value, struct ast * head, struct ast * tail){
