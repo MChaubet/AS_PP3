@@ -50,7 +50,8 @@ DECLS : DECL DECLS										{ $$ = mk_forest(false, $1, $2); }
 		| DECL											{ $$ = $1; }
 		;
 
-DECL : INST NAMES '=' BODY ';'							{ ; }
+DECL : INST NAMES '=' BODY ';'							{ if( $2->type == FOREST )
+															$$ = mk_app(mk_fun($2->node->forest->head->node->str, $4), $2->node->forest->tail); }
 		| INST INST NAMES '=' BODY ';'					{ ; }
 		| INST NAMES '=' INST NAMES "->" BODY ';'		{ ; }
 		| INST INST NAMES '=' INST NAMES "->" BODY ';'	{ ; }
@@ -58,8 +59,8 @@ DECL : INST NAMES '=' BODY ';'							{ ; }
 
 //TODO Voir pour la possibilite d'avoir plusieurs noms pour argument de fonction
 //TODO Foret de noms n'est pas la meilleur idee
-NAMES : NAME NAMES										{ $$ = mk_forest(false, $1, $2); }
-		| NAME											{ $$ = $1; }
+NAMES : NAME NAMES										{ $$ = mk_forest(false, mk_var($1), $2); }
+		| NAME											{ $$ = mk_var($1); }
 		;
 
 BODY : TREE BODY										{ $$ = mk_forest(false, $1, $2); }
@@ -75,8 +76,8 @@ TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ $$ = mk_tree($1, true, false, 
 		| '{' CONTENUS '}'								{ $$ = $2; }
 		;
 
-ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes($1, $4, $6); }
-		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes($1, $4, NULL); }
+ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $4, $6); }
+		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes(mk_var($1), $4, NULL); }
 		;
 
 CONTENUS : CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
