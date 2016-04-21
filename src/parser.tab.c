@@ -441,10 +441,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    45,    45,    46,    49,    50,    53,    55,    56,    57,
-      62,    63,    66,    67,    68,    69,    72,    73,    74,    75,
-      76,    79,    80,    83,    84,    87,    88,    91,    92,    95,
-      96
+       0,    45,    45,    46,    49,    50,    53,    56,    57,    58,
+      63,    64,    67,    68,    69,    70,    73,    74,    75,    76,
+      77,    80,    81,    84,    85,    88,    89,    92,    93,    96,
+      97
 };
 #endif
 
@@ -1276,157 +1276,158 @@ yyreduce:
 
   case 6:
 #line 53 "parser.y" /* yacc.c:1646  */
-    { if( (yyvsp[-3]. ast )->type == FOREST )
-															(yyval. ast ) = mk_app(mk_fun((yyvsp[-3]. ast )->node->forest->head->node->str, (yyvsp[-1]. ast )), (yyvsp[-3]. ast )->node->forest->tail); }
-#line 1282 "parser.tab.c" /* yacc.c:1646  */
+    { if( strcmp((yyvsp[-4]. name ), "let") == 0 )
+															if( (yyvsp[-3]. ast )->type == FOREST )
+															  (yyval. ast ) = mk_app(mk_fun((yyvsp[-3]. ast )->node->forest->head->node->str, (yyvsp[-1]. ast )), (yyvsp[-3]. ast )->node->forest->tail); }
+#line 1283 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 55 "parser.y" /* yacc.c:1646  */
+#line 56 "parser.y" /* yacc.c:1646  */
     { ; }
-#line 1288 "parser.tab.c" /* yacc.c:1646  */
+#line 1289 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 56 "parser.y" /* yacc.c:1646  */
+#line 57 "parser.y" /* yacc.c:1646  */
     { ; }
-#line 1294 "parser.tab.c" /* yacc.c:1646  */
+#line 1295 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 57 "parser.y" /* yacc.c:1646  */
+#line 58 "parser.y" /* yacc.c:1646  */
     { ; }
-#line 1300 "parser.tab.c" /* yacc.c:1646  */
+#line 1301 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 62 "parser.y" /* yacc.c:1646  */
+#line 63 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_forest(false, mk_var((yyvsp[-1]. name )), (yyvsp[0]. ast )); }
-#line 1306 "parser.tab.c" /* yacc.c:1646  */
+#line 1307 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 63 "parser.y" /* yacc.c:1646  */
+#line 64 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_var((yyvsp[0]. name )); }
-#line 1312 "parser.tab.c" /* yacc.c:1646  */
+#line 1313 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 66 "parser.y" /* yacc.c:1646  */
+#line 67 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
-#line 1318 "parser.tab.c" /* yacc.c:1646  */
+#line 1319 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 67 "parser.y" /* yacc.c:1646  */
+#line 68 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
-#line 1324 "parser.tab.c" /* yacc.c:1646  */
+#line 1325 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 68 "parser.y" /* yacc.c:1646  */
+#line 69 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[0]. ast ); }
-#line 1330 "parser.tab.c" /* yacc.c:1646  */
+#line 1331 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 69 "parser.y" /* yacc.c:1646  */
+#line 70 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[0]. ast ); }
-#line 1336 "parser.tab.c" /* yacc.c:1646  */
+#line 1337 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 72 "parser.y" /* yacc.c:1646  */
+#line 73 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_tree((yyvsp[-6]. name ), true, false, false, (yyvsp[-4]. attributes ), (yyvsp[-1]. ast )); }
-#line 1342 "parser.tab.c" /* yacc.c:1646  */
+#line 1343 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 73 "parser.y" /* yacc.c:1646  */
+#line 74 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_tree((yyvsp[-4]. name ), true, true, false, (yyvsp[-2]. attributes ), NULL); }
-#line 1348 "parser.tab.c" /* yacc.c:1646  */
+#line 1349 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 74 "parser.y" /* yacc.c:1646  */
+#line 75 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_tree((yyvsp[-3]. name ), true, false, false, NULL, (yyvsp[-1]. ast )); }
-#line 1354 "parser.tab.c" /* yacc.c:1646  */
+#line 1355 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 75 "parser.y" /* yacc.c:1646  */
+#line 76 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_tree((yyvsp[-1]. name ), true, true, false, NULL, NULL); }
-#line 1360 "parser.tab.c" /* yacc.c:1646  */
+#line 1361 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 76 "parser.y" /* yacc.c:1646  */
+#line 77 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[-1]. ast ); }
-#line 1366 "parser.tab.c" /* yacc.c:1646  */
+#line 1367 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 79 "parser.y" /* yacc.c:1646  */
+#line 80 "parser.y" /* yacc.c:1646  */
     { (yyval. attributes ) = mk_attributes(mk_var((yyvsp[-5]. name )), (yyvsp[-2]. ast ), (yyvsp[0]. attributes )); }
-#line 1372 "parser.tab.c" /* yacc.c:1646  */
+#line 1373 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 80 "parser.y" /* yacc.c:1646  */
+#line 81 "parser.y" /* yacc.c:1646  */
     { (yyval. attributes ) = mk_attributes(mk_var((yyvsp[-4]. name )), (yyvsp[-1]. ast ), NULL); }
-#line 1378 "parser.tab.c" /* yacc.c:1646  */
+#line 1379 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 83 "parser.y" /* yacc.c:1646  */
+#line 84 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
-#line 1384 "parser.tab.c" /* yacc.c:1646  */
+#line 1385 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 84 "parser.y" /* yacc.c:1646  */
+#line 85 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[0]. ast ); }
-#line 1390 "parser.tab.c" /* yacc.c:1646  */
+#line 1391 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 87 "parser.y" /* yacc.c:1646  */
+#line 88 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[0]. ast ); }
-#line 1396 "parser.tab.c" /* yacc.c:1646  */
+#line 1397 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 88 "parser.y" /* yacc.c:1646  */
+#line 89 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[-1]. ast ); }
-#line 1402 "parser.tab.c" /* yacc.c:1646  */
+#line 1403 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 91 "parser.y" /* yacc.c:1646  */
+#line 92 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
-#line 1408 "parser.tab.c" /* yacc.c:1646  */
+#line 1409 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 92 "parser.y" /* yacc.c:1646  */
+#line 93 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = (yyvsp[0]. ast ); }
-#line 1414 "parser.tab.c" /* yacc.c:1646  */
+#line 1415 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 95 "parser.y" /* yacc.c:1646  */
+#line 96 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_tree("text", false, false, true, NULL, mk_word((yyvsp[-1]. name ))); }
-#line 1420 "parser.tab.c" /* yacc.c:1646  */
+#line 1421 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 96 "parser.y" /* yacc.c:1646  */
+#line 97 "parser.y" /* yacc.c:1646  */
     { (yyval. ast ) = mk_tree("text", false, false, false, NULL, mk_word((yyvsp[0]. name ))); }
-#line 1426 "parser.tab.c" /* yacc.c:1646  */
+#line 1427 "parser.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1430 "parser.tab.c" /* yacc.c:1646  */
+#line 1431 "parser.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1654,5 +1655,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 99 "parser.y" /* yacc.c:1906  */
+#line 100 "parser.y" /* yacc.c:1906  */
 
