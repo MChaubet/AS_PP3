@@ -35,21 +35,7 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	/* On renvoie un simple espace losque l'on en détecte une suite */
 <TEXT>[[:space:]]+								{ printf(" "); }
 	/* On fait attention à la détection du symple double quote quand il est échappé par '\' */
-<TEXT>[.^[:space:]]*\\\"[.^[:space:]]*			{ yylval.name = strdup(yytext); return MOT; }
+<TEXT>[^[:space:]]*\\\"[^[:space:]]*			{ yylval.name = strdup(yytext); return MOT; }
 	/* Toutes les suites de caractères sauf l'espace constituent un mot */
-<TEXT>[.^\"[:space:]]+							{ yylval.name = strdup(yytext); return MOT; }
+<TEXT>[^\"[:space:]]+							{ yylval.name = strdup(yytext); return MOT; }
 %%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
