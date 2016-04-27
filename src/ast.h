@@ -103,7 +103,7 @@ struct ast{
     enum  ast_type type;
     union node * node;
 };
-
+void emit(struct ast * t, char * filename);
 void to_string(struct ast * t);
 struct attributes * mk_attributes(struct ast * key, struct ast * value, struct attributes * next);
 

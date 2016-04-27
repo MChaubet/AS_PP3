@@ -1,5 +1,24 @@
 #include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 #include "ast.h"
+
+void emit(struct ast * t, char * filename){
+    int stdoutCopy = dup(1);
+    printf("Tentative de creation de '%s'\n", filename );
+    int file = creat(filename, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
+    if(file){
+        if(dup2(file, 1)){
+            to_string(t);
+            dup2(stdoutCopy, 1);
+            printf("Ecriture réussi\n");
+        } else {
+            printf("Erreur de redirection du flux\n");
+        }
+    } else {
+        printf("Erreur à la creation du fichier\n");
+    }
+}
 
 void to_string(struct ast * t){
     switch (t->type) {
