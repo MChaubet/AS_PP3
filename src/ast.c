@@ -3,6 +3,8 @@
 #include <fcntl.h>
 #include "ast.h"
 
+int indentation=0;
+
 void emit(struct ast * t, char * filename){
     int stdoutCopy = dup(1);
     printf("Tentative de creation de '%s'\n", filename );
@@ -10,6 +12,7 @@ void emit(struct ast * t, char * filename){
     if(file){
         if(dup2(file, 1)){
             to_string(t);
+            printf("\n");
             dup2(stdoutCopy, 1);
             printf("Ecriture réussi\n");
         } else {
@@ -17,6 +20,13 @@ void emit(struct ast * t, char * filename){
         }
     } else {
         printf("Erreur à la creation du fichier\n");
+    }
+}
+
+void auto_indent(){
+    int i;
+    for(i=0; i<indentation;i++){
+        printf("\t");
     }
 }
 
@@ -31,7 +41,10 @@ void to_string(struct ast * t){
 
         case TREE:
             if(strcmp("text", t->node->tree->label) !=0){
-            printf("<%s ", t->node->tree->label);
+            printf("\n");
+            auto_indent();
+            printf("<%s", t->node->tree->label);
+            indentation++;
             struct attributes * att = t->node->tree->attributes;
             while(att != NULL){
                 printf(" %s='", att->key->node->str);
@@ -41,12 +54,19 @@ void to_string(struct ast * t){
             }
             if(t->node->tree->nullary == false){
                 printf(">\n");
+                auto_indent();
                 to_string(t->node->tree->daughters);
+
                 if(t->node->tree->space == true){
                     printf(" ");
                 }
+                indentation--;
+                printf("\n");
+                auto_indent();
                 printf("</%s>\n", t->node->tree->label);
+                auto_indent();
             } else {
+                indentation--;
                 printf("/>\n");
             }
         } else {
