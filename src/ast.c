@@ -2,7 +2,6 @@
 #include "ast.h"
 
 void to_string(struct ast * t){
-    printf("LEL\n");
     switch (t->type) {
         case FOREST:
             if(t->node->forest->head != NULL)
@@ -12,25 +11,31 @@ void to_string(struct ast * t){
             break;
 
         case TREE:
+            if(strcmp("text", t->node->tree->label) !=0){
             printf("<%s ", t->node->tree->label);
             struct attributes * att = t->node->tree->attributes;
             while(att != NULL){
-                printf("%s='%s' ", att->key->node->str, att->value->node->str);
+                printf(" %s='", att->key->node->str);
+                to_string(att->value);
+                printf("'");
                 att = att->next;
             }
-            if(t->node->tree->nullary != false){
-                printf(">");
+            if(t->node->tree->nullary == false){
+                printf(">\n");
                 to_string(t->node->tree->daughters);
                 if(t->node->tree->space == true){
                     printf(" ");
                 }
-                printf("</%s>", t->node->tree->label);
+                printf("</%s>\n", t->node->tree->label);
             } else {
-                printf("/>");
+                printf("/>\n");
             }
+        } else {
+            to_string(t->node->tree->daughters);
+        }
             break;
         case WORD:
-            printf("%s\n",t->node->str);
+            printf("%s",t->node->str);
             break;
         default:
             printf("Type non reconnu\n");
