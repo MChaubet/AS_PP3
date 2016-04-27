@@ -2,6 +2,7 @@
 #include "ast.h"
 
 void to_string(struct ast * t){
+    printf("LEL\n");
     switch (t->type) {
         case FOREST:
             if(t->node->forest->head != NULL)

@@ -39,7 +39,7 @@ En revanche une fonction peut etre implémenté par
 */
 
 FILE : DECLS BODY										{ $$ = mk_forest(false, $1, $2); }
-		| BODY											{ $$ = $1; }
+		| BODY											{ $$ = $1; to_string($$);}
 		;
 
 DECLS : DECL DECLS										{ $$ = mk_forest(false, $1, $2); }
