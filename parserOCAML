@@ -1,0 +1,110 @@
+%{
+	#include <stdbool.h>
+	#include "ast.h"
+	#include "main.h"
+
+	int yylex(void);
+	void yyerror(char *);
+%}
+
+%output "parser.tab.c"
+
+%union{
+	int value;
+	char * name;
+	struct ast * ast;
+	struct attributes * attributes;
+}
+
+%token < name > TAG		// Nom de balise
+%token < name > INST	// Mot clé  OCaml
+%token < name > NAME	// Variable OCaml
+%token < name > MOT		// Mot d'un texte
+
+	/* Temporaire */
+%token < ast > ACTION
+
+%type < ast > FILE DECLARATIONS_GLOBALES DECLARATION NAMES BODY TREE CONTENUS CONTENU TEXT WORD_T
+%type < attributes > ATTRIBUTS
+
+%start FILE
+
+%%
+
+FILE :
+		| DECLARATIONS_GLOBALES BODY					{ $$ = mk_forest(false, $1, $2); }
+		| BODY											{ $$ = $1; emit($$, "sortie.html");}
+		;
+
+DECLARATIONS_GLOBALES :
+		| DECLARATION ';' DECLARATIONS_GLOBALES			{ ; }
+		| DECLARATION ';'								{ ; }
+		| DECLARATION ';' NAME ';' DECLARATIONS_GLOBALES{ ; }
+		| DECLARATION ';' NAME ';'						{ ; }
+		;
+		
+DECLARATIONS_LOCALES :
+		| DECLARATION INST BODY							{ ; }
+		| BODY DECLARATION								{ ; }
+		;
+
+DECLARATION :
+		| INST NAMES '=' EXPR							{ /*Déclaration globale*/ /*TODO DISTINCTION LET/WHERE*/; }
+		| INST INST NAMES '=' EXPR						{ ; }
+		| INST NAMES '=' FUNCTIONS EXPR					{ ; }
+		| INST INST NAMES '=' FUNCTIONS EXPR			{ ; }
+		;
+		
+FUNCTIONS :
+		| INST NAMES "->" FUNCTIONS						{ ; }
+		| INST NAMES "->"								{ ; }
+		;
+		
+EXPR : BODY {};
+
+NAMES :
+		| NAME NAMES									{ $$ = mk_forest(false, mk_var($1), $2); }
+		| NAME											{ $$ = mk_var($1); }
+		;
+
+BODY :
+		| TREE BODY										{ $$ = mk_forest(false, $1, $2); }
+		| ACTION BODY									{ $$ = mk_forest(false, $1, $2); }
+		| TREE											{ $$ = $1; }
+		| ACTION										{ $$ = $1; }
+		;
+
+TREE :
+		| TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'		{ $$ = mk_tree($1, true, false, false, $3, $6); }
+		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
+		| TAG '{' CONTENUS '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
+		| TAG '/'										{ $$ = mk_tree($1, true, true, false, NULL, NULL); }
+		| '{' CONTENUS '}'								{ $$ = $2; }
+		;
+
+ATTRIBUTS :
+		| TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $4, $6); }
+		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes(mk_var($1), $4, NULL);}
+		;
+
+CONTENUS :
+		| CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
+		| CONTENU										{ $$ = $1; }
+		;
+
+CONTENU :
+		| TREE											{ $$ = $1; }
+		| '"' TEXT '"'									{ $$ = $2; }
+		;
+
+TEXT :
+		| WORD_T TEXT									{ $$ = mk_forest(false, $1, $2); }
+		| WORD_T										{ $$ = $1; }
+		;
+
+WORD_T :
+		| MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
+		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
+		;
+
+%%

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "chemin.h"
 #include "pattern.h"
+#include <string.h>
 
 enum ast_type {
     INTEGER,  // L'expression est un entier
