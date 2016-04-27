@@ -9,7 +9,7 @@
 
 %output "parser.tab.c"
 
-%union{	
+%union{
 	int value;
 	char * name;
 	struct ast * ast;
@@ -31,7 +31,7 @@
 
 %%
 /*
-En revanche une fonction peut etre implémenté par 
+En revanche une fonction peut etre implémenté par
 	"let f var1 var2 = contenu;"
 	"let f = fun var1 var2 -> contenu;"
 	"let f var1 var2 = func var1 var2 -> contenu;"
@@ -39,7 +39,7 @@ En revanche une fonction peut etre implémenté par
 */
 
 FILE : DECLS BODY										{ $$ = mk_forest(false, $1, $2); }
-		| BODY											{ $$ = $1; to_string($$);}
+		| BODY											{ $$ = $1; emit($$, "sortie.html");}
 		;
 
 DECLS : DECL DECLS										{ $$ = mk_forest(false, $1, $2); }
@@ -82,11 +82,11 @@ ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $
 CONTENUS : CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
 		| CONTENU										{ $$ = $1; }
 		;
-	
+
 CONTENU : TREE											{ $$ = $1; }
 		| '"' TEXT '"'									{ $$ = $2; }
 		;
-		
+
 TEXT : WORD_T TEXT										{ $$ = mk_forest(false, $1, $2); }
 		| WORD_T										{ $$ = $1; }
 		;
