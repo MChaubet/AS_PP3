@@ -13,5 +13,5 @@ br[att1="v1"
 {"contenu ... " div3[class="nb"]{"lol"}
  "suite ..."}
 
-div4{"contenu " a[href="http://www.labri.fr"]{"LaBRI"}"."}
-div5{"contenu" a[href="http://www.labri.fr"]{"LaBRI"}"."}
+div4{"contenu " a[href="https://www.lysator.liu.se/c/ANSI-C-grammar-l.html"]{"LEX"}"."}
+div5{"contenu" a[href="https://www.lysator.liu.se/c/ANSI-C-grammar-y.html"]{"BISON"}"."}

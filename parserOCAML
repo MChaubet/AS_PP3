@@ -24,86 +24,99 @@
 	/* Temporaire */
 %token < ast > ACTION
 
-%type < ast > FILE DECLARATIONS_GLOBALES DECLARATION NAMES BODY TREE CONTENUS CONTENU TEXT WORD_T
+%type < ast > FILE DECLARATIONS_GLOBALES DECLARATION NAMES BODY TREE CONTENUS CONTENU TEXT WORD_T 
 %type < attributes > ATTRIBUTS
 
 %start FILE
 
 %%
 
-FILE :
-		| DECLARATIONS_GLOBALES BODY					{ $$ = mk_forest(false, $1, $2); }
+FILE
+		: DECLARATIONS_GLOBALES BODY					{ $$ = mk_forest(false, $1, $2); }
 		| BODY											{ $$ = $1; emit($$, "sortie.html");}
 		;
 
-DECLARATIONS_GLOBALES :
-		| DECLARATION ';' DECLARATIONS_GLOBALES			{ ; }
+DECLARATIONS_GLOBALES
+		: DECLARATION ';' DECLARATIONS_GLOBALES			{ ; }
 		| DECLARATION ';'								{ ; }
 		| DECLARATION ';' NAME ';' DECLARATIONS_GLOBALES{ ; }
 		| DECLARATION ';' NAME ';'						{ ; }
 		;
 		
-DECLARATIONS_LOCALES :
-		| DECLARATION INST BODY							{ ; }
-		| BODY DECLARATION								{ ; }
+DECLARATION_LOCALE
+		: DECLARATION INST TREE							{ /*Creer un lien entre la variable et le body*/; }
+		| TREE DECLARATION								{ /*Creer un lien entre la variable et le body*/; }
 		;
 
-DECLARATION :
-		| INST NAMES '=' EXPR							{ /*Déclaration globale*/ /*TODO DISTINCTION LET/WHERE*/; }
-		| INST INST NAMES '=' EXPR						{ ; }
-		| INST NAMES '=' FUNCTIONS EXPR					{ ; }
-		| INST INST NAMES '=' FUNCTIONS EXPR			{ ; }
+DECLARATION
+		: INST NAMES '=' EXPR							{ /*Déclaration d'une variable ou d'une fonction*/ /*TODO DISTINCTION LET/WHERE*/; }
+		| INST INST NAMES '=' EXPR						{ /*Déclaration d'une fonction récurcive*/; }
+		| INST NAMES '=' FUNCTIONS EXPR					{ /*Déclaration d'une fonction, sous fonction*/; }
+		| INST INST NAMES '=' FUNCTIONS EXPR			{ /*Déclaration d'une fonction récurcive, sous fonction*/; }
 		;
-		
-FUNCTIONS :
-		| INST NAMES "->" FUNCTIONS						{ ; }
-		| INST NAMES "->"								{ ; }
-		;
-		
-EXPR : BODY {};
 
-NAMES :
-		| NAME NAMES									{ $$ = mk_forest(false, mk_var($1), $2); }
+FUNCTIONS
+		: INST NAMES "->" FUNCTIONS						{ /*Faire une foret de fonction*/; }
+		| INST NAMES "->"								{ /*Faire une fonction*/; }
+		;
+
+EXPR : TREE | OPERATION {/*NAME / INTEGER OPERATEUR BINAIRE*/};
+
+NAMES
+		: NAME NAMES									{ $$ = mk_forest(false, mk_var($1), $2); }
 		| NAME											{ $$ = mk_var($1); }
 		;
 
-BODY :
-		| TREE BODY										{ $$ = mk_forest(false, $1, $2); }
+BODY
+		: TREE BODY										{ $$ = mk_forest(false, $1, $2); }
 		| ACTION BODY									{ $$ = mk_forest(false, $1, $2); }
 		| TREE											{ $$ = $1; }
 		| ACTION										{ $$ = $1; }
 		;
 
-TREE :
-		| TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'		{ $$ = mk_tree($1, true, false, false, $3, $6); }
+TREE
+		: TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'		{ $$ = mk_tree($1, true, false, false, $3, $6); }
 		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
 		| TAG '{' CONTENUS '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
 		| TAG '/'										{ $$ = mk_tree($1, true, true, false, NULL, NULL); }
 		| '{' CONTENUS '}'								{ $$ = $2; }
 		;
 
-ATTRIBUTS :
-		| TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $4, $6); }
+ATTRIBUTS
+		: TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $4, $6); }
 		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes(mk_var($1), $4, NULL);}
 		;
 
-CONTENUS :
-		| CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
+CONTENUS
+		: CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
 		| CONTENU										{ $$ = $1; }
+		| ACTION										{ ; }
 		;
 
-CONTENU :
-		| TREE											{ $$ = $1; }
+CONTENU 
+		: TREE											{ $$ = $1; }
 		| '"' TEXT '"'									{ $$ = $2; }
+		| ACTION ','									{ ; }
 		;
 
-TEXT :
-		| WORD_T TEXT									{ $$ = mk_forest(false, $1, $2); }
+/*TODO Faire une enumération de tous les cas possibles*/
+ACTION 
+		: DECLARATION_LOCALE							{ ; }
+		| OPERATION
+		| NAME											{ /*Vérifier qu'il existe puis afficher*/; }
+		| MATCH											{ /*TODO Lacoste*/; }
+		| INST EXPR INST ACTION INST ACTION				{ /*if .. then .. else*/; }
+		| INST '"' MOT '"' TREE							{ /*emit "fichier.txt" tree*/; }
+		| EXPR											{ /*TODO Pas sur*/; }
+		;
+
+TEXT
+		: WORD_T TEXT									{ $$ = mk_forest(false, $1, $2); }
 		| WORD_T										{ $$ = $1; }
 		;
 
-WORD_T :
-		| MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
+WORD_T
+		: MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
 		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
 		;
 
