@@ -16,36 +16,47 @@
 	struct attributes * attributes;
 }
 
-%token < name > TAG		// Nom de balise
-%token < name > INST	// Mot clé  OCaml
-%token < name > NAME	// Variable OCaml
-%token < name > MOT		// Mot d'un texte
-%token < value > INTEGER// Un nombre
+%token < name >  TAG		// Nom de balise
+%token < name >  INST		// Mot clé  OCaml
+%token < name >  NAME		// Variable OCaml
+%token < name >  MOT		// Mot d'un texte
+%token < value > INTEGER	// Un nombre
 
-%token ARROW "=>"
+%token < name >  ARROW "=>" // Fleche (fonction)
 
 
 %type < ast > file
+
+/* Déclarations */
 %type < ast > declarations_globales
 %type < ast > declaration_locale
 %type < ast > declaration
 %type < ast > functions
-%type < ast > expr
 %type < ast > names
+
+/* Expressions */
+%type < ast > expr
+%type < ast > conditional_expr
+%type < ast > logical_expr
+%type < ast > relational_expr
+%type < ast > additive_expr
+%type < ast > multiplicative_expr
+%type < ast > factor_expr
+
+/* Code XML HTML */
 %type < ast > body
 %type < ast > tree
+%type < attributes > attributs
 %type < ast > contenus
 %type < ast > contenu
-%type < ast > action
 %type < ast > text
 %type < ast > word_t
+%type < ast > action
 
-%type < attributes > attributs
 
 %start file
 
 %%
-
 
 file
 		: declarations_globales body					{ $$ = mk_forest(false, $1, $2); }
@@ -161,13 +172,13 @@ attributs
 contenus
 		: contenu contenus								{ $$ = mk_forest(false, $1, $2); }
 		| contenu										{ $$ = $1; }
-		| action										{ ; }
+		| action										{ /*TODO*/; }
 		;
 
 contenu
 		: tree											{ $$ = $1; }
 		| '"' text '"'									{ $$ = $2; }
-		| action ','									{ ; }
+		| action ','									{ /*TODO*/; }
 		;
 
 text
@@ -180,13 +191,14 @@ word_t
 		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
 		;
 
-/*TODO Faire une enumération de tous les cas possibles*/
+/*TODO Faire une enumération de tous les cas possibles */
+/*TODO Vérification de la regle action */
 action 
 		: declaration_locale							{ ; }
-		| OPERATION
+		| OPERATION										{ ; }
 		| NAME											{ /*Vérifier qu'il existe puis afficher*/; }
 		| MATCH											{ /*TODO Lacoste*/; }
-		| INST expr INST action INST action				{ /*if .. then .. else*/; }
+		| INST expr INST action INST action				{ /*TODO if .. then .. else VOIR DANS EXPRESSIONS */; }
 		| INST '"' MOT '"' tree							{ /*emit "fichier.txt" tree*/; }
 		| expr											{ /*TODO Pas sur*/; }
 		;
