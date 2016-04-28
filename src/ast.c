@@ -5,6 +5,8 @@
 
 int indentation=0;
 
+//TODO Modifier pour juste récupérer la chaine de caractère qui est
+//TODO retourner par la fonction to_string pour la copier dans le fichier
 void emit(struct ast * t, char * filename){
     int stdoutCopy = dup(1);
     printf("Tentative de creation de '%s'\n", filename );
@@ -23,13 +25,18 @@ void emit(struct ast * t, char * filename){
     }
 }
 
-void auto_indent(){
+//TODO Modifier le prototype pour renvoyer un certain nombre de \t
+static void auto_indent(void){
     int i;
     for(i=0; i<indentation;i++){
         printf("\t");
     }
 }
 
+//TODO Remplacer le prototype de la fonction pour qu'elle retourne un string
+//TODO Pour pouvoir ensuite éventuellement évaluer les fonctions OCaml
+//TODO Rajouter les autres types du enum
+//TODO Faire éventuellement des fonctions annexes pour l'évaluation
 void to_string(struct ast * t){
     switch (t->type) {
         case FOREST:
@@ -41,41 +48,43 @@ void to_string(struct ast * t){
 
         case TREE:
             if(strcmp("text", t->node->tree->label) !=0){
-            printf("\n");
-            auto_indent();
-            printf("<%s", t->node->tree->label);
-            indentation++;
-            struct attributes * att = t->node->tree->attributes;
-            while(att != NULL){
-                printf(" %s='", att->key->node->str);
-                to_string(att->value);
-                printf("'");
-                att = att->next;
-            }
-            if(t->node->tree->nullary == false){
-                printf(">\n");
-                auto_indent();
-                to_string(t->node->tree->daughters);
+		        printf("\n");
+		        auto_indent();
+		        printf("<%s", t->node->tree->label);
+		        indentation++;
+		        struct attributes * att = t->node->tree->attributes;
+		        while(att != NULL){
+		            printf(" %s='", att->key->node->str);
+		            to_string(att->value);
+		            printf("'");
+		            att = att->next;
+		        }
+		        if(t->node->tree->nullary == false){
+		            printf(">\n");
+		            auto_indent();
+		            to_string(t->node->tree->daughters);
 
-                if(t->node->tree->space == true){
-                    printf(" ");
-                }
-                indentation--;
-                printf("\n");
-                auto_indent();
-                printf("</%s>\n", t->node->tree->label);
-                auto_indent();
-            } else {
-                indentation--;
-                printf("/>\n");
-            }
-        } else {
-            to_string(t->node->tree->daughters);
-        }
+		            if(t->node->tree->space == true){
+		                printf(" ");
+		            }
+		            indentation--;
+		            printf("\n");
+		            auto_indent();
+		            printf("</%s>\n", t->node->tree->label);
+		            auto_indent();
+		        } else {
+		            indentation--;
+		            printf("/>\n");
+		        }
+		    } else {
+		        to_string(t->node->tree->daughters);
+		    }
             break;
+            
         case WORD:
             printf("%s",t->node->str);
             break;
+            
         default:
             printf("Type non reconnu\n");
     }
