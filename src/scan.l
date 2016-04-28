@@ -21,6 +21,8 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 [[:space:]]+/\/									{ return ' '; }
 	/* On supprime tous les espaces pour ne pas avoir à les gérer dans la grammaire */
 [[:space:]]+									{ ; }
+	/* On renvoie les suites de chiffres qui forment donc des nombres */
+[[:digit:]]+									{ yylval.value = atoi(yytext); return INTEGER; }
 	/* Les nom de variables débutants par des variantes de 'xml', ou simplement constitués de '_' provoquent des ereurs */
 ({XML}{EXP}|\_)									{ /*return ERROR;*/ }
 	/* Les instructions d'Ocaml */

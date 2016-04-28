@@ -20,6 +20,7 @@
 %token < name > INST	// Mot clé  OCaml
 %token < name > NAME	// Variable OCaml
 %token < name > MOT		// Mot d'un texte
+%token < value > INTEGER// Un nombre
 
 %token ARROW "=>"
 
@@ -122,8 +123,10 @@ multiplicative_expr
 
 cast_expr
 		: '(' expr ')'									{ $$ = $2; }
+		| '!' expr										{ $$ = mk_app(mk_unaryop(NOT), $2); }
 		| '"' text '"'									{ $$ = $2; }
-		| tree											{ $$ = $2; }
+		| tree											{ $$ = $1; }
+		| INTEGER										{ $$ = mk_integer($1); }
 		;
 
 
