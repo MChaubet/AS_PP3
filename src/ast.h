@@ -18,16 +18,16 @@ enum ast_type {
     APP,      // L'expression est une application de fonction
     WORD,     // L'expression est un mot
     TREE,     // L'expression est un arbre
-    FOREST,   // L'expression est une foret
+    FOREST,   // L'expression est une forêt
     FUN,      // L'expression est une fonction
     MATCH,    // L'expression est un filtre
     COND,     // L'expression est une conditionnelle
     DECLREC   // Déclarations récursives (let rec ... where rec ...)
 };
 
-enum binop{PLUS, MINUS, MULT, DIV, LEQ, LE, GEQ, GE, EQ, OR, AND};
+enum binop{PLUS, MINUS, MULT, DIV, LEQ, LE, GEQ, GE, EQ, NEQ,OR, AND,EMIT};
 
-enum unaryop {NOT};
+enum unaryop {NOT,NEG};
 
 struct ast;
 
@@ -37,7 +37,8 @@ struct app{
     struct ast *arg;
 };
 
-struct attributes{
+struct attributes{	
+    bool is_value;
     struct ast * key;
     struct ast * value;
     struct attributes * next;
