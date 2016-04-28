@@ -25,6 +25,8 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 ({XML}{EXP}|\_)									{ /*return ERROR;*/ }
 	/* Les instructions d'Ocaml */
 {INSTR}/[[:space:]]								{ yylval.name = strdup(yytext); return INST; }
+	/* On prend en compte les opérations sur les entiers */
+[[:digit:]]+									{ yylval.value = atoi(yytext); return INTEGER; }
 	/* Les expressions suivies de '{', '[', '/' ou '=' sont des TAGs */
 {EXP}/[\{\[\/\=]								{ yylval.name = strdup(yytext); return TAG; }
 	/* Les expressions qui ne sont pas des tags sont des noms de variables, de fonctions ou d'actions */
