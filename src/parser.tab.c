@@ -1356,463 +1356,463 @@ yyreduce:
     {
         case 2:
 #line 102 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
+    { printf("lel1.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
 #line 1361 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 103 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); emit((yyval. ast ), "sortie.html");}
+    { printf("lel1.2\n");(yyval. ast ) = (yyvsp[0]. ast ); emit((yyval. ast ), "sortie.html");}
 #line 1367 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 110 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_forest(false, (yyvsp[-2]. ast ), (yyvsp[0]. ast ));}
+    { printf("lel2.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-2]. ast ), (yyvsp[0]. ast ));}
 #line 1373 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 111 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[-1]. ast ); }
+    { printf("lel2.2\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1379 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 115 "parser.y" /* yacc.c:1646  */
-    { ajouter_body((yyvsp[-2]. ast )->node->fun->body, (yyvsp[0]. ast )); (yyval. ast ) = (yyvsp[-2]. ast ); }
+    { printf("lel3.1\n");ajouter_body((yyvsp[-2]. ast )->node->fun->body, (yyvsp[0]. ast )); (yyval. ast ) = (yyvsp[-2]. ast ); }
 #line 1385 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
 #line 116 "parser.y" /* yacc.c:1646  */
-    { ajouter_body((yyvsp[-2]. ast )->node->fun->body, (yyvsp[0]. ast )); (yyval. ast ) = (yyvsp[-2]. ast ); }
+    { printf("lel3.2\n");ajouter_body((yyvsp[-2]. ast )->node->fun->body, (yyvsp[0]. ast )); (yyval. ast ) = (yyvsp[-2]. ast ); }
 #line 1391 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
 #line 120 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_fun((yyvsp[-1]. name ), (yyvsp[0]. ast )); }
+    { printf("lel4.1\n");(yyval. ast ) = mk_fun((yyvsp[-1]. name ), (yyvsp[0]. ast )); }
 #line 1397 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
 #line 121 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_fun((yyvsp[0]. name ), NULL); }
+    { printf("lel4.2\n");(yyval. ast ) = mk_fun((yyvsp[0]. name ), NULL); }
 #line 1403 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 125 "parser.y" /* yacc.c:1646  */
-    { ajouter_body((yyvsp[-2]. ast )->node->fun->body, (yyvsp[0]. ast )); (yyval. ast ) = (yyvsp[-2]. ast ); }
+    { printf("lel5.1\n");ajouter_body((yyvsp[-2]. ast )->node->fun->body, (yyvsp[0]. ast )); (yyval. ast ) = (yyvsp[-2]. ast ); }
 #line 1409 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
 #line 126 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel5.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1415 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 130 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_fun((yyvsp[-4]. name ), (yyvsp[0]. ast )), (yyvsp[-2]. ast )); }
+    { printf("lel6.1\n");(yyval. ast ) = mk_app(mk_fun((yyvsp[-4]. name ), (yyvsp[0]. ast )), (yyvsp[-2]. ast )); }
 #line 1421 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 131 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_fun((yyvsp[-4]. name ), (yyvsp[0]. ast )), mk_declrec((yyvsp[-4]. name ), (yyvsp[-2]. ast ))); }
+    { printf("lel6.2\n");(yyval. ast ) = mk_app(mk_fun((yyvsp[-4]. name ), (yyvsp[0]. ast )), mk_declrec((yyvsp[-4]. name ), (yyvsp[-2]. ast ))); }
 #line 1427 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 132 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_fun((yyvsp[-2]. name ), (yyvsp[-4]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel6.3\n");(yyval. ast ) = mk_app(mk_fun((yyvsp[-2]. name ), (yyvsp[-4]. ast )), (yyvsp[0]. ast )); }
 #line 1433 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 133 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_fun((yyvsp[-2]. name ), (yyvsp[-5]. ast )), mk_declrec((yyvsp[-2]. name ), (yyvsp[0]. ast ))); }
+    { printf("lel6.4\n");(yyval. ast ) = mk_app(mk_fun((yyvsp[-2]. name ), (yyvsp[-5]. ast )), mk_declrec((yyvsp[-2]. name ), (yyvsp[0]. ast ))); }
 #line 1439 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 140 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel7.1\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1445 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
 #line 141 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel7.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1451 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
 #line 142 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel7.3\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1457 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 143 "parser.y" /* yacc.c:1646  */
-    { emit((yyvsp[0]. ast ), (yyvsp[-2]. name )); }
+    { printf("lel7.4\n");emit((yyvsp[0]. ast ), (yyvsp[-2]. name )); }
 #line 1463 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 144 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_var((yyvsp[0]. name )); }
+    { printf("lel7.5\n");(yyval. ast ) = mk_var((yyvsp[0]. name )); }
 #line 1469 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 148 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_cond((yyvsp[-4]. ast ), (yyvsp[-2]. ast ), (yyvsp[0]. ast )); }
+    { printf("lel8.1\n");(yyval. ast ) = mk_cond((yyvsp[-4]. ast ), (yyvsp[-2]. ast ), (yyvsp[0]. ast )); }
 #line 1475 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 149 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel8.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1481 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 153 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(OR), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel9.1\n");(yyval. ast ) = mk_app(mk_app(mk_binop(OR), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1487 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 154 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(AND), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel9.2\n");(yyval. ast ) = mk_app(mk_app(mk_binop(AND), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1493 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 155 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel9.3\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1499 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
 #line 159 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(LE), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel10.1\n");(yyval. ast ) = mk_app(mk_app(mk_binop(LE), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1505 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 160 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(LEQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel10.2\n");(yyval. ast ) = mk_app(mk_app(mk_binop(LEQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1511 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 161 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(GE), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel10.3\n");(yyval. ast ) = mk_app(mk_app(mk_binop(GE), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1517 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
 #line 162 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(GEQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel10.4\n");(yyval. ast ) = mk_app(mk_app(mk_binop(GEQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1523 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 163 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(EQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel10.5\n");(yyval. ast ) = mk_app(mk_app(mk_binop(EQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1529 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
 #line 164 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(NEQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel10.6\n");(yyval. ast ) = mk_app(mk_app(mk_binop(NEQ), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1535 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
 #line 165 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel10.7\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1541 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
 #line 169 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(PLUS), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel11.1\n");(yyval. ast ) = mk_app(mk_app(mk_binop(PLUS), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1547 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
 #line 170 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(MINUS), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel11.2\n");(yyval. ast ) = mk_app(mk_app(mk_binop(MINUS), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1553 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 171 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel11.3\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1559 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 175 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(MULT), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel12.1\n");(yyval. ast ) = mk_app(mk_app(mk_binop(MULT), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1565 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 176 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_app(mk_binop(DIV), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
+    { printf("lel12.2\n");(yyval. ast ) = mk_app(mk_app(mk_binop(DIV), (yyvsp[-2]. ast )), (yyvsp[0]. ast )); }
 #line 1571 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
 #line 177 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel12.3\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1577 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
 #line 181 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel13.1\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1583 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
 #line 182 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_app(mk_unaryop(NOT), (yyvsp[0]. ast ));; }
+    { printf("lel13.2\n");(yyval. ast ) = mk_app(mk_unaryop(NOT), (yyvsp[0]. ast ));; }
 #line 1589 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
 #line 186 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[-1]. ast ); }
+    { printf("lel14.1\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1595 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 187 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[-1]. ast ); }
+    { printf("lel14.2\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1601 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
 #line 188 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel14.3\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1607 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
 #line 189 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_integer((yyvsp[0]. value )); }
+    { printf("lel14.4\n");(yyval. ast ) = mk_integer((yyvsp[0]. value )); }
 #line 1613 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
 #line 193 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_match((yyvsp[-3]. ast ), (yyvsp[-1]. patterns )); }
+    { printf("lel15.1\n");(yyval. ast ) = mk_match((yyvsp[-3]. ast ), (yyvsp[-1]. patterns )); }
 #line 1619 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 197 "parser.y" /* yacc.c:1646  */
-    { (yyval. patterns ) = mk_patterns((yyvsp[-3]. pattern ), (yyvsp[-1]. ast ), (yyvsp[0]. patterns )); }
+    { printf("lel16.1\n");(yyval. patterns ) = mk_patterns((yyvsp[-3]. pattern ), (yyvsp[-1]. ast ), (yyvsp[0]. patterns )); }
 #line 1625 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
 #line 198 "parser.y" /* yacc.c:1646  */
-    { (yyval. patterns ) = mk_patterns((yyvsp[-2]. pattern ), (yyvsp[0]. ast ), NULL); }
+    { printf("lel16.2\n");(yyval. patterns ) = mk_patterns((yyvsp[-2]. pattern ), (yyvsp[0]. ast ), NULL); }
 #line 1631 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
 #line 202 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_pforest((yyvsp[-1]. pattern ), (yyvsp[0]. pattern )); }
+    { printf("lel17.1\n");(yyval. pattern ) = mk_pforest((yyvsp[-1]. pattern ), (yyvsp[0]. pattern )); }
 #line 1637 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
 #line 203 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = (yyvsp[0]. pattern ); }
+    { printf("lel17.2\n");(yyval. pattern ) = (yyvsp[0]. pattern ); }
 #line 1643 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
 #line 207 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_wildcard(ANY); }
+    { printf("lel18.1\n");(yyval. pattern ) = mk_wildcard(ANY); }
 #line 1649 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
 #line 208 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_ptree((yyvsp[-3]. name ), false, (yyvsp[-1]. pattern )); }
+    { printf("lel18.2\n");(yyval. pattern ) = mk_ptree((yyvsp[-3]. name ), false, (yyvsp[-1]. pattern )); }
 #line 1655 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
 #line 209 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_ptree((yyvsp[-2]. name ), true, NULL); }
+    { printf("lel18.3\n");(yyval. pattern ) = mk_ptree((yyvsp[-2]. name ), true, NULL); }
 #line 1661 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 210 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_anytree(false, (yyvsp[-1]. pattern )); }
+    { printf("lel18.4\n");(yyval. pattern ) = mk_anytree(false, (yyvsp[-1]. pattern )); }
 #line 1667 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 211 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_anytree(true, NULL); }
+    { printf("lel18.5\n");(yyval. pattern ) = mk_anytree(true, NULL); }
 #line 1673 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
 #line 212 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_wildcard(ANYSTRING); }
+    { printf("lel18.6\n");(yyval. pattern ) = mk_wildcard(ANYSTRING); }
 #line 1679 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 213 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_wildcard(ANYFOREST); }
+    { printf("lel18.7\n");(yyval. pattern ) = mk_wildcard(ANYFOREST); }
 #line 1685 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
 #line 214 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_wildcard(ANYSEQ); }
+    { printf("lel18.8\n");(yyval. pattern ) = mk_wildcard(ANYSEQ); }
 #line 1691 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
 #line 215 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_pattern_var((yyvsp[0]. name ), TREEVAR); }
+    { printf("lel18.9\n");(yyval. pattern ) = mk_pattern_var((yyvsp[0]. name ), TREEVAR); }
 #line 1697 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
 #line 216 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_pattern_var((yyvsp[-1]. name ), STRINGVAR); }
+    { printf("lel18.10\n");(yyval. pattern ) = mk_pattern_var((yyvsp[-1]. name ), STRINGVAR); }
 #line 1703 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
 #line 217 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_pattern_var((yyvsp[-1]. name ), FORESTVAR); }
+    { printf("lel18.11\n");(yyval. pattern ) = mk_pattern_var((yyvsp[-1]. name ), FORESTVAR); }
 #line 1709 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
 #line 218 "parser.y" /* yacc.c:1646  */
-    { (yyval. pattern ) = mk_pattern_var((yyvsp[-1]. name ), ANYVAR); }
+    { printf("lel18.12\n");(yyval. pattern ) = mk_pattern_var((yyvsp[-1]. name ), ANYVAR); }
 #line 1715 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
 #line 225 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
+    { printf("lel19.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
 #line 1721 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 227 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel19.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1727 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 236 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_tree((yyvsp[-6]. name ), true, false, false, (yyvsp[-4]. attributes ), (yyvsp[-1]. ast )); }
+    { printf("lel20.1\n");(yyval. ast ) = mk_tree((yyvsp[-6]. name ), true, false, false, (yyvsp[-4]. attributes ), (yyvsp[-1]. ast )); }
 #line 1733 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
 #line 237 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_tree((yyvsp[-4]. name ), true, true, false, (yyvsp[-2]. attributes ), NULL); }
+    { printf("lel20.2\n");(yyval. ast ) = mk_tree((yyvsp[-4]. name ), true, true, false, (yyvsp[-2]. attributes ), NULL); }
 #line 1739 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 238 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_tree((yyvsp[-3]. name ), true, false, false, NULL, (yyvsp[-1]. ast )); }
+    { printf("lel20.3\n");(yyval. ast ) = mk_tree((yyvsp[-3]. name ), true, false, false, NULL, (yyvsp[-1]. ast )); }
 #line 1745 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 239 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_tree((yyvsp[-1]. name ), true, true, false, NULL, NULL); }
+    { printf("lel20.4\n");(yyval. ast ) = mk_tree((yyvsp[-1]. name ), true, true, false, NULL, NULL); }
 #line 1751 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
 #line 240 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[-1]. ast ); }
+    { printf("lel20.5\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1757 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
 #line 244 "parser.y" /* yacc.c:1646  */
-    { (yyval. attributes ) = mk_attributes(mk_var((yyvsp[-5]. name )), (yyvsp[-2]. ast ), (yyvsp[0]. attributes )); }
+    { printf("lel21.1\n");(yyval. attributes ) = mk_attributes(mk_var((yyvsp[-5]. name )), (yyvsp[-2]. ast ), (yyvsp[0]. attributes )); }
 #line 1763 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
 #line 245 "parser.y" /* yacc.c:1646  */
-    { (yyval. attributes ) = mk_attributes(mk_var((yyvsp[-4]. name )), (yyvsp[-1]. ast ), NULL);}
+    { printf("lel21.2\n");(yyval. attributes ) = mk_attributes(mk_var((yyvsp[-4]. name )), (yyvsp[-1]. ast ), NULL);}
 #line 1769 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
 #line 249 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
+    { printf("lel22.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
 #line 1775 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
 #line 250 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel22.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1781 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
 #line 251 "parser.y" /* yacc.c:1646  */
-    { /*TODO*/; }
+    { printf("lel22.3\n");(yyval. ast ) = (yyvsp[0]. ast ); printf("ici");}
 #line 1787 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 74:
 #line 257 "parser.y" /* yacc.c:1646  */
-    { /*TODO*/; }
+    { printf("lel23.1\n");(yyval. ast ) = (yyvsp[-1]. ast ); }
 #line 1793 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 75:
 #line 261 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
+    { printf("lel24.1\n");(yyval. ast ) = mk_forest(false, (yyvsp[-1]. ast ), (yyvsp[0]. ast )); }
 #line 1799 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 76:
 #line 262 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = (yyvsp[0]. ast ); }
+    { printf("lel24.2\n");(yyval. ast ) = (yyvsp[0]. ast ); }
 #line 1805 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 77:
 #line 266 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_tree("text", false, false, true, NULL, mk_word((yyvsp[-1]. name ))); }
+    { printf("lel25.1\n");(yyval. ast ) = mk_tree("text", false, false, true, NULL, mk_word((yyvsp[-1]. name ))); }
 #line 1811 "parser.tab.c" /* yacc.c:1646  */
     break;
 
   case 78:
 #line 267 "parser.y" /* yacc.c:1646  */
-    { (yyval. ast ) = mk_tree("text", false, false, false, NULL, mk_word((yyvsp[0]. name ))); }
+    { printf("lel25.2\n");(yyval. ast ) = mk_tree("text", false, false, false, NULL, mk_word((yyvsp[0]. name ))); }
 #line 1817 "parser.tab.c" /* yacc.c:1646  */
     break;
 
