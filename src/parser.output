@@ -94,28 +94,29 @@ Grammaire
 
    70 contenus: contenu contenus
    71         | contenu
-   72         | expr
+   72         | expr contenus
+   73         | expr
 
-   73 contenu: expr ','
+   74 contenu: expr ','
 
-   74 text: word_t text
-   75     | word_t
+   75 text: word_t text
+   76     | word_t
 
-   76 word_t: MOT ' '
-   77       | MOT
+   77 word_t: MOT ' '
+   78       | MOT
 
 
 Terminaux, suivis des règles où ils apparaissent
 
 $end (0) 0
-' ' (32) 76
+' ' (32) 77
 '!' (33) 39
 '"' (34) 18 41 68 69
 '(' (40) 40
 ')' (41) 40
 '*' (42) 35 54 58
 '+' (43) 32
-',' (44) 73
+',' (44) 74
 '-' (45) 33 56 60
 '/' (47) 36 55 59 64 66
 ';' (59) 3 4
@@ -129,7 +130,7 @@ $end (0) 0
 error (256)
 TAG (258) 50 51 63 64 65 66 68 69
 NAME (259) 7 8 11 12 13 14 19 57 58 59 60
-MOT (260) 18 76 77
+MOT (260) 18 77 78
 NUMBER (261) 43
 LET (262) 5 6 11 12
 REC (263) 6 12 14
@@ -172,7 +173,7 @@ declaration_locale (52)
     à gauche: 11 12 13 14, à droite: 16
 expr (53)
     à gauche: 15 16 17 18 19, à droite: 10 11 12 13 14 20 40 44 45
-    46 72 73
+    46 72 73 74
 conditional_expr (54)
     à gauche: 20 21, à droite: 15
 logical_expr (55)
@@ -204,13 +205,13 @@ tree (66)
 attributs (67)
     à gauche: 68 69, à droite: 63 64 68
 contenus (68)
-    à gauche: 70 71 72, à droite: 63 65 67 70
+    à gauche: 70 71 72 73, à droite: 63 65 67 70 72
 contenu (69)
-    à gauche: 73, à droite: 70 71
+    à gauche: 74, à droite: 70 71
 text (70)
-    à gauche: 74 75, à droite: 41 68 69 74
+    à gauche: 75 76, à droite: 41 68 69 75
 word_t (71)
-    à gauche: 76 77, à droite: 74 75
+    à gauche: 77 78, à droite: 75 76
 
 
 État 0
@@ -546,12 +547,38 @@ word_t (71)
 
 État 25
 
-   72 contenus: expr .
-   73 contenu: expr . ','
+   72 contenus: expr . contenus
+   73         | expr .
+   74 contenu: expr . ','
 
-    ','  décalage et aller à l'état 58
+    TAG      décalage et aller à l'état 1
+    NAME     décalage et aller à l'état 15
+    NUMBER   décalage et aller à l'état 16
+    LET      décalage et aller à l'état 17
+    IF       décalage et aller à l'état 18
+    MATCH_T  décalage et aller à l'état 19
+    EMIT_T   décalage et aller à l'état 20
+    '"'      décalage et aller à l'état 21
+    '!'      décalage et aller à l'état 22
+    '('      décalage et aller à l'état 23
+    '{'      décalage et aller à l'état 3
+    ','      décalage et aller à l'état 58
 
-    $défaut  réduction par utilisation de la règle 72 (contenus)
+    $défaut  réduction par utilisation de la règle 73 (contenus)
+
+    declaration_locale   aller à l'état 24
+    expr                 aller à l'état 25
+    conditional_expr     aller à l'état 26
+    logical_expr         aller à l'état 27
+    relational_expr      aller à l'état 28
+    additive_expr        aller à l'état 29
+    multiplicative_expr  aller à l'état 30
+    negative_expr        aller à l'état 31
+    factor_expr          aller à l'état 32
+    match_expr           aller à l'état 33
+    tree                 aller à l'état 34
+    contenus             aller à l'état 59
+    contenu              aller à l'état 36
 
 
 État 26
@@ -567,8 +594,8 @@ word_t (71)
    22 logical_expr: logical_expr . "||" relational_expr
    23             | logical_expr . "&&" relational_expr
 
-    "||"  décalage et aller à l'état 59
-    "&&"  décalage et aller à l'état 60
+    "||"  décalage et aller à l'état 60
+    "&&"  décalage et aller à l'état 61
 
     $défaut  réduction par utilisation de la règle 21 (conditional_expr)
 
@@ -583,12 +610,12 @@ word_t (71)
    29                | relational_expr . "==" additive_expr
    30                | relational_expr . "!=" additive_expr
 
-    "<"   décalage et aller à l'état 61
-    ">"   décalage et aller à l'état 62
-    "<="  décalage et aller à l'état 63
-    ">="  décalage et aller à l'état 64
-    "=="  décalage et aller à l'état 65
-    "!="  décalage et aller à l'état 66
+    "<"   décalage et aller à l'état 62
+    ">"   décalage et aller à l'état 63
+    "<="  décalage et aller à l'état 64
+    ">="  décalage et aller à l'état 65
+    "=="  décalage et aller à l'état 66
+    "!="  décalage et aller à l'état 67
 
     $défaut  réduction par utilisation de la règle 24 (logical_expr)
 
@@ -599,8 +626,8 @@ word_t (71)
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 31 (relational_expr)
 
@@ -611,8 +638,8 @@ word_t (71)
    35 multiplicative_expr: multiplicative_expr . '*' negative_expr
    36                    | multiplicative_expr . '/' negative_expr
 
-    '*'  décalage et aller à l'état 69
-    '/'  décalage et aller à l'état 70
+    '*'  décalage et aller à l'état 70
+    '/'  décalage et aller à l'état 71
 
     $défaut  réduction par utilisation de la règle 34 (additive_expr)
 
@@ -630,7 +657,7 @@ word_t (71)
    14                   | factor_expr . WHERE REC NAME '=' expr
    38 negative_expr: factor_expr .
 
-    WHERE  décalage et aller à l'état 71
+    WHERE  décalage et aller à l'état 72
 
     $défaut  réduction par utilisation de la règle 38 (negative_expr)
 
@@ -653,7 +680,7 @@ word_t (71)
 
    67 tree: '{' contenus . '}'
 
-    '}'  décalage et aller à l'état 72
+    '}'  décalage et aller à l'état 73
 
 
 État 36
@@ -686,7 +713,7 @@ word_t (71)
     factor_expr          aller à l'état 32
     match_expr           aller à l'état 33
     tree                 aller à l'état 34
-    contenus             aller à l'état 73
+    contenus             aller à l'état 74
     contenu              aller à l'état 36
 
 
@@ -713,7 +740,7 @@ word_t (71)
 
     $défaut  réduction par utilisation de la règle 4 (declarations_globales)
 
-    declarations_globales  aller à l'état 74
+    declarations_globales  aller à l'état 75
     declaration            aller à l'état 6
 
 
@@ -728,7 +755,7 @@ word_t (71)
 
    65 tree: TAG '{' contenus . '}'
 
-    '}'  décalage et aller à l'état 75
+    '}'  décalage et aller à l'état 76
 
 
 État 42
@@ -736,7 +763,7 @@ word_t (71)
    68 attributs: TAG . '=' '"' text '"' attributs
    69          | TAG . '=' '"' text '"'
 
-    '='  décalage et aller à l'état 76
+    '='  décalage et aller à l'état 77
 
 
 État 43
@@ -744,7 +771,7 @@ word_t (71)
    63 tree: TAG '[' attributs . ']' '{' contenus '}'
    64     | TAG '[' attributs . ']' '/'
 
-    ']'  décalage et aller à l'état 77
+    ']'  décalage et aller à l'état 78
 
 
 État 44
@@ -758,7 +785,7 @@ word_t (71)
 
     6 declaration: LET REC names . '=' functions
 
-    '='  décalage et aller à l'état 78
+    '='  décalage et aller à l'état 79
 
 
 État 46
@@ -769,7 +796,7 @@ word_t (71)
     NAME     décalage et aller à l'état 15
     NUMBER   décalage et aller à l'état 16
     LET      décalage et aller à l'état 17
-    FUNC     décalage et aller à l'état 79
+    FUNC     décalage et aller à l'état 80
     IF       décalage et aller à l'état 18
     MATCH_T  décalage et aller à l'état 19
     EMIT_T   décalage et aller à l'état 20
@@ -778,9 +805,9 @@ word_t (71)
     '('      décalage et aller à l'état 23
     '{'      décalage et aller à l'état 3
 
-    functions            aller à l'état 80
+    functions            aller à l'état 81
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 81
+    expr                 aller à l'état 82
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -796,14 +823,14 @@ word_t (71)
 
    11 declaration_locale: LET NAME . '=' factor_expr IN expr
 
-    '='  décalage et aller à l'état 82
+    '='  décalage et aller à l'état 83
 
 
 État 48
 
    12 declaration_locale: LET REC . NAME '=' factor_expr IN expr
 
-    NAME  décalage et aller à l'état 83
+    NAME  décalage et aller à l'état 84
 
 
 État 49
@@ -812,9 +839,9 @@ word_t (71)
    22 logical_expr: logical_expr . "||" relational_expr
    23             | logical_expr . "&&" relational_expr
 
-    THEN  décalage et aller à l'état 84
-    "||"  décalage et aller à l'état 59
-    "&&"  décalage et aller à l'état 60
+    THEN  décalage et aller à l'état 85
+    "||"  décalage et aller à l'état 60
+    "&&"  décalage et aller à l'état 61
 
 
 État 50
@@ -828,43 +855,43 @@ word_t (71)
 
    44 match_expr: MATCH_T expr . WITH filter_expr END
 
-    WITH  décalage et aller à l'état 85
+    WITH  décalage et aller à l'état 86
 
 
 État 52
 
    18 expr: EMIT_T '"' . MOT '"' tree
 
-    MOT  décalage et aller à l'état 86
+    MOT  décalage et aller à l'état 87
 
 
 État 53
 
-   76 word_t: MOT . ' '
-   77       | MOT .
+   77 word_t: MOT . ' '
+   78       | MOT .
 
-    ' '  décalage et aller à l'état 87
+    ' '  décalage et aller à l'état 88
 
-    $défaut  réduction par utilisation de la règle 77 (word_t)
+    $défaut  réduction par utilisation de la règle 78 (word_t)
 
 
 État 54
 
    41 factor_expr: '"' text . '"'
 
-    '"'  décalage et aller à l'état 88
+    '"'  décalage et aller à l'état 89
 
 
 État 55
 
-   74 text: word_t . text
-   75     | word_t .
+   75 text: word_t . text
+   76     | word_t .
 
     MOT  décalage et aller à l'état 53
 
-    $défaut  réduction par utilisation de la règle 75 (text)
+    $défaut  réduction par utilisation de la règle 76 (text)
 
-    text    aller à l'état 89
+    text    aller à l'état 90
     word_t  aller à l'état 55
 
 
@@ -879,38 +906,26 @@ word_t (71)
 
    40 factor_expr: '(' expr . ')'
 
-    ')'  décalage et aller à l'état 90
+    ')'  décalage et aller à l'état 91
 
 
 État 58
 
-   73 contenu: expr ',' .
+   74 contenu: expr ',' .
 
-    $défaut  réduction par utilisation de la règle 73 (contenu)
+    $défaut  réduction par utilisation de la règle 74 (contenu)
 
 
 État 59
 
-   22 logical_expr: logical_expr "||" . relational_expr
+   72 contenus: expr contenus .
 
-    TAG     décalage et aller à l'état 1
-    NUMBER  décalage et aller à l'état 16
-    '"'     décalage et aller à l'état 21
-    '!'     décalage et aller à l'état 22
-    '('     décalage et aller à l'état 23
-    '{'     décalage et aller à l'état 3
-
-    relational_expr      aller à l'état 91
-    additive_expr        aller à l'état 29
-    multiplicative_expr  aller à l'état 30
-    negative_expr        aller à l'état 31
-    factor_expr          aller à l'état 50
-    tree                 aller à l'état 34
+    $défaut  réduction par utilisation de la règle 72 (contenus)
 
 
 État 60
 
-   23 logical_expr: logical_expr "&&" . relational_expr
+   22 logical_expr: logical_expr "||" . relational_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -929,7 +944,7 @@ word_t (71)
 
 État 61
 
-   25 relational_expr: relational_expr "<" . additive_expr
+   23 logical_expr: logical_expr "&&" . relational_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -938,7 +953,8 @@ word_t (71)
     '('     décalage et aller à l'état 23
     '{'     décalage et aller à l'état 3
 
-    additive_expr        aller à l'état 93
+    relational_expr      aller à l'état 93
+    additive_expr        aller à l'état 29
     multiplicative_expr  aller à l'état 30
     negative_expr        aller à l'état 31
     factor_expr          aller à l'état 50
@@ -947,7 +963,7 @@ word_t (71)
 
 État 62
 
-   26 relational_expr: relational_expr ">" . additive_expr
+   25 relational_expr: relational_expr "<" . additive_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -965,7 +981,7 @@ word_t (71)
 
 État 63
 
-   28 relational_expr: relational_expr "<=" . additive_expr
+   26 relational_expr: relational_expr ">" . additive_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -983,7 +999,7 @@ word_t (71)
 
 État 64
 
-   27 relational_expr: relational_expr ">=" . additive_expr
+   28 relational_expr: relational_expr "<=" . additive_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1001,7 +1017,7 @@ word_t (71)
 
 État 65
 
-   29 relational_expr: relational_expr "==" . additive_expr
+   27 relational_expr: relational_expr ">=" . additive_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1019,7 +1035,7 @@ word_t (71)
 
 État 66
 
-   30 relational_expr: relational_expr "!=" . additive_expr
+   29 relational_expr: relational_expr "==" . additive_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1037,7 +1053,7 @@ word_t (71)
 
 État 67
 
-   32 additive_expr: additive_expr '+' . multiplicative_expr
+   30 relational_expr: relational_expr "!=" . additive_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1046,7 +1062,8 @@ word_t (71)
     '('     décalage et aller à l'état 23
     '{'     décalage et aller à l'état 3
 
-    multiplicative_expr  aller à l'état 99
+    additive_expr        aller à l'état 99
+    multiplicative_expr  aller à l'état 30
     negative_expr        aller à l'état 31
     factor_expr          aller à l'état 50
     tree                 aller à l'état 34
@@ -1054,7 +1071,7 @@ word_t (71)
 
 État 68
 
-   33 additive_expr: additive_expr '-' . multiplicative_expr
+   32 additive_expr: additive_expr '+' . multiplicative_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1071,7 +1088,7 @@ word_t (71)
 
 État 69
 
-   35 multiplicative_expr: multiplicative_expr '*' . negative_expr
+   33 additive_expr: additive_expr '-' . multiplicative_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1080,14 +1097,15 @@ word_t (71)
     '('     décalage et aller à l'état 23
     '{'     décalage et aller à l'état 3
 
-    negative_expr  aller à l'état 101
-    factor_expr    aller à l'état 50
-    tree           aller à l'état 34
+    multiplicative_expr  aller à l'état 101
+    negative_expr        aller à l'état 31
+    factor_expr          aller à l'état 50
+    tree                 aller à l'état 34
 
 
 État 70
 
-   36 multiplicative_expr: multiplicative_expr '/' . negative_expr
+   35 multiplicative_expr: multiplicative_expr '*' . negative_expr
 
     TAG     décalage et aller à l'état 1
     NUMBER  décalage et aller à l'état 16
@@ -1103,59 +1121,75 @@ word_t (71)
 
 État 71
 
-   13 declaration_locale: factor_expr WHERE . NAME '=' expr
-   14                   | factor_expr WHERE . REC NAME '=' expr
+   36 multiplicative_expr: multiplicative_expr '/' . negative_expr
 
-    NAME  décalage et aller à l'état 103
-    REC   décalage et aller à l'état 104
+    TAG     décalage et aller à l'état 1
+    NUMBER  décalage et aller à l'état 16
+    '"'     décalage et aller à l'état 21
+    '!'     décalage et aller à l'état 22
+    '('     décalage et aller à l'état 23
+    '{'     décalage et aller à l'état 3
+
+    negative_expr  aller à l'état 103
+    factor_expr    aller à l'état 50
+    tree           aller à l'état 34
 
 
 État 72
+
+   13 declaration_locale: factor_expr WHERE . NAME '=' expr
+   14                   | factor_expr WHERE . REC NAME '=' expr
+
+    NAME  décalage et aller à l'état 104
+    REC   décalage et aller à l'état 105
+
+
+État 73
 
    67 tree: '{' contenus '}' .
 
     $défaut  réduction par utilisation de la règle 67 (tree)
 
 
-État 73
+État 74
 
    70 contenus: contenu contenus .
 
     $défaut  réduction par utilisation de la règle 70 (contenus)
 
 
-État 74
+État 75
 
     3 declarations_globales: declaration ';' declarations_globales .
 
     $défaut  réduction par utilisation de la règle 3 (declarations_globales)
 
 
-État 75
+État 76
 
    65 tree: TAG '{' contenus '}' .
 
     $défaut  réduction par utilisation de la règle 65 (tree)
 
 
-État 76
+État 77
 
    68 attributs: TAG '=' . '"' text '"' attributs
    69          | TAG '=' . '"' text '"'
 
-    '"'  décalage et aller à l'état 105
+    '"'  décalage et aller à l'état 106
 
 
-État 77
+État 78
 
    63 tree: TAG '[' attributs ']' . '{' contenus '}'
    64     | TAG '[' attributs ']' . '/'
 
-    '/'  décalage et aller à l'état 106
-    '{'  décalage et aller à l'état 107
+    '/'  décalage et aller à l'état 107
+    '{'  décalage et aller à l'état 108
 
 
-État 78
+État 79
 
     6 declaration: LET REC names '=' . functions
 
@@ -1163,7 +1197,7 @@ word_t (71)
     NAME     décalage et aller à l'état 15
     NUMBER   décalage et aller à l'état 16
     LET      décalage et aller à l'état 17
-    FUNC     décalage et aller à l'état 79
+    FUNC     décalage et aller à l'état 80
     IF       décalage et aller à l'état 18
     MATCH_T  décalage et aller à l'état 19
     EMIT_T   décalage et aller à l'état 20
@@ -1172,9 +1206,9 @@ word_t (71)
     '('      décalage et aller à l'état 23
     '{'      décalage et aller à l'état 3
 
-    functions            aller à l'état 108
+    functions            aller à l'état 109
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 81
+    expr                 aller à l'état 82
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1186,30 +1220,30 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 79
+État 80
 
     9 functions: FUNC . names "=>" functions
 
     NAME  décalage et aller à l'état 12
 
-    names  aller à l'état 109
+    names  aller à l'état 110
 
 
-État 80
+État 81
 
     5 declaration: LET names '=' functions .
 
     $défaut  réduction par utilisation de la règle 5 (declaration)
 
 
-État 81
+État 82
 
    10 functions: expr .
 
     $défaut  réduction par utilisation de la règle 10 (functions)
 
 
-État 82
+État 83
 
    11 declaration_locale: LET NAME '=' . factor_expr IN expr
 
@@ -1219,18 +1253,18 @@ word_t (71)
     '('     décalage et aller à l'état 23
     '{'     décalage et aller à l'état 3
 
-    factor_expr  aller à l'état 110
+    factor_expr  aller à l'état 111
     tree         aller à l'état 34
 
 
-État 83
+État 84
 
    12 declaration_locale: LET REC NAME . '=' factor_expr IN expr
 
-    '='  décalage et aller à l'état 111
+    '='  décalage et aller à l'état 112
 
 
-État 84
+État 85
 
    20 conditional_expr: IF logical_expr THEN . expr ELSE expr
 
@@ -1247,7 +1281,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 112
+    expr                 aller à l'état 113
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1259,51 +1293,51 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 85
+État 86
 
    44 match_expr: MATCH_T expr WITH . filter_expr END
 
-    '|'  décalage et aller à l'état 113
+    '|'  décalage et aller à l'état 114
 
-    filter_expr  aller à l'état 114
-
-
-État 86
-
-   18 expr: EMIT_T '"' MOT . '"' tree
-
-    '"'  décalage et aller à l'état 115
+    filter_expr  aller à l'état 115
 
 
 État 87
 
-   76 word_t: MOT ' ' .
+   18 expr: EMIT_T '"' MOT . '"' tree
 
-    $défaut  réduction par utilisation de la règle 76 (word_t)
+    '"'  décalage et aller à l'état 116
 
 
 État 88
+
+   77 word_t: MOT ' ' .
+
+    $défaut  réduction par utilisation de la règle 77 (word_t)
+
+
+État 89
 
    41 factor_expr: '"' text '"' .
 
     $défaut  réduction par utilisation de la règle 41 (factor_expr)
 
 
-État 89
-
-   74 text: word_t text .
-
-    $défaut  réduction par utilisation de la règle 74 (text)
-
-
 État 90
+
+   75 text: word_t text .
+
+    $défaut  réduction par utilisation de la règle 75 (text)
+
+
+État 91
 
    40 factor_expr: '(' expr ')' .
 
     $défaut  réduction par utilisation de la règle 40 (factor_expr)
 
 
-État 91
+État 92
 
    22 logical_expr: logical_expr "||" relational_expr .
    25 relational_expr: relational_expr . "<" additive_expr
@@ -1313,17 +1347,17 @@ word_t (71)
    29                | relational_expr . "==" additive_expr
    30                | relational_expr . "!=" additive_expr
 
-    "<"   décalage et aller à l'état 61
-    ">"   décalage et aller à l'état 62
-    "<="  décalage et aller à l'état 63
-    ">="  décalage et aller à l'état 64
-    "=="  décalage et aller à l'état 65
-    "!="  décalage et aller à l'état 66
+    "<"   décalage et aller à l'état 62
+    ">"   décalage et aller à l'état 63
+    "<="  décalage et aller à l'état 64
+    ">="  décalage et aller à l'état 65
+    "=="  décalage et aller à l'état 66
+    "!="  décalage et aller à l'état 67
 
     $défaut  réduction par utilisation de la règle 22 (logical_expr)
 
 
-État 92
+État 93
 
    23 logical_expr: logical_expr "&&" relational_expr .
    25 relational_expr: relational_expr . "<" additive_expr
@@ -1333,159 +1367,159 @@ word_t (71)
    29                | relational_expr . "==" additive_expr
    30                | relational_expr . "!=" additive_expr
 
-    "<"   décalage et aller à l'état 61
-    ">"   décalage et aller à l'état 62
-    "<="  décalage et aller à l'état 63
-    ">="  décalage et aller à l'état 64
-    "=="  décalage et aller à l'état 65
-    "!="  décalage et aller à l'état 66
+    "<"   décalage et aller à l'état 62
+    ">"   décalage et aller à l'état 63
+    "<="  décalage et aller à l'état 64
+    ">="  décalage et aller à l'état 65
+    "=="  décalage et aller à l'état 66
+    "!="  décalage et aller à l'état 67
 
     $défaut  réduction par utilisation de la règle 23 (logical_expr)
 
 
-État 93
+État 94
 
    25 relational_expr: relational_expr "<" additive_expr .
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 25 (relational_expr)
 
 
-État 94
+État 95
 
    26 relational_expr: relational_expr ">" additive_expr .
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 26 (relational_expr)
 
 
-État 95
+État 96
 
    28 relational_expr: relational_expr "<=" additive_expr .
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 28 (relational_expr)
 
 
-État 96
+État 97
 
    27 relational_expr: relational_expr ">=" additive_expr .
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 27 (relational_expr)
 
 
-État 97
+État 98
 
    29 relational_expr: relational_expr "==" additive_expr .
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 29 (relational_expr)
 
 
-État 98
+État 99
 
    30 relational_expr: relational_expr "!=" additive_expr .
    32 additive_expr: additive_expr . '+' multiplicative_expr
    33              | additive_expr . '-' multiplicative_expr
 
-    '+'  décalage et aller à l'état 67
-    '-'  décalage et aller à l'état 68
+    '+'  décalage et aller à l'état 68
+    '-'  décalage et aller à l'état 69
 
     $défaut  réduction par utilisation de la règle 30 (relational_expr)
 
 
-État 99
+État 100
 
    32 additive_expr: additive_expr '+' multiplicative_expr .
    35 multiplicative_expr: multiplicative_expr . '*' negative_expr
    36                    | multiplicative_expr . '/' negative_expr
 
-    '*'  décalage et aller à l'état 69
-    '/'  décalage et aller à l'état 70
+    '*'  décalage et aller à l'état 70
+    '/'  décalage et aller à l'état 71
 
     $défaut  réduction par utilisation de la règle 32 (additive_expr)
 
 
-État 100
+État 101
 
    33 additive_expr: additive_expr '-' multiplicative_expr .
    35 multiplicative_expr: multiplicative_expr . '*' negative_expr
    36                    | multiplicative_expr . '/' negative_expr
 
-    '*'  décalage et aller à l'état 69
-    '/'  décalage et aller à l'état 70
+    '*'  décalage et aller à l'état 70
+    '/'  décalage et aller à l'état 71
 
     $défaut  réduction par utilisation de la règle 33 (additive_expr)
 
 
-État 101
+État 102
 
    35 multiplicative_expr: multiplicative_expr '*' negative_expr .
 
     $défaut  réduction par utilisation de la règle 35 (multiplicative_expr)
 
 
-État 102
+État 103
 
    36 multiplicative_expr: multiplicative_expr '/' negative_expr .
 
     $défaut  réduction par utilisation de la règle 36 (multiplicative_expr)
 
 
-État 103
+État 104
 
    13 declaration_locale: factor_expr WHERE NAME . '=' expr
 
-    '='  décalage et aller à l'état 116
-
-
-État 104
-
-   14 declaration_locale: factor_expr WHERE REC . NAME '=' expr
-
-    NAME  décalage et aller à l'état 117
+    '='  décalage et aller à l'état 117
 
 
 État 105
+
+   14 declaration_locale: factor_expr WHERE REC . NAME '=' expr
+
+    NAME  décalage et aller à l'état 118
+
+
+État 106
 
    68 attributs: TAG '=' '"' . text '"' attributs
    69          | TAG '=' '"' . text '"'
 
     MOT  décalage et aller à l'état 53
 
-    text    aller à l'état 118
+    text    aller à l'état 119
     word_t  aller à l'état 55
 
 
-État 106
+État 107
 
    64 tree: TAG '[' attributs ']' '/' .
 
     $défaut  réduction par utilisation de la règle 64 (tree)
 
 
-État 107
+État 108
 
    63 tree: TAG '[' attributs ']' '{' . contenus '}'
 
@@ -1512,32 +1546,32 @@ word_t (71)
     factor_expr          aller à l'état 32
     match_expr           aller à l'état 33
     tree                 aller à l'état 34
-    contenus             aller à l'état 119
+    contenus             aller à l'état 120
     contenu              aller à l'état 36
 
 
-État 108
+État 109
 
     6 declaration: LET REC names '=' functions .
 
     $défaut  réduction par utilisation de la règle 6 (declaration)
 
 
-État 109
+État 110
 
     9 functions: FUNC names . "=>" functions
 
-    "=>"  décalage et aller à l'état 120
-
-
-État 110
-
-   11 declaration_locale: LET NAME '=' factor_expr . IN expr
-
-    IN  décalage et aller à l'état 121
+    "=>"  décalage et aller à l'état 121
 
 
 État 111
+
+   11 declaration_locale: LET NAME '=' factor_expr . IN expr
+
+    IN  décalage et aller à l'état 122
+
+
+État 112
 
    12 declaration_locale: LET REC NAME '=' . factor_expr IN expr
 
@@ -1547,51 +1581,51 @@ word_t (71)
     '('     décalage et aller à l'état 23
     '{'     décalage et aller à l'état 3
 
-    factor_expr  aller à l'état 122
+    factor_expr  aller à l'état 123
     tree         aller à l'état 34
-
-
-État 112
-
-   20 conditional_expr: IF logical_expr THEN expr . ELSE expr
-
-    ELSE  décalage et aller à l'état 123
 
 
 État 113
 
-   45 filter_expr: '|' . pforests "=>" expr filter_expr
-   46            | '|' . pforests "=>" expr
+   20 conditional_expr: IF logical_expr THEN expr . ELSE expr
 
-    TAG   décalage et aller à l'état 124
-    NAME  décalage et aller à l'état 125
-    '-'   décalage et aller à l'état 126
-    '*'   décalage et aller à l'état 127
-    '/'   décalage et aller à l'état 128
-    '_'   décalage et aller à l'état 129
-
-    pforests      aller à l'état 130
-    pattern_expr  aller à l'état 131
+    ELSE  décalage et aller à l'état 124
 
 
 État 114
 
-   44 match_expr: MATCH_T expr WITH filter_expr . END
+   45 filter_expr: '|' . pforests "=>" expr filter_expr
+   46            | '|' . pforests "=>" expr
 
-    END  décalage et aller à l'état 132
+    TAG   décalage et aller à l'état 125
+    NAME  décalage et aller à l'état 126
+    '-'   décalage et aller à l'état 127
+    '*'   décalage et aller à l'état 128
+    '/'   décalage et aller à l'état 129
+    '_'   décalage et aller à l'état 130
+
+    pforests      aller à l'état 131
+    pattern_expr  aller à l'état 132
 
 
 État 115
+
+   44 match_expr: MATCH_T expr WITH filter_expr . END
+
+    END  décalage et aller à l'état 133
+
+
+État 116
 
    18 expr: EMIT_T '"' MOT '"' . tree
 
     TAG  décalage et aller à l'état 1
     '{'  décalage et aller à l'état 3
 
-    tree  aller à l'état 133
+    tree  aller à l'état 134
 
 
-État 116
+État 117
 
    13 declaration_locale: factor_expr WHERE NAME '=' . expr
 
@@ -1608,7 +1642,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 134
+    expr                 aller à l'état 135
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1620,29 +1654,29 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 117
+État 118
 
    14 declaration_locale: factor_expr WHERE REC NAME . '=' expr
 
-    '='  décalage et aller à l'état 135
-
-
-État 118
-
-   68 attributs: TAG '=' '"' text . '"' attributs
-   69          | TAG '=' '"' text . '"'
-
-    '"'  décalage et aller à l'état 136
+    '='  décalage et aller à l'état 136
 
 
 État 119
 
-   63 tree: TAG '[' attributs ']' '{' contenus . '}'
+   68 attributs: TAG '=' '"' text . '"' attributs
+   69          | TAG '=' '"' text . '"'
 
-    '}'  décalage et aller à l'état 137
+    '"'  décalage et aller à l'état 137
 
 
 État 120
+
+   63 tree: TAG '[' attributs ']' '{' contenus . '}'
+
+    '}'  décalage et aller à l'état 138
+
+
+État 121
 
     9 functions: FUNC names "=>" . functions
 
@@ -1650,7 +1684,7 @@ word_t (71)
     NAME     décalage et aller à l'état 15
     NUMBER   décalage et aller à l'état 16
     LET      décalage et aller à l'état 17
-    FUNC     décalage et aller à l'état 79
+    FUNC     décalage et aller à l'état 80
     IF       décalage et aller à l'état 18
     MATCH_T  décalage et aller à l'état 19
     EMIT_T   décalage et aller à l'état 20
@@ -1659,9 +1693,9 @@ word_t (71)
     '('      décalage et aller à l'état 23
     '{'      décalage et aller à l'état 3
 
-    functions            aller à l'état 138
+    functions            aller à l'état 139
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 81
+    expr                 aller à l'état 82
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1673,7 +1707,7 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 121
+État 122
 
    11 declaration_locale: LET NAME '=' factor_expr IN . expr
 
@@ -1690,7 +1724,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 139
+    expr                 aller à l'état 140
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1702,14 +1736,14 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 122
+État 123
 
    12 declaration_locale: LET REC NAME '=' factor_expr . IN expr
 
-    IN  décalage et aller à l'état 140
+    IN  décalage et aller à l'état 141
 
 
-État 123
+État 124
 
    20 conditional_expr: IF logical_expr THEN expr ELSE . expr
 
@@ -1726,7 +1760,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 141
+    expr                 aller à l'état 142
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1738,107 +1772,107 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 124
+État 125
 
    50 pattern_expr: TAG . '{' pattern_expr '}'
    51             | TAG . '{' '}'
 
-    '{'  décalage et aller à l'état 142
+    '{'  décalage et aller à l'état 143
 
 
-État 125
+État 126
 
    57 pattern_expr: NAME .
 
     $défaut  réduction par utilisation de la règle 57 (pattern_expr)
 
 
-État 126
+État 127
 
    56 pattern_expr: '-' . '_' '-'
    60             | '-' . NAME '-'
 
-    NAME  décalage et aller à l'état 143
-    '_'   décalage et aller à l'état 144
-
-
-État 127
-
-   54 pattern_expr: '*' . '_' '*'
-   58             | '*' . NAME '*'
-
-    NAME  décalage et aller à l'état 145
-    '_'   décalage et aller à l'état 146
+    NAME  décalage et aller à l'état 144
+    '_'   décalage et aller à l'état 145
 
 
 État 128
 
-   55 pattern_expr: '/' . '_' '/'
-   59             | '/' . NAME '/'
+   54 pattern_expr: '*' . '_' '*'
+   58             | '*' . NAME '*'
 
-    NAME  décalage et aller à l'état 147
-    '_'   décalage et aller à l'état 148
+    NAME  décalage et aller à l'état 146
+    '_'   décalage et aller à l'état 147
 
 
 État 129
+
+   55 pattern_expr: '/' . '_' '/'
+   59             | '/' . NAME '/'
+
+    NAME  décalage et aller à l'état 148
+    '_'   décalage et aller à l'état 149
+
+
+État 130
 
    49 pattern_expr: '_' .
    52             | '_' . '{' pattern_expr '}'
    53             | '_' . '{' '}'
 
-    '{'  décalage et aller à l'état 149
+    '{'  décalage et aller à l'état 150
 
     $défaut  réduction par utilisation de la règle 49 (pattern_expr)
 
 
-État 130
+État 131
 
    45 filter_expr: '|' pforests . "=>" expr filter_expr
    46            | '|' pforests . "=>" expr
 
-    "=>"  décalage et aller à l'état 150
+    "=>"  décalage et aller à l'état 151
 
 
-État 131
+État 132
 
    47 pforests: pattern_expr . pforests
    48         | pattern_expr .
 
-    TAG   décalage et aller à l'état 124
-    NAME  décalage et aller à l'état 125
-    '-'   décalage et aller à l'état 126
-    '*'   décalage et aller à l'état 127
-    '/'   décalage et aller à l'état 128
-    '_'   décalage et aller à l'état 129
+    TAG   décalage et aller à l'état 125
+    NAME  décalage et aller à l'état 126
+    '-'   décalage et aller à l'état 127
+    '*'   décalage et aller à l'état 128
+    '/'   décalage et aller à l'état 129
+    '_'   décalage et aller à l'état 130
 
     $défaut  réduction par utilisation de la règle 48 (pforests)
 
-    pforests      aller à l'état 151
-    pattern_expr  aller à l'état 131
+    pforests      aller à l'état 152
+    pattern_expr  aller à l'état 132
 
 
-État 132
+État 133
 
    44 match_expr: MATCH_T expr WITH filter_expr END .
 
     $défaut  réduction par utilisation de la règle 44 (match_expr)
 
 
-État 133
+État 134
 
    18 expr: EMIT_T '"' MOT '"' tree .
 
     $défaut  réduction par utilisation de la règle 18 (expr)
 
 
-État 134
+État 135
 
    13 declaration_locale: factor_expr WHERE NAME '=' expr .
 
     $défaut  réduction par utilisation de la règle 13 (declaration_locale)
 
 
-État 135
+État 136
 
    14 declaration_locale: factor_expr WHERE REC NAME '=' . expr
 
@@ -1855,7 +1889,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 152
+    expr                 aller à l'état 153
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1867,7 +1901,7 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 136
+État 137
 
    68 attributs: TAG '=' '"' text '"' . attributs
    69          | TAG '=' '"' text '"' .
@@ -1876,31 +1910,31 @@ word_t (71)
 
     $défaut  réduction par utilisation de la règle 69 (attributs)
 
-    attributs  aller à l'état 153
+    attributs  aller à l'état 154
 
 
-État 137
+État 138
 
    63 tree: TAG '[' attributs ']' '{' contenus '}' .
 
     $défaut  réduction par utilisation de la règle 63 (tree)
 
 
-État 138
+État 139
 
     9 functions: FUNC names "=>" functions .
 
     $défaut  réduction par utilisation de la règle 9 (functions)
 
 
-État 139
+État 140
 
    11 declaration_locale: LET NAME '=' factor_expr IN expr .
 
     $défaut  réduction par utilisation de la règle 11 (declaration_locale)
 
 
-État 140
+État 141
 
    12 declaration_locale: LET REC NAME '=' factor_expr IN . expr
 
@@ -1917,7 +1951,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 154
+    expr                 aller à l'état 155
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -1929,88 +1963,88 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 141
+État 142
 
    20 conditional_expr: IF logical_expr THEN expr ELSE expr .
 
     $défaut  réduction par utilisation de la règle 20 (conditional_expr)
 
 
-État 142
+État 143
 
    50 pattern_expr: TAG '{' . pattern_expr '}'
    51             | TAG '{' . '}'
 
-    TAG   décalage et aller à l'état 124
-    NAME  décalage et aller à l'état 125
-    '-'   décalage et aller à l'état 126
-    '*'   décalage et aller à l'état 127
-    '/'   décalage et aller à l'état 128
-    '_'   décalage et aller à l'état 129
-    '}'   décalage et aller à l'état 155
+    TAG   décalage et aller à l'état 125
+    NAME  décalage et aller à l'état 126
+    '-'   décalage et aller à l'état 127
+    '*'   décalage et aller à l'état 128
+    '/'   décalage et aller à l'état 129
+    '_'   décalage et aller à l'état 130
+    '}'   décalage et aller à l'état 156
 
-    pattern_expr  aller à l'état 156
-
-
-État 143
-
-   60 pattern_expr: '-' NAME . '-'
-
-    '-'  décalage et aller à l'état 157
+    pattern_expr  aller à l'état 157
 
 
 État 144
 
-   56 pattern_expr: '-' '_' . '-'
+   60 pattern_expr: '-' NAME . '-'
 
     '-'  décalage et aller à l'état 158
 
 
 État 145
 
-   58 pattern_expr: '*' NAME . '*'
+   56 pattern_expr: '-' '_' . '-'
 
-    '*'  décalage et aller à l'état 159
+    '-'  décalage et aller à l'état 159
 
 
 État 146
 
-   54 pattern_expr: '*' '_' . '*'
+   58 pattern_expr: '*' NAME . '*'
 
     '*'  décalage et aller à l'état 160
 
 
 État 147
 
-   59 pattern_expr: '/' NAME . '/'
+   54 pattern_expr: '*' '_' . '*'
 
-    '/'  décalage et aller à l'état 161
+    '*'  décalage et aller à l'état 161
 
 
 État 148
 
-   55 pattern_expr: '/' '_' . '/'
+   59 pattern_expr: '/' NAME . '/'
 
     '/'  décalage et aller à l'état 162
 
 
 État 149
 
-   52 pattern_expr: '_' '{' . pattern_expr '}'
-   53             | '_' '{' . '}'
+   55 pattern_expr: '/' '_' . '/'
 
-    TAG   décalage et aller à l'état 124
-    NAME  décalage et aller à l'état 125
-    '-'   décalage et aller à l'état 126
-    '*'   décalage et aller à l'état 127
-    '/'   décalage et aller à l'état 128
-    '_'   décalage et aller à l'état 129
-    '}'   décalage et aller à l'état 163
-
-    pattern_expr  aller à l'état 164
+    '/'  décalage et aller à l'état 163
 
 
 État 150
+
+   52 pattern_expr: '_' '{' . pattern_expr '}'
+   53             | '_' '{' . '}'
+
+    TAG   décalage et aller à l'état 125
+    NAME  décalage et aller à l'état 126
+    '-'   décalage et aller à l'état 127
+    '*'   décalage et aller à l'état 128
+    '/'   décalage et aller à l'état 129
+    '_'   décalage et aller à l'état 130
+    '}'   décalage et aller à l'état 164
+
+    pattern_expr  aller à l'état 165
+
+
+État 151
 
    45 filter_expr: '|' pforests "=>" . expr filter_expr
    46            | '|' pforests "=>" . expr
@@ -2028,7 +2062,7 @@ word_t (71)
     '{'      décalage et aller à l'état 3
 
     declaration_locale   aller à l'état 24
-    expr                 aller à l'état 165
+    expr                 aller à l'état 166
     conditional_expr     aller à l'état 26
     logical_expr         aller à l'état 27
     relational_expr      aller à l'état 28
@@ -2040,131 +2074,131 @@ word_t (71)
     tree                 aller à l'état 34
 
 
-État 151
+État 152
 
    47 pforests: pattern_expr pforests .
 
     $défaut  réduction par utilisation de la règle 47 (pforests)
 
 
-État 152
+État 153
 
    14 declaration_locale: factor_expr WHERE REC NAME '=' expr .
 
     $défaut  réduction par utilisation de la règle 14 (declaration_locale)
 
 
-État 153
+État 154
 
    68 attributs: TAG '=' '"' text '"' attributs .
 
     $défaut  réduction par utilisation de la règle 68 (attributs)
 
 
-État 154
+État 155
 
    12 declaration_locale: LET REC NAME '=' factor_expr IN expr .
 
     $défaut  réduction par utilisation de la règle 12 (declaration_locale)
 
 
-État 155
+État 156
 
    51 pattern_expr: TAG '{' '}' .
 
     $défaut  réduction par utilisation de la règle 51 (pattern_expr)
 
 
-État 156
+État 157
 
    50 pattern_expr: TAG '{' pattern_expr . '}'
 
-    '}'  décalage et aller à l'état 166
+    '}'  décalage et aller à l'état 167
 
 
-État 157
+État 158
 
    60 pattern_expr: '-' NAME '-' .
 
     $défaut  réduction par utilisation de la règle 60 (pattern_expr)
 
 
-État 158
+État 159
 
    56 pattern_expr: '-' '_' '-' .
 
     $défaut  réduction par utilisation de la règle 56 (pattern_expr)
 
 
-État 159
+État 160
 
    58 pattern_expr: '*' NAME '*' .
 
     $défaut  réduction par utilisation de la règle 58 (pattern_expr)
 
 
-État 160
+État 161
 
    54 pattern_expr: '*' '_' '*' .
 
     $défaut  réduction par utilisation de la règle 54 (pattern_expr)
 
 
-État 161
+État 162
 
    59 pattern_expr: '/' NAME '/' .
 
     $défaut  réduction par utilisation de la règle 59 (pattern_expr)
 
 
-État 162
+État 163
 
    55 pattern_expr: '/' '_' '/' .
 
     $défaut  réduction par utilisation de la règle 55 (pattern_expr)
 
 
-État 163
+État 164
 
    53 pattern_expr: '_' '{' '}' .
 
     $défaut  réduction par utilisation de la règle 53 (pattern_expr)
 
 
-État 164
+État 165
 
    52 pattern_expr: '_' '{' pattern_expr . '}'
 
-    '}'  décalage et aller à l'état 167
+    '}'  décalage et aller à l'état 168
 
 
-État 165
+État 166
 
    45 filter_expr: '|' pforests "=>" expr . filter_expr
    46            | '|' pforests "=>" expr .
 
-    '|'  décalage et aller à l'état 113
+    '|'  décalage et aller à l'état 114
 
     $défaut  réduction par utilisation de la règle 46 (filter_expr)
 
-    filter_expr  aller à l'état 168
+    filter_expr  aller à l'état 169
 
 
-État 166
+État 167
 
    50 pattern_expr: TAG '{' pattern_expr '}' .
 
     $défaut  réduction par utilisation de la règle 50 (pattern_expr)
 
 
-État 167
+État 168
 
    52 pattern_expr: '_' '{' pattern_expr '}' .
 
     $défaut  réduction par utilisation de la règle 52 (pattern_expr)
 
 
-État 168
+État 169
 
    45 filter_expr: '|' pforests "=>" expr filter_expr .
 

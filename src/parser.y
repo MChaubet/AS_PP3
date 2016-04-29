@@ -241,13 +241,14 @@ tree
 		;
 
 attributs
-		: TAG '=' '"' text '"' attributs				{ printf("lel21.1\n");$$ = mk_attributes(mk_var($1), $4, $6); }
-		| TAG '=' '"' text '"'							{ printf("lel21.2\n");$$ = mk_attributes(mk_var($1), $4, NULL);}
+		: TAG '=' '"' text '"' attributs				{ printf("lel21.1 %s\n", $1);$$ = mk_attributes(mk_var($1), $4, $6); }
+		| TAG '=' '"' text '"'							{ printf("lel21.2 %s\n", $1);$$ = mk_attributes(mk_var($1), $4, NULL);}
 		;
 
 contenus
 		: contenu contenus								{ printf("lel22.1\n");$$ = mk_forest(false, $1, $2); }
 		| contenu										{ printf("lel22.2\n");$$ = $1; }
+		| expr contenus									{ printf("lel22.3\n");$$ = mk_forest(false, $1, $2); }
 		| expr											{ printf("lel22.3\n");$$ = $1; }
 		;
 
@@ -263,7 +264,7 @@ text
 		;
 
 word_t
-		: MOT ' ' 										{ printf("lel25.1\n");$$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
-		| MOT	 										{ printf("lel25.2\n");$$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
+		: MOT ' ' 										{ printf("lel25.1 %s\n", $1);$$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
+		| MOT	 										{ printf("lel25.2 %s\n", $1);$$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
 		;
 %%
