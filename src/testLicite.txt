@@ -15,3 +15,7 @@ br[att1="v1"
 
 div4{"contenu " a[href="https://www.lysator.liu.se/c/ANSI-C-grammar-l.html"]{"LEX"}"."}
 div5{"contenu" a[href="https://www.lysator.liu.se/c/ANSI-C-grammar-y.html"]{"BISON"}"."}
+
+let email= a[href="mailto:author@bdx.fr"]{"email"};
+
+div{"Le " LaBRI, " est un laboratoire de l'" bdx, "."}
