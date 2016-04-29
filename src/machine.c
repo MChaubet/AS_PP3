@@ -8,7 +8,7 @@
 
 void emit( char * file, struct ast * ast){
     assert(file!=NULL && (ast ==NULL || ast!= NULL));
-    fprintf(stderr,"Vous devez implÃ©menter la fonction emit");
+    fprintf(stderr,"Vous devez implémenter la fonction emit");
     return;
 }
 
@@ -59,7 +59,7 @@ struct ast * to_forest(struct ast * t){
         break;
     }
     default:
-        fprintf(stderr,"Erreur de typage, seul les mots, arbres, entiers ou forÃªts peuvent Ãªtre convertis en forÃªt.");
+        fprintf(stderr,"Erreur de typage, seul les mots, arbres, entiers ou forêts peuvent être convertis en forêt.");
         exit(1);
         break;
     }
@@ -186,7 +186,7 @@ void reconstruct_attributes(struct machine * m, struct attributes * tail){
         compute(m);
     }
     else{
-        fprintf(stderr,"Erreur de typage : les attributs ne peuvent Ãªtre utilisÃ©s que pour construire de arbres.");
+        fprintf(stderr,"Erreur de typage : les attributs ne peuvent être utilisés que pour construire de arbres.");
         exit(1);
     }
 }
@@ -204,7 +204,7 @@ void pop_attcompvalue(struct machine * m){
         value = m->closure->value;
         break;
     default:
-        fprintf(stderr,"Erreur de typage, une valeur d'attribut ne peut qu'Ãªtre un entier ou un chaÃ®ne de caractÃ¨re.");
+        fprintf(stderr,"Erreur de typage, une valeur d'attribut ne peut qu'être un entier ou un chaîne de caractère.");
         exit(1);
         break;
     }
@@ -238,7 +238,7 @@ void pop_attcompkey(struct machine * m){
         key = m->closure->value;
         break;
     default:
-        fprintf(stderr,"Erreur de typage, une valeur d'attribut ne peut qu'Ãªtre un entier ou un chaÃ®ne de caractÃ¨re.");
+        fprintf(stderr,"Erreur de typage, une valeur d'attribut ne peut qu'être un entier ou un chaîne de caractère.");
         exit(1);
         break;
     }
@@ -314,7 +314,7 @@ void pop_forestcomphead(struct machine * m){
         head = m->closure->value;
         break;
     default:
-        fprintf(stderr,("Erreur de typage, la tÃªte d'une forÃªt ne peut contenir que des chaÃ®ne, des mots ou des nombres"));
+        fprintf(stderr,("Erreur de typage, la tête d'une forêt ne peut contenir que des chaîne, des mots ou des nombres"));
         exit(1);
         break;
     }
@@ -414,7 +414,7 @@ void pop_forestcomptail(struct machine * m){
                            NULL);
         break;
     default:
-        fprintf(stderr,"Erreur de typage: une forÃªt ne peut Ãªtre construite qu'Ã  partir d'une forÃªt, d'un arbre, d'un mot ou d'un entier");
+        fprintf(stderr,"Erreur de typage: une forêt ne peut être construite qu'à  partir d'une forêt, d'un arbre, d'un mot ou d'un entier");
         exit(1);
     }
     m->closure = mk_closure(clone_concat_forest(m->stack->top->item->closure->value,forest),NULL);
@@ -443,7 +443,7 @@ void pop_treecompforest(struct machine * m){
                            NULL);
         break;
     default:
-        fprintf(stderr,"Erreur de typage: un forÃªt ne peut Ãªtre construite qu'Ã  partir d'une forÃªt, d'un arbre, d'un mot ou d'un entier");
+        fprintf(stderr,"Erreur de typage: un forêt ne peut être construite qu'à  partir d'une forêt, d'un arbre, d'un mot ou d'un entier");
         exit(1);
     }
     m->closure = mk_closure(mk_tree(
@@ -473,14 +473,14 @@ void on_integer(struct machine * m){
             pop_treecompforest(m);
             break;
         case ATTCOMPKEY:
-            fprintf(stderr,"Erreur de typage, un entier ne peut Ãªtre la clÃ© d'un attribut.");
+            fprintf(stderr,"Erreur de typage, un entier ne peut être la clé d'un attribut.");
             exit(1);
             break;
         case ATTCOMPVALUE:
             pop_attcompvalue(m);
             break;
         case ATTCOMPNEXT:
-            fprintf(stderr,"Erreur de typage, un entier ne peut Ãªtre utilisÃ© comme sÃ©quence d'attribut.");
+            fprintf(stderr,"Erreur de typage, un entier ne peut être utilisé comme séquence d'attribut.");
             exit(1);
             break;
         case FORESTCOMPHEAD:
@@ -493,7 +493,7 @@ void on_integer(struct machine * m){
             pop_function(m);
             break;
         case MATCHCOMP:
-            fprintf(stderr,"Erreur de typage, un entier ne peut Ãªtre filtrÃ© par une construction 'match'.");
+            fprintf(stderr,"Erreur de typage, un entier ne peut être filtré par une construction 'match'.");
             exit(1);
             break;
         case CONDCOMP:
@@ -596,7 +596,7 @@ void on_binop(struct machine * m){
                                 m->stack->next->top->item->closure->value->node->num;
                             break;
                         case EMIT:
-                            fprintf(stderr,"Erreur de typage, emit ne peut Ãªtre appliquÃ© Ã  des entiers.");
+                            fprintf(stderr,"Erreur de typage, emit ne peut être appliqué à  des entiers.");
                             exit(1);
                             break;
                         }
@@ -646,7 +646,7 @@ void on_binop(struct machine * m){
                                 k=k!=0;
                                 break;
                             default:
-                                fprintf(stderr,"Erreur de typage, les opÃ©rateurs possibles entre chaÃ®nes sont +, <=, <, >=, >, ==, et !=");
+                                fprintf(stderr,"Erreur de typage, les opérateurs possibles entre chaà®nes sont +, <=, <, >=, >, ==, et !=");
                                 exit(1);
                                 break;
                             }
@@ -683,16 +683,16 @@ void on_binop(struct machine * m){
                             compute(m);
                         }
                         else{
-                            fprintf(stderr,"Erreur de typage, le seul opÃ©rateur possible entreforÃªts est +"); 
+                            fprintf(stderr,"Erreur de typage, le seul opérateur possible entreforêts est +"); 
                         }                
                     }
 
                     else{
-                        fprintf(stderr,"Erreur de typage, les opÃ©rations binaires ne peuvent prendre en argument que des entiers, des mots ou des forÃªts.");
+                        fprintf(stderr,"Erreur de typage, les opérations binaires ne peuvent prendre en argument que des entiers, des mots ou des forêts.");
                     }
                 }
                 else{
-                    fprintf(stderr,"Erreur de typage, les opÃ©rations binaires ne peuvent prendre en argument que des entiers, des mots ou des forÃªts.");
+                    fprintf(stderr,"Erreur de typage, les opérations binaires ne peuvent prendre en argument que des entiers, des mots ou des forêts.");
                 }
             }
             else{
@@ -702,13 +702,13 @@ void on_binop(struct machine * m){
                     return;
                 }
                 else {
-                    fprintf(stderr,"Erreur de typage, les opÃ©rations binaires ne peuvent prendre en argument que des entiers des mots ou des forÃªts.");
+                    fprintf(stderr,"Erreur de typage, les opérations binaires ne peuvent prendre en argument que des entiers des mots ou des forêts.");
                 }
             }
             
         }
         else{
-            fprintf(stderr,"Erreur de typage, les opÃ©rations binaires ne peuvent prendre en argument que des entiers, des mots ou des forÃªts.");
+            fprintf(stderr,"Erreur de typage, les opérations binaires ne peuvent prendre en argument que des entiers, des mots ou des forêts.");
         }
     }
 }
@@ -727,7 +727,7 @@ void on_unaryop(struct machine * m){
                     k = -m->stack->top->item->closure->value->node->num;
                 }
                 else{
-                    fprintf(stderr,"Erreur de typage, les opÃ©rations unaires compatibles avec les entiers sont ! et -.");
+                    fprintf(stderr,"Erreur de typage, les opérations unaires compatibles avec les entiers sont ! et -.");
                     exit(1);
                 }
                 m->closure=mk_closure(mk_integer(k),NULL);
@@ -739,7 +739,7 @@ void on_unaryop(struct machine * m){
                     k= m->stack->top->item->closure->value !=NULL;
                 }
                 else{
-                    fprintf(stderr,"Erreur de typage, la seule opÃ©ration unaire compatible avec les forÃªts est !.");
+                    fprintf(stderr,"Erreur de typage, la seule opération unaire compatible avec les forêts est !.");
                     exit(1);
                 }
                 m->closure=mk_closure(mk_integer(k),NULL);
@@ -766,7 +766,7 @@ void on_var(struct machine * m){
         }
     }
     fprintf(stderr,
-            "Variable %s non trouvÃ©e",
+            "Variable %s non trouvée",
             c);
     exit(1);
 }
@@ -774,7 +774,7 @@ void on_var(struct machine * m){
 void on_import(struct machine * m){
     assert(m!=NULL);
     fprintf(stderr,
-            "Import de fichier Ã  implÃ©menter");
+            "Import de fichier à  implémenter");
     exit(1);    
 }
 
@@ -807,7 +807,7 @@ void on_word(struct machine * m){
             pop_attcompvalue(m);
             break;
         case ATTCOMPNEXT:
-            fprintf(stderr,"Erreur de typage, un mot ne peut Ãªtre utilisÃ© comme sÃ©quence d'attribut.");
+            fprintf(stderr,"Erreur de typage, un mot ne peut être utilisé comme séquence d'attribut.");
             exit(1);
             break;
         case FORESTCOMPHEAD:
@@ -841,7 +841,7 @@ void on_tree(struct machine * m){
             return;            
         }
         else{
-            //sinon, suivant l'Ã©lÃ©ment sur la pile on doit poursuivre le calcul
+            //sinon, suivant l'élément sur la pile on doit poursuivre le calcul
             //ou renvoyer une erreur de typage.
             switch(m->stack->top->type){
             case FUNCTION:
@@ -860,7 +860,7 @@ void on_tree(struct machine * m){
                 pop_match(m);
                 break;
             default:
-                fprintf(stderr,"Erreur de typage, un arbre ne peut Ãªtre utilisÃ© que comme argument d'une fonction, la tÃªte d'une forÃªt, ou dans une expression de filtrage (match)");
+                fprintf(stderr,"Erreur de typage, un arbre ne peut être utilisé que comme argument d'une fonction, la tête d'une forêt, ou dans une expression de filtrage (match)");
                 exit(1);
                 break;
             }
@@ -869,7 +869,7 @@ void on_tree(struct machine * m){
     }
     else if(m->closure->value->node->tree->attributes==NULL ||
             m->closure->value->node->tree->attributes->is_value){
-        //Les attributs sont calculÃ©s, il suffit de calculer la forÃªt
+        //Les attributs sont calculés, il suffit de calculer la forêt
         if(m->closure->value->node->tree->daughters == NULL ||
            (m->closure->value->node->tree->daughters->type==FOREST &&
             m->closure->value->node->tree->daughters->node->forest->is_value)){
@@ -921,7 +921,7 @@ void on_forest(struct machine * m){
     
     if(m->closure->value==NULL ||
             m->closure->value->node->forest->is_value){
-        //une valeur vient d'Ãªtre produite, mais il faut poursuivre le calcul
+        //une valeur vient d'être produite, mais il faut poursuivre le calcul
         if(m->stack!=NULL){
             switch(m->stack->top->type){
             case TREECOMPFOREST:
@@ -943,17 +943,17 @@ void on_forest(struct machine * m){
                 pop_function(m);
                 break;
             default:
-                fprintf(stderr,"Erreur de typage, une forÃªt peut Ãªtre utilisÃ©e dans la construction d'une autre forÃªt ou alors dans celle d'un arbre, ou encore comme argument de fonction.");
+                fprintf(stderr,"Erreur de typage, une forêt peut être utilisée dans la construction d'une autre forêt ou alors dans celle d'un arbre, ou encore comme argument de fonction.");
                 exit(1);
                 break;
             }
         }
         else{
-            //un forÃªt vient d'Ãªtre construite et le programme est terminÃ©
+            //un forêt vient d'être construite et le programme est terminé
             return;}
     }
     else{
-        //la forÃªt n'est pas complÃ¨tement calculÃ©e, il faut calculer ses Ã©lÃ©ments
+        //la forêt n'est pas complà¨tement calculée, il faut calculer ses éléments
         cl = malloc(sizeof(struct closure));
         cl->value=m->closure->value->node->forest->tail;
         cl->env=m->closure->env;
@@ -984,7 +984,7 @@ void on_fun(struct machine * m){
             pop_function(m);
             break;
         default:
-            fprintf(stderr,"Erreur de typage, fonction utilisÃ©e dans un contexte inadatpÃ©.");
+            fprintf(stderr,"Erreur de typage, fonction utilisée dans un contexte inadatpé.");
             exit(1);
             break;
         }
