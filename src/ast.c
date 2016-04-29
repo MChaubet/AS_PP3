@@ -5,15 +5,13 @@
 
 int indentation=0;
 
-//WTF ??? Dites moi a quoi vous voulez que cette fonction serve et je vous l'implémente.
-// Pour l'instant je vois pas a quoi elle sert et vous ne vous en servez pas, je la commente
-/*
+
 void ajouter_body (struct ast * t, struct ast * body) {
 	while (t != NULL)
 			t = t->body;
 	t = body;
 }
-*/
+
 //TODO Modifier pour juste récupérer la chaine de caractère qui est
 //TODO retourner par la fonction to_string pour la copier dans le fichier
 void emit(struct ast * t, char * filename){

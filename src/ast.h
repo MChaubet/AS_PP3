@@ -105,7 +105,7 @@ struct ast{
     enum  ast_type type;
     union node * node;
 };
-//void ajouter_body (struct ast * t, struct ast * body);
+void ajouter_body (struct ast * t, struct ast * body);
 int evaluer(struct ast * t);
 void emit(struct ast * t, char * filename);
 void to_string(struct ast * t);
