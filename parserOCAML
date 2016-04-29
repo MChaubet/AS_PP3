@@ -67,11 +67,10 @@
 %type < ast > multiplicative_expr
 %type < ast > negative_expr 
 %type < ast > factor_expr
-%type < ast > action
 %type < ast > match_expr
-%type < ast > filter_expr
-%type < ast > pforests
-%type < ast > pattern_expr
+%type < patterns > filter_expr
+%type < pattern > pforests
+%type < pattern > pattern_expr
 
 /* Code XML HTML */
 %type < ast > body
@@ -118,10 +117,10 @@ functions
 		;
 		
 declaration_locale	/* Evaluation pour les IN et WHERE*/
-		: LET NAME '=' expr IN expr						{ $$ = mk_app(mk_fun($2, $6), $4); }
-		| LET REC NAME '=' expr IN expr					{ $$ = mk_app(mk_fun($3, $7), mk_declrec($3, $5)); }
-		| expr WHERE name '=' expr						{ $$ = mk_app(mk_fun($3, $1), $5); }
-		| expr WHERE REC name '=' expr					{ $$ = mk_app(mk_fun($3, $1), mk_declrec($4, $6)); }
+		: LET NAME '=' factor_expr IN expr						{ $$ = mk_app(mk_fun($2, $6), $4); }
+		| LET REC NAME '=' factor_expr IN expr					{ $$ = mk_app(mk_fun($3, $7), mk_declrec($3, $5)); }
+		| factor_expr WHERE NAME '=' expr						{ $$ = mk_app(mk_fun($3, $1), $5); }
+		| factor_expr WHERE REC NAME '=' expr					{ $$ = mk_app(mk_fun($4, $1), mk_declrec($4, $6)); }
 		;
 
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
@@ -163,7 +162,7 @@ additive_expr
 
 multiplicative_expr
 		: multiplicative_expr '*'  negative_expr		{ $$ = mk_app(mk_app(mk_binop(MULT), $1), $3); }
-		| multiplicative_expr '\/' negative_expr		{ $$ = mk_app(mk_app(mk_binop(DIV), $1), $3); }
+		| multiplicative_expr '/' negative_expr		{ $$ = mk_app(mk_app(mk_binop(DIV), $1), $3); }
 		| negative_expr									{ $$ = $1; }
 		;
 
@@ -179,18 +178,13 @@ factor_expr
 		| INTEGER										{ $$ = mk_integer($1); }
 		;
 
-action 
-		: expr											{ $$ = $1; }
-		| NAME											{ $$ = $1; }
-		;
-
 match_expr
 		: MATCH expr WITH filter_expr END				{ $$ = mk_match($2, $4); }
 		;
 
 filter_expr
-		: '|' pforests ARROW expression filter_expr				{ $$ = mk_patterns($2, $4, $5); }
-		| '|' pforests ARROW expression							{ $$ = mk_patterns($2, $4, NULL); }
+		: '|' pforests ARROW expr filter_expr			{ $$ = mk_patterns($2, $4, $5); }
+		| '|' pforests ARROW expr						{ $$ = mk_patterns($2, $4, NULL); }
 		;
 
 pforests
@@ -200,9 +194,9 @@ pforests
 
 pattern_expr
 		: '_'											{ $$ = mk_wildcard(ANY); }
-		| TAG '{' pattern '}'							{ $$ = mk_ptree($1, false, $3); }
+		| TAG '{' pattern_expr '}'						{ $$ = mk_ptree($1, false, $3); }
 		| TAG '{' '}'									{ $$ = mk_ptree($1, true, NULL); }
-		| '_' '{' pattern '}'							{ $$ = mk_anytree(false, $3); }
+		| '_' '{' pattern_expr '}'						{ $$ = mk_anytree(false, $3); }
 		| '_' '{' '}'									{ $$ = mk_anytree(true, NULL); }
 		| '*' '_' '*'									{ $$ = mk_wildcard(ANYSTRING); }
 		| '/' '_' '/'									{ $$ = mk_wildcard(ANYFOREST); }
@@ -218,9 +212,9 @@ pattern_expr
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 body
 		: tree body										{ $$ = mk_forest(false, $1, $2); }
-		| action body									{ $$ = mk_forest(false, $1, $2); }
+		/*| expr body									{ $$ = mk_forest(false, $1, $2); }*/
 		| tree											{ $$ = $1; }
-		| action										{ $$ = $1; }
+		/*| expr										{ $$ = $1; }*/
 		;
 
 
@@ -243,13 +237,13 @@ attributs
 contenus
 		: contenu contenus								{ $$ = mk_forest(false, $1, $2); }
 		| contenu										{ $$ = $1; }
-		| action										{ /*TODO*/; }
+		| expr											{ /*TODO*/; }
 		;
 
 contenu
-		: tree											{ $$ = $1; }
+		: /*tree											{ $$ = $1; }
 		| '"' text '"'									{ $$ = $2; }
-		| action ','									{ /*TODO*/; }
+		|*/ expr ','										{ /*TODO*/; }
 		;
 
 text
