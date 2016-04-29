@@ -20,7 +20,7 @@
 %token < name > INST	// Mot clé  OCaml
 %token < name > NAME	// Variable OCaml
 %token < name > MOT		// Mot d'un texte
-%token < value > INTEGER// Valeur numérique simple
+%token < value > ENTIER // Valeur numérique simple
 
 	/* Temporaire */
 %token < ast > ACTION
