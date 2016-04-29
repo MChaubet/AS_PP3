@@ -29,9 +29,17 @@
 %token < value > NUMBER		// Un nombre
 
 /* Tokens d'instructions CAML */
-%token LET REC FUNC IN WHERE
-%token IF THEN ELSE
-%token MATCH_T WITH END
+%token LET
+%token REC
+%token FUNC
+%token IN
+%token WHERE
+%token IF
+%token THEN
+%token ELSE
+%token MATCH_T
+%token WITH
+%token END
 %token EMIT_T
 
 

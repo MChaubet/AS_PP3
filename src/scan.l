@@ -22,18 +22,18 @@ EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 	/* ***** ***** *****  LES INSTRUCTIONS CAML  ***** ***** ***** */
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
-"let"											{ return LET; }
-"rec"											{ return REC; }
-"fun"											{ return FUN; }
-"in"											{ return IN; }
-"where"											{ return WHERE; }
-"if"											{ return IF; }
-"then"											{ return THEN; }
-"else"											{ return ELSE; }
-"match"											{ return MATCH; }
-"with"											{ return WITH; }
-"end"											{ return END; }
-"emit"											{ return EMIT; }
+let											{ return LET; }
+rec											{ return REC; }
+fun											{ return FUN; }
+in											{ return IN; }
+where										{ return WHERE; }
+if											{ return IF; }
+then										{ return THEN; }
+else										{ return ELSE; }
+match										{ return MATCH_T; }
+with										{ return WITH; }
+end											{ return END; }
+emit										{ return EMIT_T; }
 
 
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
