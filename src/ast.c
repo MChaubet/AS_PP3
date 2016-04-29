@@ -227,3 +227,10 @@ struct ast * mk_declrec(char * id, struct ast * body){
     e->node->fun->body=body;
     return e;
 }
+struct patterns * mk_patterns(struct pattern * pattern, struct ast * exp_res, struct patterns * next){
+    struct patterns *p = malloc(sizeof(struct patterns));
+    p->pattern = pattern;
+    p->res = exp_res;
+    p->next = next;
+    return p;
+}
