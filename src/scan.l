@@ -9,38 +9,74 @@
 
 %option noinput nounput
 
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+	/* ***** ***** ***** * CONSTANTES ET ETATS * ***** ***** ***** */
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 %x TEXT
 
 XML [xX][mM][lL]
-INSTR ("let"|"if"|"then"|"else"|"with"|"in"|"where"|"emit"|"rec"|"fun"|"match"|"end")
-/* Expression régulière des tags et variables */
+	/* Tags et variables */
 EXP [[:alpha:]\_][[:alnum:]\_\.\']*
 
 %%
-	/* Les '/' précédés d'espaces */
-[[:space:]]+/\/									{ return ' '; }
-	/* On supprime tous les espaces pour ne pas avoir à les gérer dans la grammaire */
-[[:space:]]+									{ ; }
-	/* On renvoie les suites de chiffres qui forment donc des nombres */
-[[:digit:]]+									{ yylval.value = atoi(yytext); return INTEGER; }
-	/* Les nom de variables débutants par des variantes de 'xml', ou simplement constitués de '_' provoquent des ereurs */
-({XML}{EXP}|\_)									{ /*return ERROR;*/ }
-	/* Les instructions d'Ocaml */
-{INSTR}/[[:space:]]								{ yylval.name = strdup(yytext); return INST; }
-	/* On prend en compte les opérations sur les entiers */
-[[:digit:]]+									{ yylval.value = atoi(yytext); return INTEGER; }
-	/* Les expressions suivies de '{', '[', '/' ou '=' sont des TAGs */
-{EXP}/[\{\[\/\=]								{ yylval.name = strdup(yytext); return TAG; }
-	/* Les expressions qui ne sont pas des tags sont des noms de variables, de fonctions ou d'actions */
-{EXP}											{ yylval.name = strdup(yytext); return NAME; }
-	/* On entre en écriture de texte */
-\"												{ BEGIN TEXT; return yytext[0]; }
-.												{ return yytext[0];}
-	/* On arrete l'écriture de texte */
-<TEXT>\"										{ BEGIN INITIAL; return yytext[0]; }
-	/* On renvoie un simple espace losque l'on en détecte une suite */
-<TEXT>[[:space:]]+								{ return ' '; }
-	/* On fait attention à la détection du symple double quote quand il est échappé par '\' */
-<TEXT>[^[:space:]]*\\\"[^[:space:]]*			{ yylval.name = strdup(yytext); return MOT; }
-	/* Toutes les suites de caractères sauf l'espace constituent un mot */
-<TEXT>[^\"[:space:]]+							{ yylval.name = strdup(yytext); return MOT; }
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+	/* ***** ***** *****  LES INSTRUCTIONS CAML  ***** ***** ***** */
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+"let"											{ return LET; }
+"rec"											{ return REC; }
+"fun"											{ return FUN; }
+"in"											{ return IN; }
+"where"											{ return WHERE; }
+"if"											{ return IF; }
+"then"											{ return THEN; }
+"else"											{ return ELSE; }
+"match"											{ return MATCH; }
+"with"											{ return WITH; }
+"end"											{ return END; }
+"emit"											{ return EMIT; }
+
+
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+	/* ***** ***** **** LES INSTRUCTIONS XML/HTML **** ***** ***** */
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+	
+[[:space:]]+/\/									{ 	/* Les '/' précédés d'espaces */
+													return ' '; }
+
+[[:space:]]+									{ 	/* Supression des espaces */
+													; }
+	
+[[:digit:]]+									{ 	/* Renvoi d'entiers */
+													yylval.value = atoi(yytext); return INTEGER; }
+	
+({XML}{EXP}|\_)									{ 	/* '_' ou noms préfixés XML */
+													/*return ERROR;*/ }
+	
+{EXP}/[\{\[\/\=]								{ 	/* Renvoie de TAGs */
+													yylval.name = strdup(yytext); return TAG; }
+	
+{EXP}											{ 	/* Renvoie de variables CAML */
+													yylval.name = strdup(yytext); return NAME; }
+	
+\"												{	/* Début d'un texte */	
+													BEGIN TEXT; return yytext[0]; }
+	
+.												{	/* Autres caractères */
+													return yytext[0];}
+													
+													
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+	/* ***** ***** ***** ** GESTION DE TEXTE *** ***** ***** ***** */
+	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+	
+<TEXT>\"										{ 	/* Fin d'un texte */
+													BEGIN INITIAL; return yytext[0]; }
+
+<TEXT>[[:space:]]+								{ 	/* Fusion d'espaces en un */
+													return ' '; }
+
+<TEXT>[^[:space:]]*\\\"[^[:space:]]*			{	/* Mots contenant \" */
+													yylval.name = strdup(yytext); return MOT; }
+	
+<TEXT>[^\"[:space:]]+							{	/* Retourne un mot */
+													yylval.name = strdup(yytext); return MOT; }
