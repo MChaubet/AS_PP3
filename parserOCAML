@@ -16,15 +16,34 @@
 	struct attributes * attributes;
 }
 
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** * GESTION DES TOKENS ** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* Retourner par le scan.l */
 %token < name >  TAG		// Nom de balise
 %token < name >  INST		// Mot clé  OCaml
 %token < name >  NAME		// Variable OCaml
 %token < name >  MOT		// Mot d'un texte
 %token < value > INTEGER	// Un nombre
 
-%token < name >  ARROW "=>" // Fleche (fonction)
+
+%token < name >  ARROW	"=>"	// Fleche (fonction)
+
+/* Token de comparaison */
+%token < name >  OU		"||"	// OU logique
+%token < name >  ET		"&&"	// ET logique
+%token < name >  INF	"<"		// Inférieur relationnel
+%token < name >  SUP	">"		// Supérieur relationnel
+%token < name >  INF_EQ	"<="	// Inférieur ou égale relationnel
+%token < name >  SUP_EQ	">="	// Supérieur ou égale relationnel
+%token < name >  EQ		"=="	// Égale relationnel
+%token < name >  NOT_EQ	"!="	// Non égale relationnel
 
 
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ** GESTION DES TYPES ** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 %type < ast > file
 
 /* Déclarations */
@@ -54,8 +73,10 @@
 %type < ast > action
 
 
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** *** DEBUT GRAMMAIRE *** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 %start file
-
 %%
 
 file
@@ -67,34 +88,31 @@ file
 /* ***** ***** ***** ***** ***** *** GESTION DES DECLARATIONS DE TOUS TYPES **** ***** ***** ***** ***** ***** */
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 declarations_globales
-		: declaration ';' declarations_globales			{ ; }
-		| declaration ';'								{ ; }
-		| declaration ';' NAME ';' declarations_globales{ ; }
-		| declaration ';' NAME ';'						{ ; }
-		;
-		
-declaration_locale
-		: declaration INST tree							{ /*Creer un lien entre la variable et le body*/; }
-		| tree declaration								{ /*Creer un lien entre la variable et le body*/; }
+		: declaration ';' declarations_globales			{ $$ = ; mk_forest(false, $1, $3);}
+		| declaration ';'								{ $$ = $1; }
 		;
 
 declaration
-		: INST names '=' expr							{ /*Déclaration d'une variable ou d'une fonction*/ /*TODO DISTINCTION FOREST/VAR LET/WHERE*/; }
-		| INST INST names '=' expr						{ /*Déclaration d'une fonction récurcive*/; }
-		| INST names '=' functions expr					{ /*Déclaration d'une fonction, sous fonction*/; }
-		| INST INST names '=' functions expr			{ /*Déclaration d'une fonction récurcive, sous fonction*/; }
-		;
-
-functions
-		: INST names ARROW functions					{ /*Faire une foret de fonction*/; }
-		| INST names ARROW								{ /*Faire une fonction*/; }
+		: LET names '=' functions 						{ $$ = mk_fun($2, $4); }
+		| LET REC names '=' functions 					{ $$ = mk_declrec($3, $5); }
 		;
 
 names
-		: NAME names									{ $$ = mk_forest(false, mk_var($1), $2); }
-		| NAME											{ $$ = mk_var($1); }
+		: NAME names									{ $$ = mk_fun($1, $2); }
+		| NAME											{ $$ = mk_fun($1, NULL); }
 		;
 
+functions
+		: FUN names ARROW functions						{ ajouter_body($2->node->fun->body, $4); $$ = $2; }
+		| expr											{ $$ = $1; }
+		;
+		
+declaration_locale	/* Evaluation pour les IN et WHERE*/
+		: LET NAME '=' expr IN expr						{ $$ = mk_app(mk_fun($2, $6), $4); }
+		| LET REC NAME '=' expr IN expr					{ $$ = mk_app(mk_fun($3, $7), mk_declrec($3, $5)); }
+		| expr WHERE name '=' expr						{ $$ = mk_app(mk_fun($3, $1), $5); }
+		| expr WHERE REC name '=' expr					{ $$ = mk_app(mk_fun($3, $1), mk_declrec($4, $6)); }
+		;
 
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 /* ***** ***** ***** ***** ***** **** GESTION DES EXPRESSIONS DE TOUS TYPES **** ***** ***** ***** ***** ***** */
@@ -156,6 +174,10 @@ body
 		| action										{ $$ = $1; }
 		;
 
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** **** GESTION HTML ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 tree
 		: TAG '[' attributs ']' '{' contenus '}'		{ $$ = mk_tree($1, true, false, false, $3, $6); }
 		| TAG '[' attributs ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
@@ -191,8 +213,10 @@ word_t
 		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
 		;
 
-/*TODO Faire une enumération de tous les cas possibles */
-/*TODO Vérification de la regle action */
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** **** GESTION CAML ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 action 
 		: declaration_locale							{ ; }
 		| OPERATION										{ ; }

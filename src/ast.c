@@ -5,6 +5,12 @@
 
 int indentation=0;
 
+void ajouter_body (struct ast * t, struct ast * body) {
+	while (t != NULL)
+			t = t->body;
+	t = body;
+}
+
 //TODO Modifier pour juste récupérer la chaine de caractère qui est
 //TODO retourner par la fonction to_string pour la copier dans le fichier
 void emit(struct ast * t, char * filename){
