@@ -1,6 +1,3 @@
-let email= a[href="mailto:author@bdx.fr"]{"email"};
-div{"Le " LaBRI, " est un laboratoire de l'" bdx, "."}
-
 div1{
 "Contenu..."
 }

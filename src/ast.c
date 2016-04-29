@@ -8,7 +8,7 @@ int indentation=0;
 
 void ajouter_body (struct ast * t, struct ast * body) {
 	while (t != NULL)
-			t = t->body;
+			t = t->node->fun->body;
 	t = body;
 }
 
