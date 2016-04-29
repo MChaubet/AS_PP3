@@ -69,6 +69,8 @@
 %type < ast > factor_expr
 %type < ast > action
 %type < ast > match_expr
+%type < ast > filter_expr
+%type < ast > pforests
 %type < ast > pattern_expr
 
 /* Code XML HTML */
@@ -183,14 +185,34 @@ action
 		;
 
 match_expr
-		: MATCH expr WITH pattern_expr END				{ ; }
+		: MATCH expr WITH filter_expr END				{ $$ = mk_match($2, $4); }
+		;
+
+filter_expr
+		: '|' pforests ARROW expression filter_expr				{ $$ = mk_patterns($2, $4, $5); }
+		| '|' pforests ARROW expression							{ $$ = mk_patterns($2, $4, NULL); }
+		;
+
+pforests
+		: pattern_expr pforests							{ $$ = mk_pforest($1, $2); }
+		| pattern_expr									{ $$ = $1; }
 		;
 
 pattern_expr
-		: '|' tree ARROW tree match_expr				{ mk_patterns($2, $4, $5); }
-		| '|' tree ARROW tree							{ mk_patterns($2, $4, NULL);; }
+		: '_'											{ $$ = mk_wildcard(ANY); }
+		| TAG '{' pattern '}'							{ $$ = mk_ptree($1, false, $3); }
+		| TAG '{' '}'									{ $$ = mk_ptree($1, true, NULL); }
+		| '_' '{' pattern '}'							{ $$ = mk_anytree(false, $3); }
+		| '_' '{' '}'									{ $$ = mk_anytree(true, NULL); }
+		| '*' '_' '*'									{ $$ = mk_wildcard(ANYSTRING); }
+		| '/' '_' '/'									{ $$ = mk_wildcard(ANYFOREST); }
+		| '-' '_' '-'									{ $$ = mk_wildcard(ANYSEQ); }
+		| NAME											{ $$ = mk_pattern_var($1, TREEVAR); }
+		| '*' NAME '*'									{ $$ = mk_pattern_var($2, STRINGVAR); }
+		| '/' NAME '/'									{ $$ = mk_pattern_var($2, FORESTVAR); }
+		| '-' NAME '-'									{ $$ = mk_pattern_var($2, ANYVAR); }
 		;
-		
+				
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 /* ***** ***** ***** ***** ***** ***** *****  GESTION CODE XML/HTML  ***** ***** ***** ***** ***** ***** ***** */
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
