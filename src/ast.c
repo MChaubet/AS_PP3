@@ -5,12 +5,15 @@
 
 int indentation=0;
 
+//WTF ??? Dites moi a quoi vous voulez que cette fonction serve et je vous l'implémente.
+// Pour l'instant je vois pas a quoi elle sert et vous ne vous en servez pas, je la commente
+/*
 void ajouter_body (struct ast * t, struct ast * body) {
 	while (t != NULL)
 			t = t->body;
 	t = body;
 }
-
+*/
 //TODO Modifier pour juste récupérer la chaine de caractère qui est
 //TODO retourner par la fonction to_string pour la copier dans le fichier
 void emit(struct ast * t, char * filename){
@@ -37,6 +40,17 @@ static void auto_indent(void){
     for(i=0; i<indentation;i++){
         printf("\t");
     }
+}
+
+int evaluer(struct ast * t){
+	if(t != NULL){
+		if(t->type == INTEGER){
+			if(t->node->num != 0){
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 //TODO Remplacer le prototype de la fonction pour qu'elle retourne un string
@@ -86,15 +100,23 @@ void to_string(struct ast * t){
 		        to_string(t->node->tree->daughters);
 		    }
             break;
-            
+
         case WORD:
             printf("%s",t->node->str);
             break;
-            
+
+		case COND:
+			if(evaluer(t->node->cond->cond)){
+				to_string(t->node->cond->then_br);
+			} else {
+				to_string(t->node->cond->else_br);
+			}
+			break;
         default:
             printf("Type non reconnu\n");
     }
 }
+
 struct ast * mk_node(void){
     struct ast *e = malloc(sizeof(struct ast));
     e->node = malloc(sizeof(union node));
