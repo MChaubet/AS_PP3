@@ -130,6 +130,7 @@ expr
 		: conditional_expr								{ $$ = $1; }
 		| declaration_locale							{ $$ = $1; }
 		| match_expr									{ $$ = $1; }
+		| EMIT '"' MOT '"' tree							{ emit($5, $3); }
 		| NAME											{ $$ = $1; }
 		;
 
