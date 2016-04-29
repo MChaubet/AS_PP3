@@ -14,86 +14,248 @@
 	char * name;
 	struct ast * ast;
 	struct attributes * attributes;
+	struct patterns * patterns;
+	struct pattern * pattern;
 }
 
-%token < name > TAG		// Nom de balise
-%token < name > INST	// Mot clé  OCaml
-%token < name > NAME	// Variable OCaml
-%token < name > MOT		// Mot d'un texte
-%token < value > ENTIER // Valeur numérique simple
 
-	/* Temporaire */
-%token < ast > ACTION
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** * GESTION DES TOKENS ** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* Retourné par le scan.l */
+%token < name >  TAG		// Nom de balise
+%token < name >  NAME		// Variable OCaml
+%token < name >  MOT		// Mot d'un texte
+%token < value > NUMBER		// Un nombre
 
-%type < ast > FILE DECLS DECL NAMES BODY TREE CONTENUS CONTENU TEXT WORD_T
-%type < attributes > ATTRIBUTS
+/* Tokens d'instructions CAML */
+%token LET REC FUNC IN WHERE
+%token IF THEN ELSE
+%token MATCH_T WITH END
+%token EMIT_T
 
-%start FILE
 
+%token < name >  ARROW	"=>"	// Fleche (fonction)
+
+/* Token de comparaison */
+%token < name >  OU		"||"	// OU logique
+%token < name >  ET		"&&"	// ET logique
+%token < name >  INF	"<"		// Inférieur relationnel
+%token < name >  SUP	">"		// Supérieur relationnel
+%token < name >  INF_EQ	"<="	// Inférieur ou égale relationnel
+%token < name >  SUP_EQ	">="	// Supérieur ou égale relationnel
+%token < name >  EQ_T	"=="	// Égale relationnel
+%token < name >  NOT_EQ	"!="	// Non égale relationnel
+
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ** GESTION DES TYPES ** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+%type < ast > file
+
+/* Déclarations */
+%type < ast > declarations_globales
+%type < ast > declaration_locale
+%type < ast > declaration
+%type < ast > functions
+%type < ast > names
+
+/* Expressions CAML */
+%type < ast > expr
+%type < ast > conditional_expr
+%type < ast > logical_expr
+%type < ast > relational_expr
+%type < ast > additive_expr
+%type < ast > multiplicative_expr
+%type < ast > negative_expr 
+%type < ast > factor_expr
+%type < ast > match_expr
+%type < patterns > filter_expr
+%type < pattern > pforests
+%type < pattern > pattern_expr
+
+/* Code XML HTML */
+%type < ast > body
+%type < ast > tree
+%type < attributes > attributs
+%type < ast > contenus
+%type < ast > contenu
+%type < ast > text
+%type < ast > word_t
+
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** *** DEBUT GRAMMAIRE *** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+%start file
 %%
-/*
-En revanche une fonction peut etre implémenté par
-	"let f var1 var2 = contenu;"
-	"let f = fun var1 var2 -> contenu;"
-	"let f var1 var2 = func var1 var2 -> contenu;"
-	"let rec f var1 var2 = func var1 var2 -> contenu;"
-*/
 
-FILE : DECLS BODY										{ $$ = mk_forest(false, $1, $2); }
-		| BODY											{ $$ = $1; emit($$, "sortie.html");}
+file
+		: declarations_globales body					{ $$ = mk_forest(false, $1, $2); }
+		| body											{ $$ = $1; emit($$, "sortie.html");}
 		;
 
-DECLS : DECL DECLS										{ $$ = mk_forest(false, $1, $2); }
-		| DECL											{ $$ = $1; }
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** *** GESTION DES DECLARATIONS DE TOUS TYPES **** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+declarations_globales
+		: declaration ';' declarations_globales			{ $$ = mk_forest(false, $1, $3);}
+		| declaration ';'								{ $$ = $1; }
 		;
 
-DECL : INST NAMES '=' BODY ';'							{ if( strcmp($1, "let") == 0 ) {
-															if( $2->type == FOREST )
-															   $$ = mk_app(mk_fun($2->node->forest->head->node->str, $4), $2->node->forest->tail);
-															else if( $2->type == VAR )
-															   $$ = mk_forest(false, $2, $4); } }
-		| INST INST NAMES '=' BODY ';'					{ if( strcmp($1, "let") == 0 && strcmp($2, "rec") == 0 )
-															if( $3->type == FOREST )
-															   $$ = mk_app(mk_declrec($3->node->forest->head->node->str, $5), $3->node->forest->tail); }
-		| INST NAMES '=' INST NAMES "->" BODY ';'		{ ; }
-		| INST INST NAMES '=' INST NAMES "->" BODY ';'	{ ; }
+declaration
+		: LET names '=' functions 						{ ajouter_body($2->node->fun->body, $4); $$ = $2; }
+		| LET REC names '=' functions 					{ ajouter_body($3->node->fun->body, $5); $$ = $3; }
 		;
 
-NAMES : NAME NAMES										{ $$ = mk_forest(false, mk_var($1), $2); }
+names
+		: NAME names									{ $$ = mk_fun($1, $2); }
+		| NAME											{ $$ = mk_fun($1, NULL); }
+		;
+
+functions
+		: FUNC names ARROW functions					{ ajouter_body($2->node->fun->body, $4); $$ = $2; }
+		| expr											{ $$ = $1; }
+		;
+		
+declaration_locale	/* Evaluation pour les IN et WHERE*/
+		: LET NAME '=' factor_expr IN expr				{ $$ = mk_app(mk_fun($2, $6), $4); }
+		| LET REC NAME '=' factor_expr IN expr			{ $$ = mk_app(mk_fun($3, $7), mk_declrec($3, $5)); }
+		| factor_expr WHERE NAME '=' expr				{ $$ = mk_app(mk_fun($3, $1), $5); }
+		| factor_expr WHERE REC NAME '=' expr			{ $$ = mk_app(mk_fun($4, $1), mk_declrec($4, $6)); }
+		;
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ** GESTION DES EXPRESSIONS OCAML ** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+expr
+		: conditional_expr								{ $$ = $1; }
+		| declaration_locale							{ $$ = $1; }
+		| match_expr									{ $$ = $1; }
+		| EMIT_T '"' MOT '"' tree						{ emit($5, $3); }
 		| NAME											{ $$ = mk_var($1); }
 		;
 
-BODY : TREE BODY										{ $$ = mk_forest(false, $1, $2); }
-		| ACTION BODY									{ $$ = mk_forest(false, $1, $2); }
-		| TREE											{ $$ = $1; }
-		| ACTION										{ $$ = $1; }
+conditional_expr
+		: IF logical_expr THEN expr ELSE expr			{ $$ = mk_cond($2, $4, $6); }
+		| logical_expr									{ $$ = $1; }
 		;
 
-TREE : TAG '[' ATTRIBUTS ']' '{' CONTENUS '}'			{ $$ = mk_tree($1, true, false, false, $3, $6); }
-		| TAG '[' ATTRIBUTS ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
-		| TAG '{' CONTENUS '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
+logical_expr
+		: logical_expr OU relational_expr				{ $$ = mk_app(mk_app(mk_binop(OR), $1), $3); }
+		| logical_expr ET relational_expr				{ $$ = mk_app(mk_app(mk_binop(AND), $1), $3); }
+		| relational_expr								{ $$ = $1; }
+		;
+		
+relational_expr 
+		: relational_expr INF		additive_expr		{ $$ = mk_app(mk_app(mk_binop(LE), $1), $3); }
+		| relational_expr SUP		additive_expr		{ $$ = mk_app(mk_app(mk_binop(LEQ), $1), $3); }
+		| relational_expr SUP_EQ	additive_expr		{ $$ = mk_app(mk_app(mk_binop(GE), $1), $3); }
+		| relational_expr INF_EQ	additive_expr		{ $$ = mk_app(mk_app(mk_binop(GEQ), $1), $3); }
+		| relational_expr EQ_T		additive_expr		{ $$ = mk_app(mk_app(mk_binop(EQ), $1), $3); }
+		| relational_expr NOT_EQ	additive_expr		{ $$ = mk_app(mk_app(mk_binop(NEQ), $1), $3); }
+		| additive_expr									{ $$ = $1; }
+		;
+
+additive_expr
+		: additive_expr '+' multiplicative_expr			{ $$ = mk_app(mk_app(mk_binop(PLUS), $1), $3); }
+		| additive_expr '-' multiplicative_expr			{ $$ = mk_app(mk_app(mk_binop(MINUS), $1), $3); }
+		| multiplicative_expr							{ $$ = $1; }
+		;
+
+multiplicative_expr
+		: multiplicative_expr '*'  negative_expr		{ $$ = mk_app(mk_app(mk_binop(MULT), $1), $3); }
+		| multiplicative_expr '/' negative_expr			{ $$ = mk_app(mk_app(mk_binop(DIV), $1), $3); }
+		| negative_expr									{ $$ = $1; }
+		;
+
+negative_expr
+		: factor_expr									{ $$ = $1; }
+		| '!' factor_expr								{ $$ = mk_app(mk_unaryop(NOT), $2);; }
+		;
+
+factor_expr
+		: '(' expr ')'									{ $$ = $2; }
+		| '"' text '"'									{ $$ = $2; }
+		| tree											{ $$ = $1; }
+		| NUMBER 										{ $$ = mk_integer($1); }
+		;
+
+match_expr
+		: MATCH_T expr WITH filter_expr END				{ $$ = mk_match($2, $4); }
+		;
+
+filter_expr
+		: '|' pforests ARROW expr filter_expr			{ $$ = mk_patterns($2, $4, $5); }
+		| '|' pforests ARROW expr						{ $$ = mk_patterns($2, $4, NULL); }
+		;
+
+pforests
+		: pattern_expr pforests							{ $$ = mk_pforest($1, $2); }
+		| pattern_expr									{ $$ = $1; }
+		;
+
+pattern_expr
+		: '_'											{ $$ = mk_wildcard(ANY); }
+		| TAG '{' pattern_expr '}'						{ $$ = mk_ptree($1, false, $3); }
+		| TAG '{' '}'									{ $$ = mk_ptree($1, true, NULL); }
+		| '_' '{' pattern_expr '}'						{ $$ = mk_anytree(false, $3); }
+		| '_' '{' '}'									{ $$ = mk_anytree(true, NULL); }
+		| '*' '_' '*'									{ $$ = mk_wildcard(ANYSTRING); }
+		| '/' '_' '/'									{ $$ = mk_wildcard(ANYFOREST); }
+		| '-' '_' '-'									{ $$ = mk_wildcard(ANYSEQ); }
+		| NAME											{ $$ = mk_pattern_var($1, TREEVAR); }
+		| '*' NAME '*'									{ $$ = mk_pattern_var($2, STRINGVAR); }
+		| '/' NAME '/'									{ $$ = mk_pattern_var($2, FORESTVAR); }
+		| '-' NAME '-'									{ $$ = mk_pattern_var($2, ANYVAR); }
+		;
+				
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** *****  GESTION CODE XML/HTML  ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+body
+		: tree body										{ $$ = mk_forest(false, $1, $2); }
+		/*| expr body									{ $$ = mk_forest(false, $1, $2); }*/
+		| tree											{ $$ = $1; }
+		/*| expr										{ $$ = $1; }*/
+		;
+
+
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+/* ***** ***** ***** **** GESTION HTML ***** ***** ***** ***** */
+/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
+tree
+		: TAG '[' attributs ']' '{' contenus '}'		{ $$ = mk_tree($1, true, false, false, $3, $6); }
+		| TAG '[' attributs ']' '/'						{ $$ = mk_tree($1, true, true, false, $3, NULL); }
+		| TAG '{' contenus '}'							{ $$ = mk_tree($1, true, false, false, NULL, $3); }
 		| TAG '/'										{ $$ = mk_tree($1, true, true, false, NULL, NULL); }
-		| '{' CONTENUS '}'								{ $$ = $2; }
+		| '{' contenus '}'								{ $$ = $2; }
 		;
 
-ATTRIBUTS : TAG '=' '"' TEXT '"' ATTRIBUTS				{ $$ = mk_attributes(mk_var($1), $4, $6); }
-		| TAG '=' '"' TEXT '"'							{ $$ = mk_attributes(mk_var($1), $4, NULL);}
+attributs
+		: TAG '=' '"' text '"' attributs				{ $$ = mk_attributes(mk_var($1), $4, $6); }
+		| TAG '=' '"' text '"'							{ $$ = mk_attributes(mk_var($1), $4, NULL);}
 		;
 
-CONTENUS : CONTENU CONTENUS								{ $$ = mk_forest(false, $1, $2); }
-		| CONTENU										{ $$ = $1; }
+contenus
+		: contenu contenus								{ $$ = mk_forest(false, $1, $2); }
+		| contenu										{ $$ = $1; }
+		| expr											{ /*TODO*/; }
 		;
 
-CONTENU : TREE											{ $$ = $1; }
-		| '"' TEXT '"'									{ $$ = $2; }
+contenu
+		: /*tree										{ $$ = $1; }
+		| '"' text '"'									{ $$ = $2; }
+		|*/ expr ','									{ /*TODO*/; }
 		;
 
-TEXT : WORD_T TEXT										{ $$ = mk_forest(false, $1, $2); }
-		| WORD_T										{ $$ = $1; }
+text
+		: word_t text									{ $$ = mk_forest(false, $1, $2); }
+		| word_t										{ $$ = $1; }
 		;
 
-WORD_T : MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
+word_t
+		: MOT ' ' 										{ $$ = mk_tree("text", false, false, true, NULL, mk_word($1)); }
 		| MOT	 										{ $$ = mk_tree("text", false, false, false, NULL, mk_word($1)); }
 		;
-
 %%
