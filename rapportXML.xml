@@ -1,0 +1,140 @@
+html{
+    head{
+        meta[charset="utf-8"]/
+        link[rel="stylesheet" href="style.css" media="screen"]/
+        title{"Rapport de Projet AS"}
+    }
+
+    body{
+        h1{"Raport de Projet d'ASPP3"}
+        h2{"Par Mathieu Chaubet, Thomas Fransisco et Mathieu Lacoste"}
+
+        div[class="table-des-matieres"]{
+            ul{
+                li{
+                    a[href="#introduction"]{"Introduction"}
+                    ul{
+                        li{a[href="#specificites"]{"Spécificités du projet"}}
+                        li{a[href="#aborder"]{"Aborder le projet"}}
+                    }
+                }
+                li{
+                    a[href="#analyse-lexicale"]{"I. L'analyse lexicale"}
+                    ul{
+                        li{a[href="#html-lexicale"]{"Gestion HTML"}}
+                        li{a[href="#caml-lexicale"]{"Gestion Caml"}}
+                    }
+                }
+                li{
+                    a[href="#analyse-syntaxique"]{"II. L'analyse syntaxique"}
+                    ul{
+                        li{a[href="#html-syntaxique"]{"Gestion HTML"}}
+                        li{a[href="#caml-syntaxique"]{"Gestion Caml"}}
+                    }
+                }
+                li{
+                    a[href="#analyse-semantique"]{"III. L'analyse sémantique"}
+                    ul{
+                        li{a[href="#html-semantique"]{"Gestion HTML"}}
+                        li{a[href="#caml-semantique"]{"Gestion Caml"}}
+                    }
+                }
+                li{
+                    a[href="#conclusion"]{"Conclusion"}
+                    ul{
+                        li{a[href="#avancement"]{"Etat d'avancement du projet"}}
+                        li{a[href="#difficultes"]{"Difficultés rencontrées"}}
+                        li{a[href="#bilan"]{"Bilan d'expérience"}}
+                    }
+                }
+            }
+        }
+
+        div[class="contenu-rapport"] {
+            h3[id="introduction"]{"Introduction"}
+                "Dans le cadre de notre semestre 6 en Licence 3 à l'Université de Bordeaux 1, c'est par groupe (de 4 à 5) que les étudiants ont eu à réaliser un projet d'Analyse Syntaxique." br/
+                "La finalité de ce travail serait de produire (à l'aide d'un programme) un site" a[href="https://fr.wikipedia.org/wiki/Hypertext_Markup_Language"]{"HTML"} "et ce en lui ayant fourni un fichier en un langage proposé mixant le pseudo" a[href="http://caml.inria.fr/index.fr.html"]{"Caml"} "et un langage de formation de données proche du" a[href="https://fr.wikipedia.org/wiki/JavaScript_Object_Notation"]{"JSON"}", le décrivant. Pour plus d'information quant à l'énoncé de ce projet, cliquez" a[href="https://www.labri.fr/perso/zeitoun/enseignement/15-16/ASPP3/uploads/Main/HomePage/projet.html"]{"ici"}"." br/
+                "C'est ainsi que vous êtes actuellement en train de lire un site intégralement généré grâce à ce système et donc par le programme que notre groupe a réalisé au cours de ce projet." br/
+                "Afin de pouvoir travailler communément sur ce projet et conformément aux attentes de nos professeurs nous avons utilisés une plateforme de versionning tout au long de notre travail. Vous pourrez donc trouvez" a[href="https://github.com/MChaubet/AS_PP3"]{"ici"} "notre dépot GitHub, contenant nos sources ainsi que le travail de chacun." br/
+                h4[id="specificites"]{"Spécificités du projet"}
+                    "Comme précisé précédement notre programme devait prendre un fichier en entrée et dont la syntaxe était toute particulière et inventée spécialement pour ce projet. Dans ce langage on pouvait distinguer deux parties :"
+                        ul{
+                            li{"La formation de données : constitué de noms suivis d'accolades qui symboliseraient l'ouverture de balises" a[href="https://fr.wikipedia.org/wiki/Hypertext_Markup_Language"]{"HTML"} "(les accolades fermantes symbolisant la fin) et des crochets qui dans un même esprit permettraient d'ajouter des attributs à ces balises."}
+                            li{"Les instructions pseudo" a[href="http://caml.inria.fr/index.fr.html"]{"Caml"} " : nous devrions permettre l'utilisation d'un grand nombre d'instruction telles que la déclaration de variables/fonctions globales (let), locales (let in et where), puis de pouvoir ré-utiliser ces mêmes viariables dans le code, ou encore par exemple la possibilité de réaliser des tests de conditions (if then else)."}
+                        } 
+                    "Une fois ce fichier produit, notre programme devrait pouvoir l'analyser d'abbord, d'un point de vue lexical, puis syntaxique et pour terminer sémantique, afin de pouvoir traduire toutes ces données en un langage" a[href="https://fr.wikipedia.org/wiki/Hypertext_Markup_Language"]{"HTML"}" interprétable par nos navigateurs internet." br/
+                h4[id="aborder"]{"Aborder le projet"}
+                    "Au démarage du projet ce groupe n'était constitué que de deux personnes, Mathieu Chaubet et Mathieu Lacoste et malgré les efforts fourni et les multiples demandes pour atteindre le nombre de personnes requises pour réaliser ce projet (4 personnes), nous n'avons pu compléter notre groupe (Thomas Francisco nous ayant rejoint fesant tout de même monter le nombre de membres à 3)" br/
+                    "Dès le début du projet nous avons pu dissocier le travail en trois parties distinctes : l'analyse lexicale, syntaxique puis sémantique. Mathieu Lacoste s'est donc concentré sur l'analyse lexicale (aidé par Mathieu Chaubet), Mathieu Chaubet a quant à lui dirigé l'analyse syntaxique (aidé par Mathieu Lacoste) et enfin Thomas Francisco s'est occupé de l'analyse syntaxique" br/
+
+            h3[id="analyse-lexicale"]{"I. L'analyse lexicale"}
+                "Tout au long du semestre 6, en cours d'Analyse Syntaxique nous avons appris à utiliser un l'outil d'analyse syntaxique" a[href="https://fr.wikipedia.org/wiki/Flex_(logiciel)"]{"Flex"}"." br/
+                "Cet outil permet d'analyser un texte, puis à l'aide de multiples expressions régulières fournies de détecter des formations lexicales et de produire des actions à leur rencontre." br/
+                "Ces formations lexicales sont appellés des lexèmes, ou encore tokens" br/
+                "Par exemple la langue française est constituée de sujets, de verbes, de compléments, etc..." br/
+                h4[id="html-lexicale"]{"Gestion HTML"}
+                    "Comme expliqué ci dessus, notre fichier contiendrait des formations telles que la suivante :" br/
+                        img[src="https://cdn.discordapp.com/attachments/133590928668491776/175974467766321153/unknown.png"]/ br/
+                    "Qui devraient être traduites de cette manière :" br/
+                        img[src="https://cdn.discordapp.com/attachments/133590928668491776/175974170755072011/unknown.png"]/ br/
+
+                    "Ainsi nos expressions pourraient correspondre à des suites de nombres ou de lettres (ou même de caractères _), traduit par les Regex suivante :" br/
+                        img[src="https://cdn.discordapp.com/attachments/133590928668491776/175973750775349249/Capture_du_2016-04-30_161430.png"]/ br/
+
+                    "De plus, nous savions que les noms de balise seraient suivis par des \, des [ ou encore des { c'est pourquoi la règle suivante nous a permis de détecter toutes les tokens de type balise :" br/
+                        img[src="https://cdn.discordapp.com/attachments/133590928668491776/175973765610602498/Capture_du_2016-04-30_161608.png"]/br/
+
+                    "Ensuite dans toutes ces balises pouvaient se trouver des zones de texte comprises entre double quotes. Pour détecter celà, nous avons crées un états TEXTE dans notre analyseur lexical afin que lorsque nous entrons dans une zone de texte, nous récupérions tous les mots un par un en tant que tokens MOT et ce jusqu'à ce que nous détections un guillemet, c'est à dire une fin de texte."
+                h4[id="caml-lexicale"]{"Gestion Caml"}
+                    "Dans notre fichier, on pourrait trouver multiples instructions Caml. Les déclarations globales de fonctions ou variables se feraient en début de fichier et se termineraient par des ;, On pourrait faire appel à notre fonctions ou variables, dans des arbres par exemple ou ces appels seraient suivis de virgules. Egalement l'utilisation de conditionnelles if/then/else seraient utilisable, et même l'instruction match/with. Et encore l'instruction emit, qui permettrait de d'écrire le code HTML d'une composante de notre fichier de base dans un autre fichier qu'on aurait précisé à notre instruction." br/
+                    "L'implémentation de toutes ces nouvelles fonctions n'a pas été sans difficultés ainsi qu'une très grande réflexion." br/
+                    "Une question en particulier fût pour la façon de renvoyer nos instructions. Nous nous sommes longtemps demandés si après avoir détecté une instructions Caml, si nous devions simplement la considérer comme un token d'instruction ou si nous devions donner à notre token le nom concret de l'instruction détecté." br/
+                    "C'est pour cette seconde option que nous avons donc optés, notament car elle facilitait grandement la compréhension de notre code et évitait les redondances de tests sur les valeurs de nos instructions dans la suite de notre programme." br/
+                    "C'est donc comme ceci que nous avons abouti au système de détection suivant :" br/
+                         img[src="https://cdn.discordapp.com/attachments/133590928668491776/175973759432261634/Capture_du_2016-04-30_161526.png"]/ br/
+
+                "Dans le reste de notre lexeur, nous avons également décidés d'échapper les caractères espaces (ou de les fusionner en un seul dans les zones de texte) car ne présentant aucun intérêt dans la gestion et l'analyse de notre fichier (choix confirmé par notre enseignant de TP Paul Dorbek)" br/
+                "Ensuite nous renvoyons tous les caratères normalement, en sachant qu'ils seront gérés par la grammaire." br/
+
+            h3[id="analyse-syntaxique"]{"II. L'analyse syntaxique"}
+                "Dans le cadre de notre enseignement d'Analyse Syntaxique, nous avons également étés initiés à l'outil d'analyse syntaxique Bison, qui s'utilise en parralèle avec flex" br/
+                "Grâce à cet outil nous avons pu désigner une grammaire décrivant tout le langage attendu dans un fichier source type. Bison permettrait ainsi de savoir grâce à la suite de lexèmes renvoyés par flex, si notre fichier pouvait corespondre à notre grammaire et donc à une syntaxe correcte que l'on pourrait comprendre" br/
+                "Par exemple la formation d'une question dans la langue française est une suite de la forme : VERBE SUJET COMPLEMENT ?" br/
+                h4[id="html-syntaxique"]{"Gestion HTML"}
+                    "Tout d'abbord et en accord avec le fichier flex, nous avons du instancier tous les tokens possibles" br/
+                    "Ensuite nous avons déterminés toute les suites qu'il était possibles de trouver et nous en avons formé une grammaire constitués de différents états. Pour la gestion du HTML tout le travail c'est essentiellement fait autour de l'état tree :" br/
+                        img[src="https://cdn.discordapp.com/attachments/133590928668491776/175985614452162561/Capture_du_2016-04-30_170217.png"]/ br/
+                    "Effectivement on voit ici que notre balise est suivi d'une accolade, d'un crochet ou encore d'un slash. On peut également suivre la création de forêts qui sont des ouvertures de crochets dans nom de balise." br/
+                    "Les contenus de ces accolades peuvent être des expressions, qui définit nottament la possibilité de contenir du texte ou d'autres trees." br/
+                    "Egalement les ouvertures de balises peuvent ne pas avoir de contenu, seulement des attributs par exemple, ou peuvent être directement fermante, voir même encore les deux à la fois. Autant de cas gérés par notre grammaire." br/
+                    "Comme spécifié dans l'énoncé nous avons donc fait attention aux règles entre les fermetures de crochet et les slash ne devant pas contenir d'espaces." br/
+                h4[id="caml-syntaxique"]{"Gestion Caml"}
+                    "Une fois de plus nous avons ici désignés tous les cas de token déjà donnés dans le lex." br/
+                    "C'est dans cette partie du projet que nous avons rencontrés nos plus gros problèmes. Le grand nombre d'instructions possible et de cas envisageable nous a poussé a modifier la grammaire encore et encore, créant souvent des conflits décalage/réduction ou réduction/réduction.
+                    Dans le cas de la gestion Caml le plus gros du travail se fait dans l'état suivant (dont le nom ou la structure est succeptible d'avoir changé dans notre code final):" br/
+                        img[src="https://cdn.discordapp.com/attachments/133590928668491776/175985627727265793/Capture_du_2016-04-30_170327.png"]/ br/
+
+                h3[id="analyse-semantique"]{"III. L'analyse sémantique"}
+                "Dans ce projet l'analyse sémantique devait donc constituer à traduire les élements compris par notre grammaire en code HTML. Pour celà tout au long de notre grammaire nous avions produit un arbre de structure fournis par le corp enseignant. Le but de l'analyse sémantique devait donc prendre cet arbre en entrée et le traduire" br/
+                "Malheureusement le manque de temps et notre préférence à se consacrer principalement aux outils vu en cours (Flex et bison) nous a poussé à délaiser un peu cette partie" br/
+                h4[id="html-semantique"]{"Gestion HTML"}
+                    "Pour le HTML nous disposons d'une fonction to string qui en parcourant l'arbre de manière récursive de produire un code html" br/
+                    "C'est cette fonction que notre fonction emit va utiliser pour rediriger le texte vers un fichier .html" br/
+                h4[id="caml-semantique"]{"Gestion Caml"}
+                    "Ici même si l'arbre de structures a bien été constuit lors de la lecture de la grammaire nous n'avons pas implémenté d'analyse sémantique."  br/
+
+            h3[id="conclusion"]{"Conclusion"}
+                h4[id="avancement"]{"Etat d'avancement du projet"}
+                    "Au final nous avons une gestion lexicale syntaxique et sémantique du HTML qui fonctionne correctement" br/
+                    "Pour ce qui est de la gestion Caml en revanche même si nous avons un lexeur qui rempli ces fonctions, nous avons eu du mal à réaliser la grammaire et au final l'analyse sémantique." br/
+                    "De plus nous n'avons égallement pas pu aborder le thème de la machine abstraite fournie par le corps enseignant." br/
+                    "Nous restons tout de même satisfait du travail fourni par notre groupe réduit et des compétences acquises par chacun" br/
+                h4[id="difficultes"]{"Difficultées rencontrées"}
+                    "Comme il l'a déjà été précisé à de multiples reprises, nous avons rencontré de nombreux problèmes lors de la réalisation de la grammaire mais sans vouloir passer outre cette étape importante car c'est ici une compétence vraiment intéréssante et un des objectifs majeurs de l'enseignement d'AS" br/
+                    "Un des autres problèmes rencontrés fût les erreurs de compréhension que trop nombreuses. C'est pourquoi à lors de nouvelles informations ou aides fournie par le corps enseignant nous avons du plusieurs fois revoir notre code après nous être rendu compte avoir mal implémenté des cas." br/
+                h4[id="bilan"]{"Bilan d'expérience"}
+                    "Au final ce projet et tous le cours d'AS nous a permis de découvrir des outils qui nous étaient parfaitement inconnus et un aspect de la programmation que nous n'aurions envisagé." br/
+                    "De plus malgré les problèmes évidents, le sujet même si un peu ambitieux était particulièrement intéréssant et le resentit au bout de ce projet est plutôt positif car comme expliqué précédement nous avons eu la véritable impression d'avoir reçu une connaissance importante et utile" br/
+        }
+    }
+}

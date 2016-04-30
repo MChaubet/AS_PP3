@@ -862,12 +862,12 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 33 "scan.l"
-{ printf("match\n");return MATCH_T; }
+{ return MATCH_T; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 34 "scan.l"
-{ printf("with\n");return WITH; }
+{ return WITH; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -877,7 +877,7 @@ YY_RULE_SETUP
 case 12:
 YY_RULE_SETUP
 #line 36 "scan.l"
-{ printf("emit\n");return EMIT_T; }
+{ return EMIT_T; }
 	YY_BREAK
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 /* ***** ***** **** LES INSTRUCTIONS XML/HTML **** ***** ***** */
@@ -925,18 +925,18 @@ case 18:
 YY_RULE_SETUP
 #line 58 "scan.l"
 { 	/* Renvoie de variables CAML */
-													printf("%s\n", yytext);yylval.name = strdup(yytext); return NAME; }
+													yylval.name = strdup(yytext); return NAME; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 61 "scan.l"
-{	printf("\"(DEBUT)\n");/* Début d'un texte */	
+{	/* Début d'un texte */	
 													BEGIN TEXT; return yytext[0]; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 64 "scan.l"
-{	printf("%s\n", yytext);/* Autres caractères */
+{	/* Autres caractères */
 													return yytext[0];}
 	YY_BREAK
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
@@ -945,7 +945,7 @@ YY_RULE_SETUP
 case 21:
 YY_RULE_SETUP
 #line 72 "scan.l"
-{ 	printf("\"(FIN)\n");/* Fin d'un texte */
+{ 	/* Fin d'un texte */
 													BEGIN INITIAL; return yytext[0]; }
 	YY_BREAK
 case 22:
@@ -965,7 +965,7 @@ case 24:
 YY_RULE_SETUP
 #line 81 "scan.l"
 {	/* Retourne un mot */
-													printf("MOT\n");yylval.name = strdup(yytext); return MOT; }
+													yylval.name = strdup(yytext); return MOT; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
