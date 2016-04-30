@@ -1,6 +1,6 @@
-let email= a[href="mailto:author@bdx.fr"]{"email"};
-let Google= a[href="http://www.google.com"]{"google"};
-div{"Le " Google, " est un laboratoire de l'" email, "."}
+let email = a[href="mailto:author@bdx.fr"]{"email"};
+let Google = a[href="http://www.google.com"]{"google"};
+div{"Le " Google " est un laboratoire de l'" email "."}
 
 div1{
 "Contenu..."

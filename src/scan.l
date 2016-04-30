@@ -33,7 +33,7 @@ else										{ return ELSE; }
 match										{ return MATCH_T; }
 with										{ return WITH; }
 end											{ return END; }
-emit										{ return EMIT_T; }
+emit										{ printf("emit\n");return EMIT_T; }
 
 
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
@@ -56,12 +56,12 @@ emit										{ return EMIT_T; }
 													yylval.name = strdup(yytext); return TAG; }
 	
 {EXP}											{ 	/* Renvoie de variables CAML */
-													yylval.name = strdup(yytext); return NAME; }
+													printf("%s\n", yytext);yylval.name = strdup(yytext); return NAME; }
 	
-\"												{	/* Début d'un texte */	
+\"												{	printf("\"(DEBUT)\n");/* Début d'un texte */	
 													BEGIN TEXT; return yytext[0]; }
 	
-.												{	/* Autres caractères */
+.												{	printf("%s\n", yytext);/* Autres caractères */
 													return yytext[0];}
 													
 													
@@ -69,7 +69,7 @@ emit										{ return EMIT_T; }
 	/* ***** ***** ***** ** GESTION DE TEXTE *** ***** ***** ***** */
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 	
-<TEXT>\"										{ 	/* Fin d'un texte */
+<TEXT>\"										{ 	printf("\"(FIN)\n");/* Fin d'un texte */
 													BEGIN INITIAL; return yytext[0]; }
 
 <TEXT>[[:space:]]+								{ 	/* Fusion d'espaces en un */
@@ -79,4 +79,4 @@ emit										{ return EMIT_T; }
 													yylval.name = strdup(yytext); return MOT; }
 	
 <TEXT>[^\"[:space:]]+							{	/* Retourne un mot */
-													yylval.name = strdup(yytext); return MOT; }
+													printf("MOT\n");yylval.name = strdup(yytext); return MOT; }

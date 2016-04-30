@@ -10,7 +10,7 @@ div2[att1="v1"
 br[att1="v1"
    att2="v2"]/
 
-{"contenu ... " div3[class="nb"]{"lol"}
+{"contenu ... " div3[class="nb"]{"encore des mots"}
  "suite ..."}
 
 div4{"contenu " a[href="https://www.lysator.liu.se/c/ANSI-C-grammar-l.html"]{"LEX"}"."}

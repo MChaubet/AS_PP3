@@ -86,8 +86,6 @@
 %type < ast > body
 %type < ast > tree
 %type < attributes > attributs
-%type < ast > contenus
-%type < ast > contenu
 %type < ast > text
 %type < ast > word_t
 
@@ -140,8 +138,6 @@ expr
 		: conditional_expr								{ printf("lel7.1\n");$$ = $1; }
 		| declaration_locale							{ printf("lel7.2\n");$$ = $1; }
 		| match_expr									{ printf("lel7.3\n");$$ = $1; }
-		| EMIT_T '"' MOT '"' tree						{ printf("lel7.4\n");emit($5, $3); }
-		| NAME											{ printf("lel7.5\n");$$ = mk_var($1); }
 		;
 
 conditional_expr
@@ -187,6 +183,8 @@ factor_expr
 		| '"' text '"'									{ printf("lel14.2\n");$$ = $2; }
 		| tree											{ printf("lel14.3\n");$$ = $1; }
 		| NUMBER 										{ printf("lel14.4\n");$$ = mk_integer($1); }
+		| NAME											{ printf("lel14.5 %s\n", $1);$$ = mk_var($1); }
+		| EMIT_T '"' MOT '"' tree						{ printf("lel14.6\n");emit($5, $3); }
 		;
 
 match_expr
@@ -222,10 +220,10 @@ pattern_expr
 /* ***** ***** ***** ***** ***** ***** *****  GESTION CODE XML/HTML  ***** ***** ***** ***** ***** ***** ***** */
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 body
-		: tree body										{ printf("lel19.1\n");$$ = mk_forest(false, $1, $2); }
-		/*| expr body									{ $$ = mk_forest(false, $1, $2); }*/
-		| tree											{ printf("lel19.2\n");$$ = $1; }
-		/*| expr										{ $$ = $1; }*/
+		/*: tree body										{ printf("lel19.1\n");$$ = mk_forest(false, $1, $2); }*/
+		 : factor_expr body									{ $$ = mk_forest(false, $1, $2); }
+		/*| tree											{ printf("lel19.2\n");$$ = $1; }*/
+		| factor_expr											{ $$ = $1; }
 		;
 
 
@@ -233,31 +231,18 @@ body
 /* ***** ***** ***** **** GESTION HTML ***** ***** ***** ***** */
 /* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 tree
-		: TAG '[' attributs ']' '{' contenus '}'		{ printf("lel20.1\n");$$ = mk_tree($1, true, false, false, $3, $6); }
+		: TAG '[' attributs ']' '{' body '}'		{ printf("lel20.1\n");$$ = mk_tree($1, true, false, false, $3, $6); }
 		| TAG '[' attributs ']' '/'						{ printf("lel20.2\n");$$ = mk_tree($1, true, true, false, $3, NULL); }
-		| TAG '{' contenus '}'							{ printf("lel20.3\n");$$ = mk_tree($1, true, false, false, NULL, $3); }
+		| TAG '{' body '}'							{ printf("lel20.3\n");$$ = mk_tree($1, true, false, false, NULL, $3); }
 		| TAG '/'										{ printf("lel20.4\n");$$ = mk_tree($1, true, true, false, NULL, NULL); }
-		| '{' contenus '}'								{ printf("lel20.5\n");$$ = $2; }
+		| '{' body '}'								{ printf("lel20.5\n");$$ = $2; }
 		;
 
 attributs
 		: TAG '=' '"' text '"' attributs				{ printf("lel21.1 %s\n", $1);$$ = mk_attributes(mk_var($1), $4, $6); }
 		| TAG '=' '"' text '"'							{ printf("lel21.2 %s\n", $1);$$ = mk_attributes(mk_var($1), $4, NULL);}
 		;
-
-contenus
-		: contenu contenus								{ printf("lel22.1\n");$$ = mk_forest(false, $1, $2); }
-		| contenu										{ printf("lel22.2\n");$$ = $1; }
-		| expr contenus									{ printf("lel22.3\n");$$ = mk_forest(false, $1, $2); }
-		| expr											{ printf("lel22.3\n");$$ = $1; }
-		;
-
-contenu
-		: /*tree										{ $$ = $1; }
-		| '"' text '"'									{ $$ = $2; }
-		|*/ expr ','									{ printf("lel23.1\n");$$ = $1; }
-		;
-
+		
 text
 		: word_t text									{ printf("lel24.1\n");$$ = mk_forest(false, $1, $2); }
 		| word_t										{ printf("lel24.2\n");$$ = $1; }
