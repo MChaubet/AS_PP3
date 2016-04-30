@@ -862,12 +862,12 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 33 "scan.l"
-{ return MATCH_T; }
+{ printf("match\n");return MATCH_T; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 34 "scan.l"
-{ return WITH; }
+{ printf("with\n");return WITH; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
@@ -904,7 +904,7 @@ case 15:
 YY_RULE_SETUP
 #line 49 "scan.l"
 { 	/* Renvoi d'entiers */
-													yylval.value = atoi(yytext); return INTEGER; }
+													yylval.value = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP

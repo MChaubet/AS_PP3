@@ -1,0 +1,4 @@
+match exp with
+| a{z} -> c{"contenu" z}
+| b{_ _{x} {y}} -> {x, y}
+end

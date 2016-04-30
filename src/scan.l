@@ -33,7 +33,7 @@ else										{ return ELSE; }
 match										{ return MATCH_T; }
 with										{ return WITH; }
 end											{ return END; }
-emit										{ printf("emit\n");return EMIT_T; }
+emit										{ return EMIT_T; }
 
 
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
@@ -47,7 +47,7 @@ emit										{ printf("emit\n");return EMIT_T; }
 													; }
 	
 [[:digit:]]+									{ 	/* Renvoi d'entiers */
-													yylval.value = atoi(yytext); return INTEGER; }
+													yylval.value = atoi(yytext); return NUMBER; }
 	
 ({XML}{EXP}|\_)									{ 	/* '_' ou noms préfixés XML */
 													/*return ERROR;*/ }
@@ -56,12 +56,12 @@ emit										{ printf("emit\n");return EMIT_T; }
 													yylval.name = strdup(yytext); return TAG; }
 	
 {EXP}											{ 	/* Renvoie de variables CAML */
-													printf("%s\n", yytext);yylval.name = strdup(yytext); return NAME; }
+													yylval.name = strdup(yytext); return NAME; }
 	
-\"												{	printf("\"(DEBUT)\n");/* Début d'un texte */	
+\"												{	/* Début d'un texte */	
 													BEGIN TEXT; return yytext[0]; }
 	
-.												{	printf("%s\n", yytext);/* Autres caractères */
+.												{	/* Autres caractères */
 													return yytext[0];}
 													
 													
@@ -69,7 +69,7 @@ emit										{ printf("emit\n");return EMIT_T; }
 	/* ***** ***** ***** ** GESTION DE TEXTE *** ***** ***** ***** */
 	/* ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** */
 	
-<TEXT>\"										{ 	printf("\"(FIN)\n");/* Fin d'un texte */
+<TEXT>\"										{ 	/* Fin d'un texte */
 													BEGIN INITIAL; return yytext[0]; }
 
 <TEXT>[[:space:]]+								{ 	/* Fusion d'espaces en un */
@@ -79,4 +79,4 @@ emit										{ printf("emit\n");return EMIT_T; }
 													yylval.name = strdup(yytext); return MOT; }
 	
 <TEXT>[^\"[:space:]]+							{	/* Retourne un mot */
-													printf("MOT\n");yylval.name = strdup(yytext); return MOT; }
+													yylval.name = strdup(yytext); return MOT; }
